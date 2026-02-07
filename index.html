@@ -58,6 +58,29 @@
             border-color: #ff6b6b;
         }
 
+        .reset-button {
+            position: absolute;
+            top: 0;
+            right: 70px;
+            background: rgba(255,0,0,0.3);
+            border: 3px solid #ff6b6b;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .reset-button:hover {
+            background: rgba(255,0,0,0.5);
+            transform: scale(1.1);
+        }
+
         h1 {
             font-size: 3em;
             text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
@@ -333,6 +356,81 @@
             100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
         }
 
+        /* Confirmation Modal */
+        .confirm-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .confirm-modal.active {
+            display: flex;
+        }
+
+        .confirm-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .confirm-content h2 {
+            color: #ef4444;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .confirm-content p {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+            line-height: 1.5;
+        }
+
+        .confirm-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .confirm-btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .confirm-btn.cancel {
+            background: #6b7280;
+            color: white;
+        }
+
+        .confirm-btn.cancel:hover {
+            background: #4b5563;
+        }
+
+        .confirm-btn.confirm {
+            background: #ef4444;
+            color: white;
+        }
+
+        .confirm-btn.confirm:hover {
+            background: #dc2626;
+        }
+
         /* Mobile Responsive Styles */
         @media (max-width: 768px) {
             body {
@@ -366,6 +464,13 @@
                 width: 50px;
                 height: 50px;
                 font-size: 1.5em;
+            }
+
+            .reset-button {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3em;
+                right: 60px;
             }
 
             .pokemon-grid {
@@ -458,6 +563,27 @@
                 padding: 30px 40px;
                 width: 90%;
             }
+
+            .confirm-content {
+                padding: 30px 20px;
+            }
+
+            .confirm-content h2 {
+                font-size: 1.5em;
+            }
+
+            .confirm-content p {
+                font-size: 1em;
+            }
+
+            .confirm-buttons {
+                flex-direction: column;
+            }
+
+            .confirm-btn {
+                width: 100%;
+                padding: 12px 30px;
+            }
         }
 
         /* Extra small mobile devices */
@@ -533,6 +659,9 @@
 <body>
     <div class="container">
         <header>
+            <button class="reset-button" id="resetButton" onclick="showResetConfirmation()" title="Reset All Caught Pokémon">
+                🔄
+            </button>
             <button class="mute-button" id="muteButton" onclick="toggleMute()" title="Toggle Sound">
                 🔊
             </button>
@@ -587,6 +716,19 @@
     <!-- Ran Away Notification -->
     <div class="ran-away-notification" id="ranAwayNotification">
         💨 <span id="pokemonName"></span> ran away! 💨
+    </div>
+
+    <!-- Reset Confirmation Modal -->
+    <div class="confirm-modal" id="confirmModal">
+        <div class="confirm-content">
+            <h2>⚠️ Reset Progress?</h2>
+            <p>Are you sure you want to reset all caught Pokémon? This will release all <strong><span id="confirmCount">0</span> Pokémon</strong> you've caught and you'll start over from the beginning.</p>
+            <p><strong>This action cannot be undone!</strong></p>
+            <div class="confirm-buttons">
+                <button class="confirm-btn cancel" onclick="closeResetConfirmation()">Cancel</button>
+                <button class="confirm-btn confirm" onclick="confirmReset()">Reset Everything</button>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -833,6 +975,40 @@
             setTimeout(() => {
                 notification.style.display = 'none';
             }, 2000);
+        }
+
+        // Show reset confirmation modal
+        function showResetConfirmation() {
+            const count = Object.keys(caughtPokemon).length;
+            if (count === 0) {
+                alert("You haven't caught any Pokémon yet!");
+                return;
+            }
+            document.getElementById('confirmCount').textContent = count;
+            document.getElementById('confirmModal').classList.add('active');
+        }
+
+        // Close reset confirmation modal
+        function closeResetConfirmation() {
+            document.getElementById('confirmModal').classList.remove('active');
+        }
+
+        // Confirm and execute reset
+        function confirmReset() {
+            caughtPokemon = {};
+            localStorage.setItem('caughtPokemon', JSON.stringify(caughtPokemon));
+            closeResetConfirmation();
+            initializeGrid();
+            
+            // Show success notification
+            const notification = document.getElementById('ranAwayNotification');
+            notification.innerHTML = '🔄 All Pokémon released! Start fresh! 🔄';
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+                notification.innerHTML = '💨 <span id="pokemonName"></span> ran away! 💨';
+            }, 2500);
         }
 
         // Update stats
