@@ -102,6 +102,7 @@
             justify-content: center;
             margin-top: 20px;
             flex-wrap: wrap;
+            align-items: center;
         }
 
         .operation-btn {
@@ -127,6 +128,39 @@
             color: #3b4cca;
             border-color: #ffcb05;
             box-shadow: 0 4px 15px rgba(255, 203, 5, 0.4);
+        }
+
+        .grade-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.3);
+            padding: 8px 16px;
+            border-radius: 12px;
+            border: 3px solid white;
+        }
+
+        .grade-selector label {
+            color: white;
+            font-weight: bold;
+            font-size: 1em;
+            white-space: nowrap;
+        }
+
+        .grade-selector select {
+            background: white;
+            color: #3b4cca;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            min-width: 120px;
+        }
+
+        .grade-selector select:focus {
+            outline: 2px solid #ffcb05;
         }
 
         .pokemon-grid {
@@ -460,6 +494,22 @@
                 max-width: calc(50% - 8px);
             }
 
+            .grade-selector {
+                width: 100%;
+                justify-content: center;
+                padding: 10px;
+            }
+
+            .grade-selector label {
+                font-size: 0.9em;
+            }
+
+            .grade-selector select {
+                font-size: 0.9em;
+                padding: 6px 10px;
+                min-width: 100px;
+            }
+
             .mute-button {
                 width: 50px;
                 height: 50px;
@@ -685,6 +735,21 @@
                 <button class="operation-btn active" onclick="setOperation('random')" data-operation="random">
                     🎲 Random
                 </button>
+                <div class="grade-selector">
+                    <label for="gradeLevel">📚 Grade:</label>
+                    <select id="gradeLevel" onchange="setGradeLevel(this.value)">
+                        <option value="1">1st Grade (Age 6)</option>
+                        <option value="2">2nd Grade (Age 7)</option>
+                        <option value="3">3rd Grade (Age 8)</option>
+                        <option value="4" selected>4th Grade (Age 9)</option>
+                        <option value="5">5th Grade (Age 10)</option>
+                        <option value="6">6th Grade (Age 11)</option>
+                        <option value="7">7th Grade (Age 12)</option>
+                        <option value="8">8th Grade (Age 13)</option>
+                        <option value="9">9th Grade (Age 14)</option>
+                        <option value="10">10th Grade (Age 15-16)</option>
+                    </select>
+                </div>
             </div>
         </header>
 
@@ -766,6 +831,13 @@
         let currentAnswer = 0;
         let isMuted = JSON.parse(localStorage.getItem('isMuted')) || false;
         let operationMode = localStorage.getItem('operationMode') || 'random';
+        let gradeLevel = parseInt(localStorage.getItem('gradeLevel')) || 4;
+
+        // Set grade level
+        function setGradeLevel(grade) {
+            gradeLevel = parseInt(grade);
+            localStorage.setItem('gradeLevel', gradeLevel);
+        }
 
         // Set operation mode
         function setOperation(mode) {
@@ -800,41 +872,123 @@
             }
         }
 
-        // Generate math problem suitable for 9-year-olds
+        // Generate grade-appropriate math problem
         function generateMathProblem() {
-            const operations = {
-                addition: () => {
-                    const a = Math.floor(Math.random() * 50) + 10;
-                    const b = Math.floor(Math.random() * 50) + 10;
-                    return { problem: `${a} + ${b}`, answer: a + b };
+            // Define difficulty parameters by grade level
+            const gradeDifficulty = {
+                1: { // Age 6 - Very basic addition/subtraction
+                    addition: { min: 1, max: 10 },
+                    subtraction: { min: 1, max: 10 },
+                    multiplication: null, // Not appropriate yet
+                    division: null
                 },
-                subtraction: () => {
-                    const a = Math.floor(Math.random() * 50) + 20;
-                    const b = Math.floor(Math.random() * (a - 10)) + 1;
-                    return { problem: `${a} - ${b}`, answer: a - b };
+                2: { // Age 7 - Simple addition/subtraction
+                    addition: { min: 1, max: 20 },
+                    subtraction: { min: 1, max: 20 },
+                    multiplication: { min: 1, max: 5, maxProduct: 25 },
+                    division: null
                 },
-                multiplication: () => {
-                    const a = Math.floor(Math.random() * 12) + 2;
-                    const b = Math.floor(Math.random() * 12) + 2;
-                    return { problem: `${a} × ${b}`, answer: a * b };
+                3: { // Age 8 - Larger numbers, intro multiplication
+                    addition: { min: 5, max: 50 },
+                    subtraction: { min: 5, max: 50 },
+                    multiplication: { min: 2, max: 10, maxProduct: 50 },
+                    division: { divisor: [2, 3, 4, 5], quotient: [2, 10] }
                 },
-                division: () => {
-                    const b = Math.floor(Math.random() * 10) + 2;
-                    const answer = Math.floor(Math.random() * 12) + 2;
-                    const a = b * answer;
-                    return { problem: `${a} ÷ ${b}`, answer: answer };
+                4: { // Age 9 - Standard multiplication tables
+                    addition: { min: 10, max: 100 },
+                    subtraction: { min: 10, max: 100 },
+                    multiplication: { min: 2, max: 12, maxProduct: 144 },
+                    division: { divisor: [2, 12], quotient: [2, 12] }
+                },
+                5: { // Age 10 - Larger multiplication, division
+                    addition: { min: 20, max: 200 },
+                    subtraction: { min: 20, max: 200 },
+                    multiplication: { min: 5, max: 15, maxProduct: 225 },
+                    division: { divisor: [2, 15], quotient: [2, 15] }
+                },
+                6: { // Age 11 - Multi-digit operations
+                    addition: { min: 50, max: 500 },
+                    subtraction: { min: 50, max: 500 },
+                    multiplication: { min: 10, max: 25, maxProduct: 625 },
+                    division: { divisor: [5, 20], quotient: [5, 20] }
+                },
+                7: { // Age 12 - Larger numbers
+                    addition: { min: 100, max: 1000 },
+                    subtraction: { min: 100, max: 1000 },
+                    multiplication: { min: 15, max: 35, maxProduct: 1225 },
+                    division: { divisor: [10, 25], quotient: [10, 25] }
+                },
+                8: { // Age 13 - More complex
+                    addition: { min: 200, max: 2000 },
+                    subtraction: { min: 200, max: 2000 },
+                    multiplication: { min: 20, max: 50, maxProduct: 2500 },
+                    division: { divisor: [15, 35], quotient: [15, 35] }
+                },
+                9: { // Age 14 - Advanced
+                    addition: { min: 500, max: 5000 },
+                    subtraction: { min: 500, max: 5000 },
+                    multiplication: { min: 25, max: 75, maxProduct: 5625 },
+                    division: { divisor: [20, 50], quotient: [20, 50] }
+                },
+                10: { // Age 15-16 - Most challenging
+                    addition: { min: 1000, max: 10000 },
+                    subtraction: { min: 1000, max: 10000 },
+                    multiplication: { min: 50, max: 100, maxProduct: 10000 },
+                    division: { divisor: [25, 75], quotient: [25, 75] }
                 }
             };
 
-            // If random mode, pick a random operation
+            const difficulty = gradeDifficulty[gradeLevel];
+
+            const operations = {
+                addition: () => {
+                    if (!difficulty.addition) return null;
+                    const a = Math.floor(Math.random() * (difficulty.addition.max - difficulty.addition.min + 1)) + difficulty.addition.min;
+                    const b = Math.floor(Math.random() * (difficulty.addition.max - difficulty.addition.min + 1)) + difficulty.addition.min;
+                    return { problem: `${a} + ${b}`, answer: a + b };
+                },
+                subtraction: () => {
+                    if (!difficulty.subtraction) return null;
+                    const a = Math.floor(Math.random() * (difficulty.subtraction.max - difficulty.subtraction.min + 1)) + difficulty.subtraction.min;
+                    const b = Math.floor(Math.random() * a) + 1; // Ensure b < a for positive result
+                    return { problem: `${a} - ${b}`, answer: a - b };
+                },
+                multiplication: () => {
+                    if (!difficulty.multiplication) return null;
+                    const a = Math.floor(Math.random() * (difficulty.multiplication.max - difficulty.multiplication.min + 1)) + difficulty.multiplication.min;
+                    const b = Math.floor(Math.random() * (difficulty.multiplication.max - difficulty.multiplication.min + 1)) + difficulty.multiplication.min;
+                    return { problem: `${a} × ${b}`, answer: a * b };
+                },
+                division: () => {
+                    if (!difficulty.division) return null;
+                    const divisor = Math.floor(Math.random() * (difficulty.division.divisor[1] - difficulty.division.divisor[0] + 1)) + difficulty.division.divisor[0];
+                    const quotient = Math.floor(Math.random() * (difficulty.division.quotient[1] - difficulty.division.quotient[0] + 1)) + difficulty.division.quotient[0];
+                    const dividend = divisor * quotient;
+                    return { problem: `${dividend} ÷ ${divisor}`, answer: quotient };
+                }
+            };
+
+            // If random mode, pick a random operation that's available for this grade
             if (operationMode === 'random') {
-                const operationTypes = ['addition', 'subtraction', 'multiplication', 'division'];
-                const randomType = operationTypes[Math.floor(Math.random() * operationTypes.length)];
+                const availableOps = [];
+                if (difficulty.addition) availableOps.push('addition');
+                if (difficulty.subtraction) availableOps.push('subtraction');
+                if (difficulty.multiplication) availableOps.push('multiplication');
+                if (difficulty.division) availableOps.push('division');
+                
+                const randomType = availableOps[Math.floor(Math.random() * availableOps.length)];
                 return operations[randomType]();
             }
 
-            // Otherwise use the selected operation
-            return operations[operationMode]();
+            // Otherwise use the selected operation (if available for this grade)
+            const result = operations[operationMode]();
+            
+            // If operation not available for this grade, fall back to addition
+            if (!result) {
+                return operations.addition();
+            }
+            
+            return result;
         }
 
         // Get Pokémon sprite URL from PokeAPI
@@ -1027,6 +1181,7 @@
             
             updateMuteButton(); // Initialize mute button state
             setOperation(operationMode); // Initialize operation mode button state
+            document.getElementById('gradeLevel').value = gradeLevel; // Initialize grade level dropdown
             initializeGrid();
         });
     </script>
