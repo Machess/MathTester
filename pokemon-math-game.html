@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon Math Challenge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 3em;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+
+        .stats {
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 15px;
+            display: inline-block;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .pokemon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 15px;
+            background: rgba(255,255,255,0.9);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .pokemon-card {
+            background: white;
+            border: 3px solid #ffcb05;
+            border-radius: 10px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .pokemon-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .pokemon-card.caught {
+            background: #f0f0f0;
+            border-color: #888;
+        }
+
+        .pokemon-sprite {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto;
+        }
+
+        .pokemon-name {
+            font-size: 0.75em;
+            margin-top: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .pokemon-number {
+            font-size: 0.65em;
+            color: #666;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2em;
+            cursor: pointer;
+            color: #666;
+            background: none;
+            border: none;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        .pokemon-display {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .pokemon-modal-sprite {
+            width: 120px;
+            height: 120px;
+        }
+
+        .speech-bubble {
+            background: #fff;
+            border: 3px solid #333;
+            border-radius: 20px;
+            padding: 20px;
+            position: relative;
+            flex: 1;
+        }
+
+        .speech-bubble:before {
+            content: '';
+            position: absolute;
+            left: -20px;
+            top: 30px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 10px 20px 10px 0;
+            border-color: transparent #333 transparent transparent;
+        }
+
+        .speech-bubble:after {
+            content: '';
+            position: absolute;
+            left: -14px;
+            top: 33px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 7px 14px 7px 0;
+            border-color: transparent #fff transparent transparent;
+        }
+
+        .math-problem {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .answer-section {
+            text-align: center;
+        }
+
+        .answer-input {
+            font-size: 1.5em;
+            padding: 15px;
+            border: 3px solid #ffcb05;
+            border-radius: 10px;
+            width: 200px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .submit-btn {
+            background: #3b4cca;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: #2a3799;
+            transform: scale(1.05);
+        }
+
+        .feedback {
+            margin-top: 20px;
+            font-size: 1.3em;
+            font-weight: bold;
+            min-height: 30px;
+        }
+
+        .feedback.correct {
+            color: #22c55e;
+        }
+
+        .feedback.incorrect {
+            color: #ef4444;
+        }
+
+        .celebration {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 2em;
+            animation: bounce 0.5s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .ran-away-notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 40px 60px;
+            border-radius: 20px;
+            font-size: 2em;
+            font-weight: bold;
+            z-index: 2000;
+            display: none;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            animation: fadeInOut 2s ease;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            20% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 Pokémon Math Challenge 🎮</h1>
+            <div class="stats">
+                <span id="caught-count">0</span> / 150 Pokémon Caught! ⚡
+            </div>
+        </header>
+
+        <div class="pokemon-grid" id="pokemonGrid"></div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="mathModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">×</button>
+            
+            <div class="pokemon-display">
+                <img class="pokemon-modal-sprite" id="modalSprite" src="" alt="">
+                <div class="speech-bubble">
+                    <div class="math-problem" id="mathProblem"></div>
+                </div>
+            </div>
+
+            <div class="answer-section">
+                <input type="number" class="answer-input" id="answerInput" placeholder="Answer">
+                <br>
+                <button class="submit-btn" onclick="checkAnswer()">Catch Pokémon!</button>
+                <div class="feedback" id="feedback"></div>
+                <div class="celebration" id="celebration">🎉 Pokémon Caught! 🎉</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ran Away Notification -->
+    <div class="ran-away-notification" id="ranAwayNotification">
+        💨 <span id="pokemonName"></span> ran away! 💨
+    </div>
+
+    <script>
+        // Kanto Pokémon (1-150)
+        const pokemon = [
+            "Bulbasaur", "Ivysaur", "Venusaur", "Charmander", "Charmeleon", "Charizard", 
+            "Squirtle", "Wartortle", "Blastoise", "Caterpie", "Metapod", "Butterfree",
+            "Weedle", "Kakuna", "Beedrill", "Pidgey", "Pidgeotto", "Pidgeot",
+            "Rattata", "Raticate", "Spearow", "Fearow", "Ekans", "Arbok",
+            "Pikachu", "Raichu", "Sandshrew", "Sandslash", "Nidoran♀", "Nidorina",
+            "Nidoqueen", "Nidoran♂", "Nidorino", "Nidoking", "Clefairy", "Clefable",
+            "Vulpix", "Ninetales", "Jigglypuff", "Wigglytuff", "Zubat", "Golbat",
+            "Oddish", "Gloom", "Vileplume", "Paras", "Parasect", "Venonat",
+            "Venomoth", "Diglett", "Dugtrio", "Meowth", "Persian", "Psyduck",
+            "Golduck", "Mankey", "Primeape", "Growlithe", "Arcanine", "Poliwag",
+            "Poliwhirl", "Poliwrath", "Abra", "Kadabra", "Alakazam", "Machop",
+            "Machoke", "Machamp", "Bellsprout", "Weepinbell", "Victreebel", "Tentacool",
+            "Tentacruel", "Geodude", "Graveler", "Golem", "Ponyta", "Rapidash",
+            "Slowpoke", "Slowbro", "Magnemite", "Magneton", "Farfetch'd", "Doduo",
+            "Dodrio", "Seel", "Dewgong", "Grimer", "Muk", "Shellder",
+            "Cloyster", "Gastly", "Haunter", "Gengar", "Onix", "Drowzee",
+            "Hypno", "Krabby", "Kingler", "Voltorb", "Electrode", "Exeggcute",
+            "Exeggutor", "Cubone", "Marowak", "Hitmonlee", "Hitmonchan", "Lickitung",
+            "Koffing", "Weezing", "Rhyhorn", "Rhydon", "Chansey", "Tangela",
+            "Kangaskhan", "Horsea", "Seadra", "Goldeen", "Seaking", "Staryu",
+            "Starmie", "Mr. Mime", "Scyther", "Jynx", "Electabuzz", "Magmar",
+            "Pinsir", "Tauros", "Magikarp", "Gyarados", "Lapras", "Ditto",
+            "Eevee", "Vaporeon", "Jolteon", "Flareon", "Porygon", "Omanyte",
+            "Omastar", "Kabuto", "Kabutops", "Aerodactyl", "Snorlax", "Articuno",
+            "Zapdos", "Moltres", "Dratini", "Dragonair", "Dragonite", "Mewtwo", "Mew"
+        ];
+
+        let caughtPokemon = JSON.parse(localStorage.getItem('caughtPokemon')) || {};
+        let currentPokemon = null;
+        let currentAnswer = 0;
+
+        // Generate math problem suitable for 9-year-olds
+        function generateMathProblem() {
+            const operations = [
+                () => {
+                    const a = Math.floor(Math.random() * 50) + 10;
+                    const b = Math.floor(Math.random() * 50) + 10;
+                    return { problem: `${a} + ${b}`, answer: a + b };
+                },
+                () => {
+                    const a = Math.floor(Math.random() * 50) + 20;
+                    const b = Math.floor(Math.random() * (a - 10)) + 1;
+                    return { problem: `${a} - ${b}`, answer: a - b };
+                },
+                () => {
+                    const a = Math.floor(Math.random() * 12) + 2;
+                    const b = Math.floor(Math.random() * 12) + 2;
+                    return { problem: `${a} × ${b}`, answer: a * b };
+                },
+                () => {
+                    const b = Math.floor(Math.random() * 10) + 2;
+                    const answer = Math.floor(Math.random() * 12) + 2;
+                    const a = b * answer;
+                    return { problem: `${a} ÷ ${b}`, answer: answer };
+                }
+            ];
+
+            const operation = operations[Math.floor(Math.random() * operations.length)];
+            return operation();
+        }
+
+        // Get Pokémon sprite URL from PokeAPI
+        function getPokemonSpriteUrl(number, isCaught) {
+            if (isCaught) {
+                // Return pokeball sprite
+                return 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png';
+            }
+            // Return pokemon sprite from PokeAPI (using official artwork for better quality)
+            return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${number}.png`;
+        }
+
+        // Get Pokémon cry/sound URL from PokeAPI
+        function getPokemonCryUrl(number) {
+            return `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${number}.ogg`;
+        }
+
+        // Play Pokémon cry sound
+        function playPokemonCry(number) {
+            const audio = new Audio(getPokemonCryUrl(number));
+            audio.volume = 0.5; // Set volume to 50% so it's not too loud
+            audio.play().catch(err => {
+                console.log('Could not play cry:', err);
+                // Fallback: Try legacy cry format
+                const legacyAudio = new Audio(`https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/legacy/${number}.ogg`);
+                legacyAudio.volume = 0.5;
+                legacyAudio.play().catch(e => console.log('Legacy cry also failed:', e));
+            });
+        }
+
+        // Initialize grid
+        function initializeGrid() {
+            const grid = document.getElementById('pokemonGrid');
+            grid.innerHTML = '';
+
+            pokemon.forEach((name, index) => {
+                const number = index + 1;
+                const isCaught = caughtPokemon[number];
+                
+                const card = document.createElement('div');
+                card.className = `pokemon-card ${isCaught ? 'caught' : ''}`;
+                card.onclick = () => openModal(number, name);
+
+                const sprite = document.createElement('img');
+                sprite.className = 'pokemon-sprite';
+                sprite.src = getPokemonSpriteUrl(number, isCaught);
+                sprite.alt = name;
+
+                const nameEl = document.createElement('div');
+                nameEl.className = 'pokemon-name';
+                nameEl.textContent = name;
+
+                const numberEl = document.createElement('div');
+                numberEl.className = 'pokemon-number';
+                numberEl.textContent = `#${String(number).padStart(3, '0')}`;
+
+                card.appendChild(sprite);
+                card.appendChild(nameEl);
+                card.appendChild(numberEl);
+                grid.appendChild(card);
+            });
+
+            updateStats();
+        }
+
+        // Open modal
+        function openModal(number, name) {
+            if (caughtPokemon[number]) {
+                return; // Already caught
+            }
+
+            currentPokemon = { number, name };
+            const mathData = generateMathProblem();
+            currentAnswer = mathData.answer;
+
+            // Play Pokémon cry sound
+            playPokemonCry(number);
+
+            document.getElementById('modalSprite').src = getPokemonSpriteUrl(number, false);
+            document.getElementById('modalSprite').alt = name;
+            document.getElementById('mathProblem').textContent = `Solve this to catch me: ${mathData.problem} = ?`;
+            document.getElementById('answerInput').value = '';
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('celebration').style.display = 'none';
+            document.getElementById('mathModal').classList.add('active');
+            document.getElementById('answerInput').focus();
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('mathModal').classList.remove('active');
+            currentPokemon = null;
+        }
+
+        // Check answer
+        function checkAnswer() {
+            const userAnswer = parseInt(document.getElementById('answerInput').value);
+            const feedback = document.getElementById('feedback');
+            const celebration = document.getElementById('celebration');
+
+            if (userAnswer === currentAnswer) {
+                feedback.textContent = '✓ Correct!';
+                feedback.className = 'feedback correct';
+                celebration.style.display = 'block';
+
+                // Mark as caught
+                caughtPokemon[currentPokemon.number] = true;
+                localStorage.setItem('caughtPokemon', JSON.stringify(caughtPokemon));
+
+                setTimeout(() => {
+                    closeModal();
+                    initializeGrid();
+                }, 2000);
+            } else {
+                // Pokemon runs away on wrong answer
+                feedback.textContent = '✗ Wrong answer!';
+                feedback.className = 'feedback incorrect';
+                
+                setTimeout(() => {
+                    closeModal();
+                    showRanAwayNotification(currentPokemon.name);
+                }, 800);
+            }
+        }
+
+        // Show ran away notification
+        function showRanAwayNotification(pokemonName) {
+            const notification = document.getElementById('ranAwayNotification');
+            document.getElementById('pokemonName').textContent = pokemonName;
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 2000);
+        }
+
+        // Update stats
+        function updateStats() {
+            const count = Object.keys(caughtPokemon).length;
+            document.getElementById('caught-count').textContent = count;
+        }
+
+        // Enter key support
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('answerInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    checkAnswer();
+                }
+            });
+            
+            initializeGrid();
+        });
+    </script>
+</body>
+</html>
