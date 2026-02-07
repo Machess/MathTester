@@ -27,6 +27,35 @@
             text-align: center;
             color: white;
             margin-bottom: 30px;
+            position: relative;
+        }
+
+        .mute-button {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: rgba(255,255,255,0.2);
+            border: 3px solid white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .mute-button:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+
+        .mute-button.muted {
+            background: rgba(255,0,0,0.3);
+            border-color: #ff6b6b;
         }
 
         h1 {
@@ -275,6 +304,9 @@
 <body>
     <div class="container">
         <header>
+            <button class="mute-button" id="muteButton" onclick="toggleMute()" title="Toggle Sound">
+                🔊
+            </button>
             <h1>🎮 Pokémon Math Challenge 🎮</h1>
             <div class="stats">
                 <span id="caught-count">0</span> / 150 Pokémon Caught! ⚡
@@ -344,6 +376,28 @@
         let caughtPokemon = JSON.parse(localStorage.getItem('caughtPokemon')) || {};
         let currentPokemon = null;
         let currentAnswer = 0;
+        let isMuted = JSON.parse(localStorage.getItem('isMuted')) || false;
+
+        // Toggle mute on/off
+        function toggleMute() {
+            isMuted = !isMuted;
+            localStorage.setItem('isMuted', JSON.stringify(isMuted));
+            updateMuteButton();
+        }
+
+        // Update mute button appearance
+        function updateMuteButton() {
+            const button = document.getElementById('muteButton');
+            if (isMuted) {
+                button.textContent = '🔇';
+                button.classList.add('muted');
+                button.title = 'Sound Off - Click to Unmute';
+            } else {
+                button.textContent = '🔊';
+                button.classList.remove('muted');
+                button.title = 'Sound On - Click to Mute';
+            }
+        }
 
         // Generate math problem suitable for 9-year-olds
         function generateMathProblem() {
@@ -392,6 +446,11 @@
 
         // Play Pokémon cry sound
         function playPokemonCry(number) {
+            // Don't play if muted
+            if (isMuted) {
+                return;
+            }
+            
             const audio = new Audio(getPokemonCryUrl(number));
             audio.volume = 0.5; // Set volume to 50% so it's not too loud
             audio.play().catch(err => {
@@ -524,6 +583,7 @@
                 }
             });
             
+            updateMuteButton(); // Initialize mute button state
             initializeGrid();
         });
     </script>
