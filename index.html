@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Pokémon Math Master</title>
+    <title>Pokémon Math Challenge</title>
     <style>
         * {
             margin: 0;
@@ -15,7 +15,344 @@
             font-family: 'Arial', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* Page Routing */
+        .page {
+            display: none;
+            min-height: 100vh;
             padding: 20px;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Navigation Bar */
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(59, 76, 202, 0.95);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .nav-bar.hidden {
+            display: none;
+        }
+
+        .nav-brand {
+            color: #ffcb05;
+            font-size: 1.5em;
+            font-weight: bold;
+            text-shadow: 2px 2px 0 #3b4cca;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.4);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: #ffcb05;
+            color: #3b4cca;
+            border-color: #ffcb05;
+        }
+
+        .page-content {
+            margin-top: 80px;
+        }
+
+        /* Start Screen */
+        .start-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+
+        .game-logo {
+            background: linear-gradient(135deg, #ffcb05 0%, #ffd700 100%);
+            border: 5px solid #3b4cca;
+            border-radius: 30px;
+            padding: 40px 60px;
+            margin-bottom: 50px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        .game-logo h1 {
+            font-size: 4em;
+            color: #3b4cca;
+            text-shadow: 3px 3px 0px #fff;
+            margin-bottom: 10px;
+        }
+
+        .game-logo .subtitle {
+            font-size: 1.5em;
+            color: #3b4cca;
+            font-weight: bold;
+        }
+
+        .start-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .start-btn, .settings-btn {
+            background: #3b4cca;
+            color: white;
+            border: none;
+            padding: 20px 60px;
+            font-size: 1.5em;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .start-btn:hover, .settings-btn:hover {
+            background: #2a3799;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        .settings-btn {
+            background: #6b7280;
+        }
+
+        .settings-btn:hover {
+            background: #4b5563;
+        }
+
+        .reset-game-btn {
+            background: #ef4444;
+        }
+
+        .reset-game-btn:hover {
+            background: #dc2626;
+        }
+
+        /* Settings Modal */
+        .settings-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .settings-modal.active {
+            display: flex;
+        }
+
+        .settings-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .settings-content h2 {
+            color: #3b4cca;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .setting-group {
+            margin-bottom: 25px;
+        }
+
+        .setting-group label {
+            display: block;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .setting-group select,
+        .setting-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .operation-settings {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .operation-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            background: #f3f4f6;
+            border-radius: 8px;
+        }
+
+        .operation-checkbox input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .save-settings-btn {
+            width: 100%;
+            background: #3b4cca;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .save-settings-btn:hover {
+            background: #2a3799;
+        }
+
+        /* Bush Selection Screen */
+        .bush-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .bush-screen h2 {
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .bushes-container {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .bush {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+        }
+
+        .bush:hover {
+            transform: translateY(-10px) scale(1.05);
+        }
+
+        .bush.checked {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .bush.checked:hover {
+            transform: none;
+        }
+
+        .bush.checked .bush-image {
+            filter: grayscale(1) drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+        }
+
+        .bush.checked .bush-label {
+            text-decoration: line-through;
+        }
+
+        .bush-image {
+            width: 150px;
+            height: 150px;
+            font-size: 8em;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+        }
+
+        .bush-label {
+            color: white;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .empty-bush-message {
+            display: none;
+        }
+
+        /* Game Screen */
+        .game-screen {
+            min-height: 100vh;
+        }
+
+        .pokedex-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .pokedex-title {
+            font-size: 3em;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
+        }
+
+        .pokedex-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .pokedex-controls .reset-button,
+        .pokedex-controls .mute-button {
+            position: relative;
+            top: auto;
+            right: auto;
         }
 
         .container {
@@ -23,11 +360,17 @@
             margin: 0 auto;
         }
 
+        .pokedex-filters {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+        }
+
         header {
             text-align: center;
             color: white;
             margin-bottom: 30px;
-            position: relative;
         }
 
         .mute-button {
@@ -430,8 +773,17 @@
         }
 
         .pokemon-card.caught {
-            background: #f0f0f0;
-            border-color: #888;
+            background: white;
+            border-color: #22c55e;
+        }
+
+        .pokemon-card.uncaught {
+            background: #f3f4f6;
+            border-color: #9ca3af;
+        }
+
+        .pokemon-card.uncaught .pokemon-sprite {
+            filter: brightness(0.7);
         }
 
         .pokemon-sprite {
@@ -709,12 +1061,92 @@
         /* Mobile Responsive Styles */
         @media (max-width: 768px) {
             body {
+                padding: 0;
+            }
+
+            .page {
                 padding: 10px;
+            }
+
+            .page-content {
+                margin-top: 70px;
+            }
+
+            .nav-bar {
+                padding: 10px 15px;
+            }
+
+            .nav-brand {
+                font-size: 1.2em;
+            }
+
+            .nav-btn {
+                padding: 8px 12px;
+                font-size: 0.85em;
+            }
+
+            .game-logo h1 {
+                font-size: 2.5em;
+            }
+
+            .game-logo .subtitle {
+                font-size: 1.2em;
+            }
+
+            .game-logo {
+                padding: 30px 40px;
+            }
+
+            .start-btn, .settings-btn {
+                padding: 15px 40px;
+                font-size: 1.2em;
+            }
+
+            .bush-screen h2 {
+                font-size: 1.8em;
+                margin-bottom: 30px;
+            }
+
+            .bushes-container {
+                gap: 20px;
+            }
+
+            .bush-image {
+                width: 100px;
+                height: 100px;
+                font-size: 5em;
+            }
+
+            .settings-content {
+                padding: 30px 20px;
+            }
+
+            .operation-settings {
+                grid-template-columns: 1fr;
             }
 
             h1 {
                 font-size: 1.8em;
                 margin-bottom: 5px;
+            }
+
+            .pokedex-title {
+                font-size: 2em;
+            }
+
+            .pokedex-controls {
+                gap: 10px;
+            }
+
+            .pokedex-controls .reset-button,
+            .pokedex-controls .mute-button {
+                width: 50px;
+                height: 50px;
+                font-size: 1.3em;
+            }
+
+            .pokedex-filters {
+                padding: 15px;
             }
 
             .stats {
@@ -1018,69 +1450,181 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <button class="reset-button" id="resetButton" onclick="showResetConfirmation()" title="Reset All Caught Pokémon">
-                🔄
-            </button>
-            <button class="mute-button" id="muteButton" onclick="toggleMute()" title="Toggle Sound">
-                🔊
-            </button>
-            <h1>Pokémon Math</h1>
-            <div class="stats-container">
-                <div class="stat-box stats">
-                    <div class="stat-label">Pokémon Caught</div>
-                    <div class="stat-value"><span id="caught-count">0</span> / 150</div>
-                </div>
-                <div class="stat-box stats">
-                    <div class="stat-label">🔥 Current Streak</div>
-                    <div class="stat-value"><span id="streak-count">0</span></div>
-                </div>
-                <button class="badges-button" onclick="openBadgeModal()">
-                    <div class="badge-notification">
-                        🏆 My Badges
-                        <span class="badge-count" id="badge-count">0</span>
-                    </div>
-                </button>
-            </div>
-            <div class="operation-filters">
-                <button class="operation-btn" onclick="setOperation('addition')" data-operation="addition">
-                    ➕ Addition
-                </button>
-                <button class="operation-btn" onclick="setOperation('subtraction')" data-operation="subtraction">
-                    ➖ Subtraction
-                </button>
-                <button class="operation-btn" onclick="setOperation('multiplication')" data-operation="multiplication">
-                    ✖️ Multiplication
-                </button>
-                <button class="operation-btn" onclick="setOperation('division')" data-operation="division">
-                    ➗ Division
-                </button>
-                <button class="operation-btn active" onclick="setOperation('random')" data-operation="random">
-                    🎲 Random
-                </button>
-                <div class="grade-selector">
-                    <label for="gradeLevel">📚 Grade:</label>
-                    <select id="gradeLevel" onchange="setGradeLevel(this.value)">
-                        <option value="1">1st Grade (Age 6)</option>
-                        <option value="2">2nd Grade (Age 7)</option>
-                        <option value="3">3rd Grade (Age 8)</option>
-                        <option value="4" selected>4th Grade (Age 9)</option>
-                        <option value="5">5th Grade (Age 10)</option>
-                        <option value="6">6th Grade (Age 11)</option>
-                        <option value="7">7th Grade (Age 12)</option>
-                        <option value="8">8th Grade (Age 13)</option>
-                        <option value="9">9th Grade (Age 14)</option>
-                        <option value="10">10th Grade (Age 15-16)</option>
-                    </select>
-                </div>
-            </div>
-        </header>
-
-        <div class="pokemon-grid" id="pokemonGrid"></div>
+    <!-- Navigation Bar (hidden on start screen) -->
+    <div class="nav-bar hidden" id="navBar">
+        <div class="nav-brand">POKÉMON Math</div>
+        <div class="nav-buttons">
+            <button class="nav-btn" onclick="navigateTo('menu')">🏠 Menu</button>
+            <button class="nav-btn" onclick="navigateTo('hunt')">🌳 Hunt</button>
+            <button class="nav-btn" onclick="navigateTo('pokedex')">📖 Pokédex</button>
+        </div>
     </div>
 
-    <!-- Modal -->
+    <!-- START MENU PAGE -->
+    <div class="page active" id="menuPage">
+        <div class="start-screen">
+            <div class="game-logo">
+                <h1>POKÉMON</h1>
+                <div class="subtitle">Math Challenge</div>
+            </div>
+            <div class="start-buttons">
+                <button class="start-btn" onclick="startGame()">▶ Start Game</button>
+                <button class="settings-btn" onclick="openSettings()">⚙ Settings</button>
+                <button class="badges-button" style="margin-top: 20px;" onclick="openBadgeModal()">
+                    <div class="badge-notification">
+                        🏆 My Badges
+                        <span class="badge-count" id="badge-count-menu">0</span>
+                    </div>
+                </button>
+                <button class="reset-game-btn start-btn" onclick="showFullResetConfirmation()">🔄 Reset All Progress</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BUSH HUNTING PAGE -->
+    <div class="page" id="huntPage">
+        <div class="bush-screen">
+            <h2 id="bushHeader">🌿 Choose a bush to search! 🌿</h2>
+            <div class="bushes-container">
+                <div class="bush" id="bush-0" onclick="selectBush(0)">
+                    <div class="bush-image">🌳</div>
+                    <div class="bush-label">Bush 1</div>
+                </div>
+                <div class="bush" id="bush-1" onclick="selectBush(1)">
+                    <div class="bush-image">🌳</div>
+                    <div class="bush-label">Bush 2</div>
+                </div>
+                <div class="bush" id="bush-2" onclick="selectBush(2)">
+                    <div class="bush-image">🌳</div>
+                    <div class="bush-label">Bush 3</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- POKÉDEX PAGE -->
+    <div class="page" id="pokedexPage">
+        <div class="page-content">
+            <div class="pokedex-header">
+                <h1 class="pokedex-title">📖 Pokédex 📖</h1>
+                
+                <div class="pokedex-controls">
+                    <button class="mute-button" id="muteButton" onclick="toggleMute()" title="Toggle Sound">
+                        🔊
+                    </button>
+                    <button class="reset-button" id="resetButton" onclick="showResetConfirmation()" title="Reset All Caught Pokémon">
+                        🔄
+                    </button>
+                </div>
+
+                <div class="stats-container" style="margin-bottom: 20px;">
+                    <div class="stat-box stats">
+                        <div class="stat-label">Pokémon Caught</div>
+                        <div class="stat-value"><span id="caught-count">0</span> / 150</div>
+                    </div>
+                    <div class="stat-box stats">
+                        <div class="stat-label">🔥 Current Streak</div>
+                        <div class="stat-value"><span id="streak-count">0</span></div>
+                    </div>
+                    <button class="badges-button" onclick="openBadgeModal()">
+                        <div class="badge-notification">
+                            🏆 My Badges
+                            <span class="badge-count" id="badge-count">0</span>
+                        </div>
+                    </button>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="pokedex-filters">
+                    <div class="operation-filters">
+                        <button class="operation-btn" onclick="setOperation('addition')" data-operation="addition">
+                            ➕ Addition
+                        </button>
+                        <button class="operation-btn" onclick="setOperation('subtraction')" data-operation="subtraction">
+                            ➖ Subtraction
+                        </button>
+                        <button class="operation-btn" onclick="setOperation('multiplication')" data-operation="multiplication">
+                            ✖️ Multiplication
+                        </button>
+                        <button class="operation-btn" onclick="setOperation('division')" data-operation="division">
+                            ➗ Division
+                        </button>
+                        <button class="operation-btn active" onclick="setOperation('random')" data-operation="random">
+                            🎲 Random
+                        </button>
+                        <div class="grade-selector">
+                            <label for="gradeLevel">📚 Grade:</label>
+                            <select id="gradeLevel" onchange="setGradeLevel(this.value)">
+                                <option value="1">1st Grade (Age 6)</option>
+                                <option value="2">2nd Grade (Age 7)</option>
+                                <option value="3">3rd Grade (Age 8)</option>
+                                <option value="4" selected>4th Grade (Age 9)</option>
+                                <option value="5">5th Grade (Age 10)</option>
+                                <option value="6">6th Grade (Age 11)</option>
+                                <option value="7">7th Grade (Age 12)</option>
+                                <option value="8">8th Grade (Age 13)</option>
+                                <option value="9">9th Grade (Age 14)</option>
+                                <option value="10">10th Grade (Age 15-16)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pokemon-grid" id="pokemonGrid"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="settings-modal" id="settingsModal">
+        <div class="settings-content">
+            <button class="close-btn" onclick="closeSettings()">×</button>
+            <h2>⚙️ Game Settings</h2>
+            
+            <div class="setting-group">
+                <label for="settingsGrade">📚 Grade Level</label>
+                <select id="settingsGrade">
+                    <option value="1">1st Grade (Age 6)</option>
+                    <option value="2">2nd Grade (Age 7)</option>
+                    <option value="3">3rd Grade (Age 8)</option>
+                    <option value="4" selected>4th Grade (Age 9)</option>
+                    <option value="5">5th Grade (Age 10)</option>
+                    <option value="6">6th Grade (Age 11)</option>
+                    <option value="7">7th Grade (Age 12)</option>
+                    <option value="8">8th Grade (Age 13)</option>
+                    <option value="9">9th Grade (Age 14)</option>
+                    <option value="10">10th Grade (Age 15-16)</option>
+                </select>
+            </div>
+
+            <div class="setting-group">
+                <label>🎲 Math Operations (Select at least one)</label>
+                <div class="operation-settings">
+                    <label class="operation-checkbox">
+                        <input type="checkbox" id="opAddition" value="addition" checked>
+                        <span>➕ Addition</span>
+                    </label>
+                    <label class="operation-checkbox">
+                        <input type="checkbox" id="opSubtraction" value="subtraction" checked>
+                        <span>➖ Subtraction</span>
+                    </label>
+                    <label class="operation-checkbox">
+                        <input type="checkbox" id="opMultiplication" value="multiplication" checked>
+                        <span>✖️ Multiplication</span>
+                    </label>
+                    <label class="operation-checkbox">
+                        <input type="checkbox" id="opDivision" value="division" checked>
+                        <span>➗ Division</span>
+                    </label>
+                </div>
+            </div>
+
+            <button class="save-settings-btn" onclick="saveSettings()">Save Settings</button>
+        </div>
+    </div>
+
+    <!-- Math Problem Modal -->
     <div class="modal" id="mathModal">
         <div class="modal-content">
             <button class="close-btn" onclick="closeModal()">×</button>
@@ -1095,11 +1639,16 @@
             <div class="answer-section">
                 <input type="number" inputmode="numeric" pattern="[0-9]*" class="answer-input" id="answerInput" placeholder="Answer">
                 <br>
-                <button class="submit-btn" onclick="checkAnswer()">Catch Pokémon!</button>
+                <button class="submit-btn" id="submitBtn" onclick="checkAnswer()">Catch Pokémon!</button>
                 <div class="feedback" id="feedback"></div>
                 <div class="celebration" id="celebration">🎉 Pokémon Caught! 🎉</div>
             </div>
         </div>
+    </div>
+
+    <!-- Empty Bush Message -->
+    <div class="empty-bush-message" id="emptyBushMessage">
+        🍃 Nothing here... Try another bush! 🍃
     </div>
 
     <!-- Ran Away Notification -->
@@ -1115,7 +1664,26 @@
             <p><strong>This action cannot be undone!</strong></p>
             <div class="confirm-buttons">
                 <button class="confirm-btn cancel" onclick="closeResetConfirmation()">Cancel</button>
-                <button class="confirm-btn confirm" onclick="confirmReset()">Reset Everything</button>
+                <button class="confirm-btn confirm" onclick="confirmReset()">Reset Pokémon</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full Game Reset Confirmation Modal -->
+    <div class="confirm-modal" id="fullResetModal">
+        <div class="confirm-content">
+            <h2>⚠️ RESET EVERYTHING?</h2>
+            <p style="color: #ef4444; font-weight: bold;">This will delete ALL your progress including:</p>
+            <ul style="text-align: left; margin: 20px 40px; color: #666;">
+                <li>All <strong><span id="fullResetCount">0</span> caught Pokémon</strong></li>
+                <li>All <strong><span id="fullResetBadges">0</span> unlocked badges</strong></li>
+                <li>All stats and streak records</li>
+                <li>Settings will be reset to defaults</li>
+            </ul>
+            <p><strong>THIS CANNOT BE UNDONE!</strong></p>
+            <div class="confirm-buttons">
+                <button class="confirm-btn cancel" onclick="closeFullResetConfirmation()">Cancel</button>
+                <button class="confirm-btn confirm" onclick="confirmFullReset()">Delete Everything</button>
             </div>
         </div>
     </div>
@@ -1196,6 +1764,10 @@
         let isMuted = JSON.parse(localStorage.getItem('isMuted')) || false;
         let operationMode = localStorage.getItem('operationMode') || 'random';
         let gradeLevel = parseInt(localStorage.getItem('gradeLevel')) || 4;
+        let allowedOperations = JSON.parse(localStorage.getItem('allowedOperations')) || ['addition', 'subtraction', 'multiplication', 'division'];
+        let selectedBush = null;
+        let pokemonInBush = false;
+        let checkedBushes = []; // Track which bushes have been checked
         
         // Badge and stats system
         let gameStats = JSON.parse(localStorage.getItem('gameStats')) || {
@@ -1206,6 +1778,115 @@
             operationCounts: { addition: 0, subtraction: 0, multiplication: 0, division: 0 },
             unlockedBadges: []
         };
+
+        // Routing system
+        function navigateTo(page) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            
+            // Show/hide nav bar
+            if (page === 'menu') {
+                document.getElementById('navBar').classList.add('hidden');
+                document.getElementById('menuPage').classList.add('active');
+            } else {
+                document.getElementById('navBar').classList.remove('hidden');
+                
+                // Update active nav button
+                document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+                
+                if (page === 'hunt') {
+                    document.getElementById('huntPage').classList.add('active');
+                    document.querySelectorAll('.nav-btn')[1].classList.add('active');
+                    resetBushes(); // Reset bushes when returning to hunt page
+                } else if (page === 'pokedex') {
+                    document.getElementById('pokedexPage').classList.add('active');
+                    document.querySelectorAll('.nav-btn')[2].classList.add('active');
+                    initializeGrid(); // Refresh the grid when viewing
+                }
+            }
+        }
+
+        // Reset bushes for new round
+        function resetBushes() {
+            checkedBushes = [];
+            document.querySelectorAll('.bush').forEach(bush => {
+                bush.classList.remove('checked');
+            });
+            document.getElementById('bushHeader').textContent = '🌿 Choose a bush to search! 🌿';
+        }
+
+        // Bush selection - ALWAYS show math problem
+        function selectBush(bushIndex) {
+            // Don't allow selecting already checked bushes
+            if (checkedBushes.includes(bushIndex)) {
+                return;
+            }
+
+            selectedBush = bushIndex;
+            
+            // Only 1 in 3 bushes has a Pokémon (33% chance)
+            pokemonInBush = Math.random() < 0.33;
+            
+            if (pokemonInBush) {
+                // Pokémon found! Pick random uncaught one
+                const uncaught = [];
+                for (let i = 1; i <= 150; i++) {
+                    if (!caughtPokemon[i]) uncaught.push(i);
+                }
+                if (uncaught.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * uncaught.length);
+                    const pokemonNumber = uncaught[randomIndex];
+                    openModalWithPokemon(pokemonNumber, pokemon[pokemonNumber - 1]);
+                } else {
+                    // All caught!
+                    alert('You\'ve caught all 150 Pokémon! 🎉');
+                    navigateTo('pokedex');
+                }
+            } else {
+                // Empty bush - but still show math problem!
+                openModalWithoutPokemon();
+            }
+        }
+
+        // Open modal with a Pokémon
+        function openModalWithPokemon(number, name) {
+            currentPokemon = { number, name };
+            const mathData = generateMathProblem();
+            currentAnswer = mathData.answer;
+
+            // Play Pokémon cry sound
+            playPokemonCry(number);
+
+            document.getElementById('modalSprite').src = getPokemonSpriteUrl(number, false);
+            document.getElementById('modalSprite').alt = name;
+            document.getElementById('mathProblem').textContent = `Solve this to catch me: ${mathData.problem} = ?`;
+            document.getElementById('submitBtn').textContent = 'Catch Pokémon!';
+            document.getElementById('answerInput').value = '';
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('celebration').style.display = 'none';
+            document.getElementById('mathModal').classList.add('active');
+            document.getElementById('answerInput').focus();
+        }
+
+        // Open modal without a Pokémon (empty bush)
+        function openModalWithoutPokemon() {
+            currentPokemon = null; // No Pokémon in this bush
+            const mathData = generateMathProblem();
+            currentAnswer = mathData.answer;
+
+            // Show question mark or empty bush sprite
+            document.getElementById('modalSprite').src = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png';
+            document.getElementById('modalSprite').alt = 'Empty';
+            document.getElementById('mathProblem').textContent = `Nothing here... but solve this anyway: ${mathData.problem} = ?`;
+            document.getElementById('submitBtn').textContent = 'Continue Searching';
+            document.getElementById('answerInput').value = '';
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('celebration').style.display = 'none';
+            document.getElementById('mathModal').classList.add('active');
+            document.getElementById('answerInput').focus();
+        }
 
         // Badge definitions
         const badges = [
@@ -1339,7 +2020,9 @@
 
         // Update badge count display
         function updateBadgeCount() {
-            document.getElementById('badge-count').textContent = gameStats.unlockedBadges.length;
+            const count = gameStats.unlockedBadges.length;
+            document.getElementById('badge-count').textContent = count;
+            document.getElementById('badge-count-menu').textContent = count;
         }
 
         // Update streak display
@@ -1483,27 +2166,102 @@
                 }
             };
 
-            // If random mode, pick a random operation that's available for this grade
+            // If random mode, pick a random operation that's available for this grade AND allowed in settings
             if (operationMode === 'random') {
                 const availableOps = [];
-                if (difficulty.addition) availableOps.push('addition');
-                if (difficulty.subtraction) availableOps.push('subtraction');
-                if (difficulty.multiplication) availableOps.push('multiplication');
-                if (difficulty.division) availableOps.push('division');
+                if (difficulty.addition && allowedOperations.includes('addition')) availableOps.push('addition');
+                if (difficulty.subtraction && allowedOperations.includes('subtraction')) availableOps.push('subtraction');
+                if (difficulty.multiplication && allowedOperations.includes('multiplication')) availableOps.push('multiplication');
+                if (difficulty.division && allowedOperations.includes('division')) availableOps.push('division');
+                
+                if (availableOps.length === 0) {
+                    // Fallback to addition if nothing available
+                    return operations.addition();
+                }
                 
                 const randomType = availableOps[Math.floor(Math.random() * availableOps.length)];
                 return operations[randomType]();
             }
 
-            // Otherwise use the selected operation (if available for this grade)
+            // Otherwise use the selected operation (if available for this grade AND allowed)
+            if (!allowedOperations.includes(operationMode)) {
+                // If selected operation not allowed, pick from allowed ones
+                const availableOps = [];
+                if (difficulty.addition && allowedOperations.includes('addition')) availableOps.push('addition');
+                if (difficulty.subtraction && allowedOperations.includes('subtraction')) availableOps.push('subtraction');
+                if (difficulty.multiplication && allowedOperations.includes('multiplication')) availableOps.push('multiplication');
+                if (difficulty.division && allowedOperations.includes('division')) availableOps.push('division');
+                
+                if (availableOps.length > 0) {
+                    const randomType = availableOps[Math.floor(Math.random() * availableOps.length)];
+                    return operations[randomType]();
+                }
+                return operations.addition();
+            }
+            
             const result = operations[operationMode]();
             
-            // If operation not available for this grade, fall back to addition
+            // If operation not available for this grade, fall back to an allowed operation
             if (!result) {
+                const availableOps = [];
+                if (difficulty.addition && allowedOperations.includes('addition')) availableOps.push('addition');
+                if (difficulty.subtraction && allowedOperations.includes('subtraction')) availableOps.push('subtraction');
+                if (difficulty.multiplication && allowedOperations.includes('multiplication')) availableOps.push('multiplication');
+                if (difficulty.division && allowedOperations.includes('division')) availableOps.push('division');
+                
+                if (availableOps.length > 0) {
+                    const randomType = availableOps[Math.floor(Math.random() * availableOps.length)];
+                    return operations[randomType]();
+                }
                 return operations.addition();
             }
             
             return result;
+        }
+
+        // Screen navigation
+        function startGame() {
+            navigateTo('hunt');
+        }
+
+        function openSettings() {
+            document.getElementById('settingsGrade').value = gradeLevel;
+            document.getElementById('opAddition').checked = allowedOperations.includes('addition');
+            document.getElementById('opSubtraction').checked = allowedOperations.includes('subtraction');
+            document.getElementById('opMultiplication').checked = allowedOperations.includes('multiplication');
+            document.getElementById('opDivision').checked = allowedOperations.includes('division');
+            document.getElementById('settingsModal').classList.add('active');
+        }
+
+        function closeSettings() {
+            document.getElementById('settingsModal').classList.remove('active');
+        }
+
+        function saveSettings() {
+            gradeLevel = parseInt(document.getElementById('settingsGrade').value);
+            localStorage.setItem('gradeLevel', gradeLevel);
+            
+            allowedOperations = [];
+            if (document.getElementById('opAddition').checked) allowedOperations.push('addition');
+            if (document.getElementById('opSubtraction').checked) allowedOperations.push('subtraction');
+            if (document.getElementById('opMultiplication').checked) allowedOperations.push('multiplication');
+            if (document.getElementById('opDivision').checked) allowedOperations.push('division');
+            
+            if (allowedOperations.length === 0) {
+                alert('Please select at least one operation!');
+                return;
+            }
+            
+            localStorage.setItem('allowedOperations', JSON.stringify(allowedOperations));
+            document.getElementById('settingsModal').classList.remove('active');
+            
+            // Update game screen dropdowns
+            document.getElementById('gradeLevel').value = gradeLevel;
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('mathModal').classList.remove('active');
         }
 
         // Get Pokémon sprite URL from PokeAPI
@@ -1549,17 +2307,21 @@
                 const isCaught = caughtPokemon[number];
                 
                 const card = document.createElement('div');
-                card.className = `pokemon-card ${isCaught ? 'caught' : ''}`;
-                card.onclick = () => openModal(number, name);
+                card.className = `pokemon-card ${isCaught ? 'caught' : 'uncaught'}`;
+                card.onclick = () => {
+                    // Can only view caught Pokemon from grid
+                    if (!isCaught) return;
+                };
 
                 const sprite = document.createElement('img');
                 sprite.className = 'pokemon-sprite';
-                sprite.src = getPokemonSpriteUrl(number, isCaught);
-                sprite.alt = name;
+                // Show pokeball for uncaught, Pokemon sprite for caught
+                sprite.src = isCaught ? getPokemonSpriteUrl(number, false) : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png';
+                sprite.alt = isCaught ? name : '???';
 
                 const nameEl = document.createElement('div');
                 nameEl.className = 'pokemon-name';
-                nameEl.textContent = name;
+                nameEl.textContent = isCaught ? name : '???';
 
                 const numberEl = document.createElement('div');
                 numberEl.className = 'pokemon-number';
@@ -1572,30 +2334,6 @@
             });
 
             updateStats();
-        }
-
-        // Open modal
-        function openModal(number, name) {
-            if (caughtPokemon[number]) {
-                return; // Already caught
-            }
-
-            currentPokemon = { number, name };
-            const mathData = generateMathProblem();
-            currentAnswer = mathData.answer;
-
-            // Play Pokémon cry sound
-            playPokemonCry(number);
-
-            document.getElementById('modalSprite').src = getPokemonSpriteUrl(number, false);
-            document.getElementById('modalSprite').alt = name;
-            document.getElementById('mathProblem').textContent = `Solve this to catch me: ${mathData.problem} = ?`;
-            document.getElementById('answerInput').value = '';
-            document.getElementById('feedback').textContent = '';
-            document.getElementById('feedback').className = 'feedback';
-            document.getElementById('celebration').style.display = 'none';
-            document.getElementById('mathModal').classList.add('active');
-            document.getElementById('answerInput').focus();
         }
 
         // Close modal
@@ -1615,7 +2353,6 @@
             if (userAnswer === currentAnswer) {
                 feedback.textContent = '✓ Correct!';
                 feedback.className = 'feedback correct';
-                celebration.style.display = 'block';
 
                 // Update stats
                 gameStats.correctAnswers++;
@@ -1629,20 +2366,54 @@
                     gameStats.operationCounts[lastOperationType]++;
                 }
 
-                // Mark as caught
-                caughtPokemon[currentPokemon.number] = true;
-                localStorage.setItem('caughtPokemon', JSON.stringify(caughtPokemon));
-                
-                saveGameStats();
-                updateStreakDisplay();
-                checkBadges();
+                if (currentPokemon) {
+                    // There was a Pokémon in this bush!
+                    celebration.textContent = '🎉 Pokémon Caught! 🎉';
+                    celebration.style.display = 'block';
 
-                setTimeout(() => {
-                    closeModal();
-                    initializeGrid();
-                }, 2000);
+                    // Mark as caught
+                    caughtPokemon[currentPokemon.number] = true;
+                    localStorage.setItem('caughtPokemon', JSON.stringify(caughtPokemon));
+                    
+                    saveGameStats();
+                    updateStreakDisplay();
+                    updateBadgeCount();
+                    checkBadges();
+
+                    setTimeout(() => {
+                        closeModal();
+                        // Reset all bushes for new round after catching Pokemon
+                        resetBushes();
+                    }, 2000);
+                } else {
+                    // Empty bush - mark it as checked
+                    celebration.textContent = '✓ Bush checked! Try another!';
+                    celebration.style.display = 'block';
+                    
+                    saveGameStats();
+                    updateStreakDisplay();
+                    updateBadgeCount();
+                    checkBadges();
+
+                    // Mark this bush as checked
+                    checkedBushes.push(selectedBush);
+                    document.getElementById(`bush-${selectedBush}`).classList.add('checked');
+
+                    setTimeout(() => {
+                        closeModal();
+                        
+                        // Check if all bushes are checked
+                        if (checkedBushes.length === 3) {
+                            // All bushes checked, reset for new round
+                            setTimeout(() => {
+                                resetBushes();
+                                document.getElementById('bushHeader').textContent = '🌿 No Pokémon this time! Try again! 🌿';
+                            }, 500);
+                        }
+                    }, 1500);
+                }
             } else {
-                // Pokemon runs away on wrong answer
+                // Wrong answer - Pokemon runs away or stays in bush
                 feedback.textContent = '✗ Wrong answer!';
                 feedback.className = 'feedback incorrect';
                 
@@ -1651,10 +2422,22 @@
                 saveGameStats();
                 updateStreakDisplay();
                 
-                setTimeout(() => {
-                    closeModal();
-                    showRanAwayNotification(currentPokemon.name);
-                }, 800);
+                if (currentPokemon) {
+                    // Pokemon runs away
+                    setTimeout(() => {
+                        closeModal();
+                        showRanAwayNotification(currentPokemon.name);
+                        // Reset bushes after Pokemon runs away
+                        setTimeout(() => {
+                            resetBushes();
+                        }, 2000);
+                    }, 800);
+                } else {
+                    // Empty bush - just close modal, don't mark as checked
+                    setTimeout(() => {
+                        closeModal();
+                    }, 1500);
+                }
             }
         }
 
@@ -1701,6 +2484,67 @@
                 notification.style.display = 'none';
                 notification.innerHTML = '💨 <span id="pokemonName"></span> ran away! 💨';
             }, 2500);
+        }
+
+        // Show full game reset confirmation
+        function showFullResetConfirmation() {
+            const pokemonCount = Object.keys(caughtPokemon).length;
+            const badgeCount = gameStats.unlockedBadges.length;
+            
+            document.getElementById('fullResetCount').textContent = pokemonCount;
+            document.getElementById('fullResetBadges').textContent = badgeCount;
+            document.getElementById('fullResetModal').classList.add('active');
+        }
+
+        // Close full game reset confirmation
+        function closeFullResetConfirmation() {
+            document.getElementById('fullResetModal').classList.remove('active');
+        }
+
+        // Confirm and execute full game reset
+        function confirmFullReset() {
+            // Clear all data
+            localStorage.removeItem('caughtPokemon');
+            localStorage.removeItem('gameStats');
+            localStorage.removeItem('operationMode');
+            localStorage.removeItem('gradeLevel');
+            localStorage.removeItem('allowedOperations');
+            localStorage.removeItem('isMuted');
+            
+            // Reset all variables to defaults
+            caughtPokemon = {};
+            gameStats = {
+                totalProblems: 0,
+                correctAnswers: 0,
+                currentStreak: 0,
+                bestStreak: 0,
+                operationCounts: { addition: 0, subtraction: 0, multiplication: 0, division: 0 },
+                unlockedBadges: []
+            };
+            operationMode = 'random';
+            gradeLevel = 4;
+            allowedOperations = ['addition', 'subtraction', 'multiplication', 'division'];
+            isMuted = false;
+            
+            closeFullResetConfirmation();
+            
+            // Show success notification
+            const notification = document.getElementById('ranAwayNotification');
+            notification.innerHTML = '✨ Game completely reset! Welcome back, Trainer! ✨';
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+                notification.innerHTML = '💨 <span id="pokemonName"></span> ran away! 💨';
+            }, 3000);
+            
+            // Update all displays
+            updateBadgeCount();
+            updateStreakDisplay();
+            updateMuteButton();
+            setOperation('random');
+            document.getElementById('gradeLevel').value = 4;
+            initializeGrid();
         }
 
         // Open badge modal
