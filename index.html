@@ -96,6 +96,247 @@
             font-weight: bold;
         }
 
+        .stats-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            align-items: stretch;
+        }
+
+        .stat-box {
+            background: rgba(255,255,255,0.2);
+            padding: 15px 20px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            min-width: 150px;
+        }
+
+        .stat-label {
+            font-size: 0.85em;
+            opacity: 0.9;
+        }
+
+        .stat-value {
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        .badges-button {
+            background: rgba(255,203,5,0.3);
+            border: 3px solid #ffcb05;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 15px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badges-button:hover {
+            background: rgba(255,203,5,0.5);
+            transform: translateY(-2px);
+        }
+
+        .badge-notification {
+            position: relative;
+        }
+
+        .badge-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75em;
+            font-weight: bold;
+            border: 2px solid white;
+        }
+
+        /* Badge Modal */
+        .badge-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .badge-modal.active {
+            display: flex;
+        }
+
+        .badge-modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .badge-modal-content h2 {
+            color: #3b4cca;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 2em;
+        }
+
+        .badge-modal-content .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .badge-item {
+            background: #f3f4f6;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+        }
+
+        .badge-item.unlocked {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-color: #ffcb05;
+            box-shadow: 0 4px 15px rgba(255, 203, 5, 0.3);
+        }
+
+        .badge-item.locked {
+            opacity: 0.5;
+            filter: grayscale(1);
+        }
+
+        .badge-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .badge-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        .badge-description {
+            font-size: 0.85em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .badge-progress {
+            font-size: 0.8em;
+            color: #3b4cca;
+            font-weight: bold;
+        }
+
+        .stats-section {
+            background: #f3f4f6;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .stats-section h3 {
+            color: #3b4cca;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .stat-item {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-item-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .stat-item-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #3b4cca;
+        }
+
+        /* New Badge Popup */
+        .new-badge-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            z-index: 3000;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            animation: badgePopIn 0.5s ease;
+        }
+
+        @keyframes badgePopIn {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .new-badge-popup h3 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .new-badge-popup .badge-icon {
+            font-size: 4em;
+            margin: 20px 0;
+        }
+
+        .new-badge-popup .badge-name {
+            font-size: 1.5em;
+            color: #ffcb05;
+        }
+
         .operation-filters {
             display: flex;
             gap: 10px;
@@ -481,6 +722,76 @@
                 padding: 10px;
             }
 
+            .stats-container {
+                gap: 10px;
+            }
+
+            .stat-box {
+                padding: 10px 15px;
+                min-width: 120px;
+            }
+
+            .stat-label {
+                font-size: 0.75em;
+            }
+
+            .stat-value {
+                font-size: 1.1em;
+            }
+
+            .badges-button {
+                padding: 10px 16px;
+                font-size: 0.9em;
+            }
+
+            .badge-count {
+                width: 20px;
+                height: 20px;
+                font-size: 0.7em;
+            }
+
+            .badge-modal-content {
+                padding: 20px;
+            }
+
+            .badge-modal-content h2 {
+                font-size: 1.5em;
+            }
+
+            .badges-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                gap: 15px;
+            }
+
+            .badge-item {
+                padding: 15px;
+            }
+
+            .badge-icon {
+                font-size: 2.5em;
+            }
+
+            .badge-name {
+                font-size: 1em;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .new-badge-popup {
+                padding: 30px 20px;
+                width: 90%;
+            }
+
+            .new-badge-popup h3 {
+                font-size: 1.4em;
+            }
+
+            .new-badge-popup .badge-icon {
+                font-size: 3em;
+            }
+
             .operation-filters {
                 gap: 8px;
                 margin-top: 15px;
@@ -716,8 +1027,21 @@
                 🔊
             </button>
             <h1>🎮 Pokémon Math Challenge 🎮</h1>
-            <div class="stats">
-                <span id="caught-count">0</span> / 150 Pokémon Caught! ⚡
+            <div class="stats-container">
+                <div class="stat-box stats">
+                    <div class="stat-label">Pokémon Caught</div>
+                    <div class="stat-value"><span id="caught-count">0</span> / 150</div>
+                </div>
+                <div class="stat-box stats">
+                    <div class="stat-label">🔥 Current Streak</div>
+                    <div class="stat-value"><span id="streak-count">0</span></div>
+                </div>
+                <button class="badges-button" onclick="openBadgeModal()">
+                    <div class="badge-notification">
+                        🏆 My Badges
+                        <span class="badge-count" id="badge-count">0</span>
+                    </div>
+                </button>
             </div>
             <div class="operation-filters">
                 <button class="operation-btn" onclick="setOperation('addition')" data-operation="addition">
@@ -796,6 +1120,46 @@
         </div>
     </div>
 
+    <!-- Badge Modal -->
+    <div class="badge-modal" id="badgeModal">
+        <div class="badge-modal-content">
+            <button class="close-btn" onclick="closeBadgeModal()">×</button>
+            <h2>🏆 Achievement Badges</h2>
+            <p class="subtitle">Unlock badges by catching Pokémon and solving math problems!</p>
+            
+            <div class="badges-grid" id="badgesGrid"></div>
+            
+            <div class="stats-section">
+                <h3>📊 Your Stats</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-item-label">Total Problems Solved</div>
+                        <div class="stat-item-value" id="total-problems">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-item-label">Accuracy Rate</div>
+                        <div class="stat-item-value" id="accuracy-rate">0%</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-item-label">Best Streak</div>
+                        <div class="stat-item-value" id="best-streak">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-item-label">Favorite Operation</div>
+                        <div class="stat-item-value" id="favorite-operation">-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Badge Popup -->
+    <div class="new-badge-popup" id="newBadgePopup">
+        <h3>🎉 Badge Unlocked! 🎉</h3>
+        <div class="badge-icon" id="newBadgeIcon"></div>
+        <div class="badge-name" id="newBadgeName"></div>
+    </div>
+
     <script>
         // Kanto Pokémon (1-150)
         const pokemon = [
@@ -832,12 +1196,159 @@
         let isMuted = JSON.parse(localStorage.getItem('isMuted')) || false;
         let operationMode = localStorage.getItem('operationMode') || 'random';
         let gradeLevel = parseInt(localStorage.getItem('gradeLevel')) || 4;
+        
+        // Badge and stats system
+        let gameStats = JSON.parse(localStorage.getItem('gameStats')) || {
+            totalProblems: 0,
+            correctAnswers: 0,
+            currentStreak: 0,
+            bestStreak: 0,
+            operationCounts: { addition: 0, subtraction: 0, multiplication: 0, division: 0 },
+            unlockedBadges: []
+        };
+
+        // Badge definitions
+        const badges = [
+            {
+                id: 'math_trainer',
+                name: 'Math Trainer',
+                description: 'Catch 10 Pokémon',
+                icon: '🎖️',
+                requirement: () => Object.keys(caughtPokemon).length >= 10
+            },
+            {
+                id: 'gym_leader',
+                name: 'Gym Leader',
+                description: 'Catch 50 Pokémon',
+                icon: '⭐',
+                requirement: () => Object.keys(caughtPokemon).length >= 50
+            },
+            {
+                id: 'champion',
+                name: 'Champion',
+                description: 'Catch all 150 Pokémon',
+                icon: '👑',
+                requirement: () => Object.keys(caughtPokemon).length >= 150
+            },
+            {
+                id: 'speed_demon',
+                name: 'Speed Demon',
+                description: 'Answer 5 in a row correctly',
+                icon: '⚡',
+                requirement: () => gameStats.currentStreak >= 5
+            },
+            {
+                id: 'no_mistakes',
+                name: 'No Mistakes',
+                description: 'Catch 5 without any running away',
+                icon: '💯',
+                requirement: () => gameStats.currentStreak >= 5
+            },
+            {
+                id: 'operation_master_add',
+                name: 'Addition Master',
+                description: 'Complete 20 addition problems',
+                icon: '➕',
+                requirement: () => gameStats.operationCounts.addition >= 20
+            },
+            {
+                id: 'operation_master_sub',
+                name: 'Subtraction Master',
+                description: 'Complete 20 subtraction problems',
+                icon: '➖',
+                requirement: () => gameStats.operationCounts.subtraction >= 20
+            },
+            {
+                id: 'operation_master_mult',
+                name: 'Multiplication Master',
+                description: 'Complete 20 multiplication problems',
+                icon: '✖️',
+                requirement: () => gameStats.operationCounts.multiplication >= 20
+            },
+            {
+                id: 'operation_master_div',
+                name: 'Division Master',
+                description: 'Complete 20 division problems',
+                icon: '➗',
+                requirement: () => gameStats.operationCounts.division >= 20
+            },
+            {
+                id: 'perfect_ten',
+                name: 'Perfect Ten',
+                description: 'Get 10 problems correct in a row',
+                icon: '🔥',
+                requirement: () => gameStats.bestStreak >= 10
+            },
+            {
+                id: 'scholar',
+                name: 'Scholar',
+                description: 'Solve 100 total problems',
+                icon: '📚',
+                requirement: () => gameStats.totalProblems >= 100
+            },
+            {
+                id: 'ace_student',
+                name: 'Ace Student',
+                description: 'Maintain 90% accuracy over 20+ problems',
+                icon: '🌟',
+                requirement: () => gameStats.totalProblems >= 20 && (gameStats.correctAnswers / gameStats.totalProblems) >= 0.9
+            }
+        ];
 
         // Set grade level
         function setGradeLevel(grade) {
             gradeLevel = parseInt(grade);
             localStorage.setItem('gradeLevel', gradeLevel);
         }
+
+        // Save game stats
+        function saveGameStats() {
+            localStorage.setItem('gameStats', JSON.stringify(gameStats));
+        }
+
+        // Check and unlock badges
+        function checkBadges() {
+            const newlyUnlocked = [];
+            
+            badges.forEach(badge => {
+                if (!gameStats.unlockedBadges.includes(badge.id) && badge.requirement()) {
+                    gameStats.unlockedBadges.push(badge.id);
+                    newlyUnlocked.push(badge);
+                }
+            });
+
+            if (newlyUnlocked.length > 0) {
+                saveGameStats();
+                updateBadgeCount();
+                // Show popup for first new badge
+                showNewBadgePopup(newlyUnlocked[0]);
+            }
+        }
+
+        // Show new badge popup
+        function showNewBadgePopup(badge) {
+            document.getElementById('newBadgeIcon').textContent = badge.icon;
+            document.getElementById('newBadgeName').textContent = badge.name;
+            const popup = document.getElementById('newBadgePopup');
+            popup.style.display = 'block';
+            
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 3000);
+        }
+
+        // Update badge count display
+        function updateBadgeCount() {
+            document.getElementById('badge-count').textContent = gameStats.unlockedBadges.length;
+        }
+
+        // Update streak display
+        function updateStreakDisplay() {
+            document.getElementById('streak-count').textContent = gameStats.currentStreak;
+        }
+
+        // Track operation type from current problem
+        let lastOperationType = null;
 
         // Set operation mode
         function setOperation(mode) {
@@ -945,18 +1456,21 @@
                     if (!difficulty.addition) return null;
                     const a = Math.floor(Math.random() * (difficulty.addition.max - difficulty.addition.min + 1)) + difficulty.addition.min;
                     const b = Math.floor(Math.random() * (difficulty.addition.max - difficulty.addition.min + 1)) + difficulty.addition.min;
+                    lastOperationType = 'addition';
                     return { problem: `${a} + ${b}`, answer: a + b };
                 },
                 subtraction: () => {
                     if (!difficulty.subtraction) return null;
                     const a = Math.floor(Math.random() * (difficulty.subtraction.max - difficulty.subtraction.min + 1)) + difficulty.subtraction.min;
                     const b = Math.floor(Math.random() * a) + 1; // Ensure b < a for positive result
+                    lastOperationType = 'subtraction';
                     return { problem: `${a} - ${b}`, answer: a - b };
                 },
                 multiplication: () => {
                     if (!difficulty.multiplication) return null;
                     const a = Math.floor(Math.random() * (difficulty.multiplication.max - difficulty.multiplication.min + 1)) + difficulty.multiplication.min;
                     const b = Math.floor(Math.random() * (difficulty.multiplication.max - difficulty.multiplication.min + 1)) + difficulty.multiplication.min;
+                    lastOperationType = 'multiplication';
                     return { problem: `${a} × ${b}`, answer: a * b };
                 },
                 division: () => {
@@ -964,6 +1478,7 @@
                     const divisor = Math.floor(Math.random() * (difficulty.division.divisor[1] - difficulty.division.divisor[0] + 1)) + difficulty.division.divisor[0];
                     const quotient = Math.floor(Math.random() * (difficulty.division.quotient[1] - difficulty.division.quotient[0] + 1)) + difficulty.division.quotient[0];
                     const dividend = divisor * quotient;
+                    lastOperationType = 'division';
                     return { problem: `${dividend} ÷ ${divisor}`, answer: quotient };
                 }
             };
@@ -1095,14 +1610,32 @@
             const feedback = document.getElementById('feedback');
             const celebration = document.getElementById('celebration');
 
+            gameStats.totalProblems++;
+            
             if (userAnswer === currentAnswer) {
                 feedback.textContent = '✓ Correct!';
                 feedback.className = 'feedback correct';
                 celebration.style.display = 'block';
 
+                // Update stats
+                gameStats.correctAnswers++;
+                gameStats.currentStreak++;
+                if (gameStats.currentStreak > gameStats.bestStreak) {
+                    gameStats.bestStreak = gameStats.currentStreak;
+                }
+                
+                // Track operation type
+                if (lastOperationType) {
+                    gameStats.operationCounts[lastOperationType]++;
+                }
+
                 // Mark as caught
                 caughtPokemon[currentPokemon.number] = true;
                 localStorage.setItem('caughtPokemon', JSON.stringify(caughtPokemon));
+                
+                saveGameStats();
+                updateStreakDisplay();
+                checkBadges();
 
                 setTimeout(() => {
                     closeModal();
@@ -1112,6 +1645,11 @@
                 // Pokemon runs away on wrong answer
                 feedback.textContent = '✗ Wrong answer!';
                 feedback.className = 'feedback incorrect';
+                
+                // Reset streak
+                gameStats.currentStreak = 0;
+                saveGameStats();
+                updateStreakDisplay();
                 
                 setTimeout(() => {
                     closeModal();
@@ -1165,6 +1703,97 @@
             }, 2500);
         }
 
+        // Open badge modal
+        function openBadgeModal() {
+            renderBadges();
+            updateStatsDisplay();
+            document.getElementById('badgeModal').classList.add('active');
+        }
+
+        // Close badge modal
+        function closeBadgeModal() {
+            document.getElementById('badgeModal').classList.remove('active');
+        }
+
+        // Render badges in modal
+        function renderBadges() {
+            const grid = document.getElementById('badgesGrid');
+            grid.innerHTML = '';
+
+            badges.forEach(badge => {
+                const isUnlocked = gameStats.unlockedBadges.includes(badge.id);
+                const progress = getBadgeProgress(badge);
+                
+                const badgeEl = document.createElement('div');
+                badgeEl.className = `badge-item ${isUnlocked ? 'unlocked' : 'locked'}`;
+                
+                badgeEl.innerHTML = `
+                    <div class="badge-icon">${badge.icon}</div>
+                    <div class="badge-name">${badge.name}</div>
+                    <div class="badge-description">${badge.description}</div>
+                    ${!isUnlocked ? `<div class="badge-progress">${progress}</div>` : '<div class="badge-progress">✓ Unlocked!</div>'}
+                `;
+                
+                grid.appendChild(badgeEl);
+            });
+        }
+
+        // Get badge progress text
+        function getBadgeProgress(badge) {
+            switch(badge.id) {
+                case 'math_trainer':
+                    return `${Object.keys(caughtPokemon).length}/10 caught`;
+                case 'gym_leader':
+                    return `${Object.keys(caughtPokemon).length}/50 caught`;
+                case 'champion':
+                    return `${Object.keys(caughtPokemon).length}/150 caught`;
+                case 'speed_demon':
+                case 'no_mistakes':
+                    return `${gameStats.currentStreak}/5 streak`;
+                case 'operation_master_add':
+                    return `${gameStats.operationCounts.addition}/20 completed`;
+                case 'operation_master_sub':
+                    return `${gameStats.operationCounts.subtraction}/20 completed`;
+                case 'operation_master_mult':
+                    return `${gameStats.operationCounts.multiplication}/20 completed`;
+                case 'operation_master_div':
+                    return `${gameStats.operationCounts.division}/20 completed`;
+                case 'perfect_ten':
+                    return `${gameStats.bestStreak}/10 best streak`;
+                case 'scholar':
+                    return `${gameStats.totalProblems}/100 solved`;
+                case 'ace_student':
+                    const accuracy = gameStats.totalProblems > 0 ? Math.round((gameStats.correctAnswers / gameStats.totalProblems) * 100) : 0;
+                    return `${accuracy}% accuracy (need 90%)`;
+                default:
+                    return 'In progress...';
+            }
+        }
+
+        // Update stats display in modal
+        function updateStatsDisplay() {
+            document.getElementById('total-problems').textContent = gameStats.totalProblems;
+            
+            const accuracy = gameStats.totalProblems > 0 
+                ? Math.round((gameStats.correctAnswers / gameStats.totalProblems) * 100) 
+                : 0;
+            document.getElementById('accuracy-rate').textContent = accuracy + '%';
+            
+            document.getElementById('best-streak').textContent = gameStats.bestStreak;
+            
+            // Find favorite operation
+            const ops = gameStats.operationCounts;
+            const favorite = Object.keys(ops).reduce((a, b) => ops[a] > ops[b] ? a : b);
+            const favoriteIcons = {
+                addition: '➕ Addition',
+                subtraction: '➖ Subtraction',
+                multiplication: '✖️ Multiplication',
+                division: '➗ Division'
+            };
+            document.getElementById('favorite-operation').textContent = 
+                ops[favorite] > 0 ? favoriteIcons[favorite] : '-';
+        }
+
         // Update stats
         function updateStats() {
             const count = Object.keys(caughtPokemon).length;
@@ -1182,6 +1811,8 @@
             updateMuteButton(); // Initialize mute button state
             setOperation(operationMode); // Initialize operation mode button state
             document.getElementById('gradeLevel').value = gradeLevel; // Initialize grade level dropdown
+            updateBadgeCount(); // Initialize badge count
+            updateStreakDisplay(); // Initialize streak display
             initializeGrid();
         });
     </script>
