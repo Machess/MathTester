@@ -3382,7 +3382,7 @@
 
             document.getElementById('modalSprite').src = getPokemonSpriteUrl(number, false);
             document.getElementById('modalSprite').alt = name;
-            document.getElementById('mathProblem').textContent = `Solve this to catch me: ${mathData.problem} = ?`;
+            document.getElementById('mathProblem').textContent = `${mathData.problem} = ?`;
             document.getElementById('submitBtn').textContent = 'Catch Pokémon!';
             document.getElementById('answerInput').value = '';
             document.getElementById('feedback').textContent = '';
@@ -3401,7 +3401,7 @@
             // Show question mark or empty bush sprite
             document.getElementById('modalSprite').src = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png';
             document.getElementById('modalSprite').alt = 'Empty';
-            document.getElementById('mathProblem').textContent = `Nothing here... but solve this anyway: ${mathData.problem} = ?`;
+            document.getElementById('mathProblem').textContent = `Nothing here... ${mathData.problem} = ?`;
             document.getElementById('submitBtn').textContent = 'Continue Searching';
             document.getElementById('answerInput').value = '';
             document.getElementById('feedback').textContent = '';
@@ -4125,7 +4125,7 @@
             document.getElementById('battleQuestionText').textContent = mathData.problem + ' = ?';
             document.getElementById('battleAnswerInput').value = '';
             document.getElementById('battleAnswerInput').focus();
-            document.getElementById('battleMessage').textContent = `Solve the problem to use ${attackName}!`;
+            document.getElementById('battleMessage').textContent = `Use ${attackName}!`;
         }
 
         // Submit battle answer
@@ -4766,7 +4766,6 @@
                     return `${Object.keys(caughtPokemon).length}/50 caught`;
                 case 'champion':
                     return `${Object.keys(caughtPokemon).length}/150 caught`;
-                case 'speed_demon':
                 case 'no_mistakes':
                     return `${gameStats.currentStreak}/5 streak`;
                 case 'operation_master_add':
