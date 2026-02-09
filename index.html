@@ -3056,7 +3056,8 @@
             currentStreak: 0,
             bestStreak: 0,
             operationCounts: { addition: 0, subtraction: 0, multiplication: 0, division: 0 },
-            unlockedBadges: []
+            unlockedBadges: [],
+            battlesWon: 0
         };
 
         // Sound Effects using Web Audio API and generated tones
@@ -3410,92 +3411,58 @@
             document.getElementById('answerInput').focus();
         }
 
+        // Helper function to count Pokemon by type
+        function countPokemonByType(typeName) {
+            let count = 0;
+            for (let pokemonNum in caughtPokemon) {
+                // We'll need to fetch type data - for now use a simplified approach
+                // This will be populated when we catch Pokemon
+                if (pokemonTypeCache[pokemonNum] && pokemonTypeCache[pokemonNum].includes(typeName)) {
+                    count++;
+                }
+            }
+            return count;
+        }
+        
+        // Cache for Pokemon types (populated as we catch them)
+        let pokemonTypeCache = JSON.parse(localStorage.getItem('pokemonTypeCache')) || {};
+        
         // Badge definitions
         const badges = [
-            {
-                id: 'math_trainer',
-                name: 'Math Trainer',
-                description: 'Catch 10 Pokémon',
-                icon: '🎖️',
-                requirement: () => Object.keys(caughtPokemon).length >= 10
-            },
-            {
-                id: 'gym_leader',
-                name: 'Gym Leader',
-                description: 'Catch 50 Pokémon',
-                icon: '⭐',
-                requirement: () => Object.keys(caughtPokemon).length >= 50
-            },
-            {
-                id: 'champion',
-                name: 'Champion',
-                description: 'Catch all 150 Pokémon',
-                icon: '👑',
-                requirement: () => Object.keys(caughtPokemon).length >= 150
-            },
-            {
-                id: 'speed_demon',
-                name: 'Speed Demon',
-                description: 'Answer 5 in a row correctly',
-                icon: '⚡',
-                requirement: () => gameStats.currentStreak >= 5
-            },
-            {
-                id: 'no_mistakes',
-                name: 'No Mistakes',
-                description: 'Catch 5 without any running away',
-                icon: '💯',
-                requirement: () => gameStats.currentStreak >= 5
-            },
-            {
-                id: 'operation_master_add',
-                name: 'Addition Master',
-                description: 'Complete 20 addition problems',
-                icon: '➕',
-                requirement: () => gameStats.operationCounts.addition >= 20
-            },
-            {
-                id: 'operation_master_sub',
-                name: 'Subtraction Master',
-                description: 'Complete 20 subtraction problems',
-                icon: '➖',
-                requirement: () => gameStats.operationCounts.subtraction >= 20
-            },
-            {
-                id: 'operation_master_mult',
-                name: 'Multiplication Master',
-                description: 'Complete 20 multiplication problems',
-                icon: '✖️',
-                requirement: () => gameStats.operationCounts.multiplication >= 20
-            },
-            {
-                id: 'operation_master_div',
-                name: 'Division Master',
-                description: 'Complete 20 division problems',
-                icon: '➗',
-                requirement: () => gameStats.operationCounts.division >= 20
-            },
-            {
-                id: 'perfect_ten',
-                name: 'Perfect Ten',
-                description: 'Get 10 problems correct in a row',
-                icon: '🔥',
-                requirement: () => gameStats.bestStreak >= 10
-            },
-            {
-                id: 'scholar',
-                name: 'Scholar',
-                description: 'Solve 100 total problems',
-                icon: '📚',
-                requirement: () => gameStats.totalProblems >= 100
-            },
-            {
-                id: 'ace_student',
-                name: 'Ace Student',
-                description: 'Maintain 90% accuracy over 20+ problems',
-                icon: '🌟',
-                requirement: () => gameStats.totalProblems >= 20 && (gameStats.correctAnswers / gameStats.totalProblems) >= 0.9
-            }
+            // TYPE MASTER BADGES (10 types with 10+ Pokémon in Gen 1)
+            { id: 'flame_badge', name: 'Flame Badge', icon: '🔥', description: 'Catch 10 Fire-type Pokémon', requirement: () => countPokemonByType('fire') >= 10 },
+            { id: 'wave_badge', name: 'Wave Badge', icon: '💧', description: 'Catch 10 Water-type Pokémon', requirement: () => countPokemonByType('water') >= 10 },
+            { id: 'leaf_badge', name: 'Leaf Badge', icon: '🌿', description: 'Catch 10 Grass-type Pokémon', requirement: () => countPokemonByType('grass') >= 10 },
+            { id: 'toxic_badge', name: 'Toxic Badge', icon: '☠️', description: 'Catch 10 Poison-type Pokémon', requirement: () => countPokemonByType('poison') >= 10 },
+            { id: 'terra_badge', name: 'Terra Badge', icon: '🌍', description: 'Catch 10 Ground-type Pokémon', requirement: () => countPokemonByType('ground') >= 10 },
+            { id: 'sky_badge', name: 'Sky Badge', icon: '🦅', description: 'Catch 10 Flying-type Pokémon', requirement: () => countPokemonByType('flying') >= 10 },
+            { id: 'mind_badge', name: 'Mind Badge', icon: '🔮', description: 'Catch 10 Psychic-type Pokémon', requirement: () => countPokemonByType('psychic') >= 10 },
+            { id: 'swarm_badge', name: 'Swarm Badge', icon: '🐛', description: 'Catch 10 Bug-type Pokémon', requirement: () => countPokemonByType('bug') >= 10 },
+            { id: 'stone_badge', name: 'Stone Badge', icon: '🪨', description: 'Catch 10 Rock-type Pokémon', requirement: () => countPokemonByType('rock') >= 10 },
+            { id: 'hero_badge', name: 'Hero Badge', icon: '⭐', description: 'Catch 10 Normal-type Pokémon', requirement: () => countPokemonByType('normal') >= 10 },
+            
+            // COLLECTION MILESTONE BADGES
+            { id: 'explorer_badge', name: 'Explorer Badge', icon: '🎒', description: 'Catch 25 different Pokémon', requirement: () => Object.keys(caughtPokemon).length >= 25 },
+            { id: 'adventurer_badge', name: 'Adventurer Badge', icon: '🗺️', description: 'Catch 50 different Pokémon', requirement: () => Object.keys(caughtPokemon).length >= 50 },
+            { id: 'champion_badge', name: 'Champion Badge', icon: '🏅', description: 'Catch 100 different Pokémon', requirement: () => Object.keys(caughtPokemon).length >= 100 },
+            { id: 'master_trainer_badge', name: 'Master Trainer Badge', icon: '👑', description: 'Catch all 150 Pokémon', requirement: () => Object.keys(caughtPokemon).length >= 150 },
+            
+            // MATH MASTERY BADGES (Total correct answers, not streaks)
+            { id: 'scholar_badge', name: 'Scholar Badge', icon: '📚', description: 'Answer 75 math problems correctly', requirement: () => gameStats.correctAnswers >= 75 },
+            { id: 'mathematician_badge', name: 'Mathematician Badge', icon: '🧮', description: 'Answer 150 math problems correctly', requirement: () => gameStats.correctAnswers >= 150 },
+            { id: 'professor_badge', name: 'Professor Badge', icon: '🎓', description: 'Answer 250 math problems correctly', requirement: () => gameStats.correctAnswers >= 250 },
+            
+            // PERFECT STREAK BADGES (Different from total count)
+            { id: 'boulder_badge', name: 'Boulder Badge', icon: '🥉', description: 'Win 10 in a row', requirement: () => gameStats.currentStreak >= 10 },
+            { id: 'cascade_badge', name: 'Cascade Badge', icon: '🥈', description: 'Win 25 in a row', requirement: () => gameStats.currentStreak >= 25 },
+            { id: 'thunder_badge', name: 'Thunder Badge', icon: '🥇', description: 'Win 50 in a row', requirement: () => gameStats.currentStreak >= 50 },
+            { id: 'rainbow_badge', name: 'Rainbow Badge', icon: '🏆', description: 'Win 100 in a row', requirement: () => gameStats.currentStreak >= 100 },
+            
+            // BATTLE VICTORY BADGES
+            { id: 'rookie_trainer', name: 'Rookie Trainer', icon: '⚔️', description: 'Win your first battle', requirement: () => (gameStats.battlesWon || 0) >= 1 },
+            { id: 'experienced_trainer', name: 'Experienced Trainer', icon: '🗡️', description: 'Win 10 battles', requirement: () => (gameStats.battlesWon || 0) >= 10 },
+            { id: 'veteran_trainer', name: 'Veteran Trainer', icon: '🛡️', description: 'Win 25 battles', requirement: () => (gameStats.battlesWon || 0) >= 25 },
+            { id: 'battle_master', name: 'Battle Master', icon: '👑', description: 'Win 50 battles', requirement: () => (gameStats.battlesWon || 0) >= 50 }
         ];
 
         // Set grade level
@@ -4358,20 +4325,34 @@
                 message.textContent = 'You defeated the opponent trainer!';
                 playLegendaryFanfare();
                 
-                // Award Battle Master badge
-                const battleBadgeId = 'battle_master';
-                if (!gameStats.unlockedBadges.includes(battleBadgeId)) {
-                    gameStats.unlockedBadges.push(battleBadgeId);
-                    saveGameStats();
-                    updateBadgeCount();
-                    
+                // Increment battles won
+                gameStats.battlesWon = (gameStats.battlesWon || 0) + 1;
+                saveGameStats();
+                checkBadges();
+                
+                // Check for new battle badges
+                const newBadges = [];
+                if (gameStats.battlesWon === 1 && !gameStats.unlockedBadges.includes('rookie_trainer')) {
+                    newBadges.push({ id: 'rookie_trainer', name: 'Rookie Trainer', icon: '⚔️' });
+                }
+                if (gameStats.battlesWon === 10 && !gameStats.unlockedBadges.includes('experienced_trainer')) {
+                    newBadges.push({ id: 'experienced_trainer', name: 'Experienced Trainer', icon: '🗡️' });
+                }
+                if (gameStats.battlesWon === 25 && !gameStats.unlockedBadges.includes('veteran_trainer')) {
+                    newBadges.push({ id: 'veteran_trainer', name: 'Veteran Trainer', icon: '🛡️' });
+                }
+                if (gameStats.battlesWon === 50 && !gameStats.unlockedBadges.includes('battle_master')) {
+                    newBadges.push({ id: 'battle_master', name: 'Battle Master', icon: '👑' });
+                }
+                
+                if (newBadges.length > 0) {
                     reward.style.display = 'block';
-                    reward.innerHTML = `
+                    reward.innerHTML = newBadges.map(badge => `
                         <h3>🏆 New Badge Unlocked!</h3>
-                        <div style="font-size: 3em; margin: 10px 0;">⚔️</div>
-                        <div style="font-size: 1.3em; font-weight: bold;">Battle Master</div>
-                        <p>Won your first Pokémon battle!</p>
-                    `;
+                        <div style="font-size: 3em; margin: 10px 0;">${badge.icon}</div>
+                        <div style="font-size: 1.3em; font-weight: bold;">${badge.name}</div>
+                        <p>Battles Won: ${gameStats.battlesWon}</p>
+                    `).join('<hr style="margin: 20px 0;">');
                 } else {
                     reward.style.display = 'none';
                 }
@@ -4535,16 +4516,39 @@
                     caughtPokemon[currentPokemon.number] = true;
                     localStorage.setItem('caughtPokemon', JSON.stringify(caughtPokemon));
                     
+                    // Cache Pokemon types for badge tracking
+                    fetch(`https://pokeapi.co/api/v2/pokemon/${currentPokemon.number}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            const types = data.types.map(t => t.type.name);
+                            pokemonTypeCache[currentPokemon.number] = types;
+                            localStorage.setItem('pokemonTypeCache', JSON.stringify(pokemonTypeCache));
+                        })
+                        .catch(err => console.log('Could not cache types:', err));
+                    
                     saveGameStats();
                     updateStreakDisplay();
                     updateBadgeCount();
                     checkBadges();
+
+                    // Store the caught Pokemon info for display
+                    const caughtPokemonNumber = currentPokemon.number;
+                    const caughtPokemonName = currentPokemon.name;
 
                     setTimeout(() => {
                         modalSprite.classList.remove('caught-success');
                         closeModal();
                         // Reset all bushes for new round after catching Pokemon
                         resetBushes();
+                        
+                        // Navigate to Pokedex and show the caught Pokemon info
+                        setTimeout(() => {
+                            navigateTo('pokedex');
+                            // Wait for Pokedex to load, then show Pokemon info
+                            setTimeout(() => {
+                                showPokemonInfo(caughtPokemonNumber, caughtPokemonName);
+                            }, 300);
+                        }, 500);
                     }, 2000);
                 } else {
                     // Empty bush - mark it as checked
