@@ -378,7 +378,7 @@
             box-shadow: var(--shadow-lg);
         }
 
-        /* Modern Bush Selection Screen */
+        /* Modern Bush Selection Screen - Pokemon Route Style */
         .bush-screen {
             display: flex;
             flex-direction: column;
@@ -386,60 +386,401 @@
             justify-content: center;
             min-height: 100vh;
             gap: var(--spacing-xl);
+            background: 
+                /* Sky gradient */
+                linear-gradient(180deg, #87CEEB 0%, #B0E0E6 40%, #E0F6FF 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated Clouds */
+        .bush-screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 35%;
+            background:
+                /* Cloud 1 */
+                radial-gradient(ellipse 80px 40px at 15% 20%, white 0%, white 50%, transparent 50%),
+                radial-gradient(ellipse 60px 35px at 10% 22%, white 0%, white 50%, transparent 50%),
+                radial-gradient(ellipse 70px 38px at 20% 22%, white 0%, white 50%, transparent 50%),
+                /* Cloud 2 */
+                radial-gradient(ellipse 90px 45px at 60% 15%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.9) 50%, transparent 50%),
+                radial-gradient(ellipse 70px 40px at 55% 17%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.9) 50%, transparent 50%),
+                radial-gradient(ellipse 75px 42px at 65% 17%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.9) 50%, transparent 50%),
+                /* Cloud 3 */
+                radial-gradient(ellipse 70px 35px at 85% 25%, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.8) 50%, transparent 50%),
+                radial-gradient(ellipse 55px 30px at 82% 27%, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.8) 50%, transparent 50%),
+                radial-gradient(ellipse 60px 32px at 88% 27%, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.8) 50%, transparent 50%);
+            animation: clouds-drift 120s linear infinite;
+            z-index: 0;
+        }
+
+        @keyframes clouds-drift {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100px); }
+        }
+
+        /* Grass tufts and rocks container - positioned above grass layer */
+        .bushes-container::before {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background:
+                /* Left side grass tufts */
+                radial-gradient(ellipse 25px 30px at 8% 60%, #6BAA6B 0%, #5A9959 40%, transparent 60%),
+                radial-gradient(ellipse 20px 25px at 6% 65%, #7FBA7F 0%, #6BAA6B 40%, transparent 60%),
+                radial-gradient(ellipse 22px 28px at 10% 63%, #7FBA7F 0%, #6BAA6B 40%, transparent 60%),
+                
+                radial-gradient(ellipse 28px 32px at 15% 55%, #6BAA6B 0%, #5A9959 40%, transparent 60%),
+                radial-gradient(ellipse 23px 27px at 13% 58%, #7FBA7F 0%, #6BAA6B 40%, transparent 60%),
+                
+                /* Right side grass tufts */
+                radial-gradient(ellipse 26px 31px at 92% 60%, #6BAA6B 0%, #5A9959 40%, transparent 60%),
+                radial-gradient(ellipse 21px 26px at 94% 65%, #7FBA7F 0%, #6BAA6B 40%, transparent 60%),
+                radial-gradient(ellipse 24px 29px at 90% 63%, #7FBA7F 0%, #6BAA6B 40%, transparent 60%),
+                
+                radial-gradient(ellipse 27px 33px at 85% 55%, #6BAA6B 0%, #5A9959 40%, transparent 60%),
+                radial-gradient(ellipse 22px 28px at 87% 58%, #7FBA7F 0%, #6BAA6B 40%, transparent 60%),
+                
+                /* Small rocks on path edges */
+                radial-gradient(circle 12px at 35% 70%, #8B7A6A 0%, #6B5A4A 60%, transparent 60%),
+                radial-gradient(circle 8px at 37% 72%, #9B8A7A 0%, #7B6A5A 60%, transparent 60%),
+                radial-gradient(circle 10px at 33% 68%, #8B7A6A 0%, #6B5A4A 60%, transparent 60%),
+                
+                radial-gradient(circle 14px at 65% 70%, #8B7A6A 0%, #6B5A4A 60%, transparent 60%),
+                radial-gradient(circle 9px at 67% 72%, #9B8A7A 0%, #7B6A5A 60%, transparent 60%),
+                radial-gradient(circle 11px at 63% 68%, #8B7A6A 0%, #6B5A4A 60%, transparent 60%),
+                
+                /* More scattered grass */
+                radial-gradient(ellipse 18px 22px at 20% 75%, #7FBA7F 0%, #6BAA6B 40%, transparent 60%),
+                radial-gradient(ellipse 20px 24px at 80% 75%, #7FBA7F 0%, #6BAA6B 40%, transparent 60%),
+                radial-gradient(ellipse 16px 20px at 25% 80%, #6BAA6B 0%, #5A9959 40%, transparent 60%),
+                radial-gradient(ellipse 17px 21px at 75% 80%, #6BAA6B 0%, #5A9959 40%, transparent 60%);
+            pointer-events: none;
+            z-index: 9;
+        }
+
+        /* Route grass background */
+        .bush-screen::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70%;
+            background: 
+                /* Grass texture */
+                repeating-linear-gradient(
+                    90deg,
+                    #7FBA7F 0px,
+                    #6BAA6B 2px,
+                    #7FBA7F 4px
+                ),
+                /* Base grass */
+                linear-gradient(180deg, #8BC34A 0%, #689F38 100%);
+            z-index: 0;
+        }
+
+        /* Dirt path in center */
+        .dirt-path {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 45%;
+            height: 70%;
+            background: 
+                /* Dirt texture */
+                repeating-linear-gradient(
+                    45deg,
+                    #C5A572 0px,
+                    #C5A572 3px,
+                    #B89968 3px,
+                    #B89968 6px
+                ),
+                /* Base dirt */
+                linear-gradient(180deg, #D4B896 0%, #A88B5C 100%);
+            border-left: 8px solid #8BC34A;
+            border-right: 8px solid #8BC34A;
+            box-shadow: 
+                inset 0 10px 20px rgba(0,0,0,0.1),
+                inset 0 -10px 20px rgba(0,0,0,0.05);
+            z-index: 1;
+        }
+
+        /* Animated clouds layer */
+        .clouds-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            z-index: 0;
+            animation: clouds-drift 180s linear infinite;
+        }
+
+        @keyframes clouds-drift {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(100px); }
+        }
+
+        .cloud {
+            position: absolute;
+            background: white;
+            border-radius: 100px;
+            opacity: 0.9;
+        }
+
+        .cloud::before,
+        .cloud::after {
+            content: '';
+            position: absolute;
+            background: white;
+            border-radius: 100px;
+        }
+
+        .cloud-1 {
+            width: 100px;
+            height: 50px;
+            top: 15%;
+            left: 10%;
+        }
+
+        .cloud-1::before {
+            width: 65px;
+            height: 45px;
+            top: -25px;
+            left: 15px;
+        }
+
+        .cloud-1::after {
+            width: 75px;
+            height: 40px;
+            top: -20px;
+            right: 10px;
+        }
+
+        .cloud-2 {
+            width: 120px;
+            height: 55px;
+            top: 10%;
+            right: 15%;
+            opacity: 0.85;
+        }
+
+        .cloud-2::before {
+            width: 70px;
+            height: 48px;
+            top: -28px;
+            left: 20px;
+        }
+
+        .cloud-2::after {
+            width: 80px;
+            height: 45px;
+            top: -22px;
+            right: 15px;
+        }
+
+        .cloud-3 {
+            width: 90px;
+            height: 45px;
+            top: 22%;
+            right: 5%;
+            opacity: 0.8;
+        }
+
+        .cloud-3::before {
+            width: 55px;
+            height: 40px;
+            top: -22px;
+            left: 12px;
+        }
+
+        .cloud-3::after {
+            width: 60px;
+            height: 38px;
+            top: -18px;
+            right: 8px;
+        }
+
+        /* Decorations layer */
+        .decorations {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 9;
+            pointer-events: none;
+        }
+
+        /* Grass tufts */
+        .grass-tuft {
+            position: absolute;
+            width: 30px;
+            height: 35px;
+            background: 
+                radial-gradient(ellipse 15px 18px at 50% 60%, #7FBA7F 0%, #6BAA6B 40%, transparent 60%),
+                radial-gradient(ellipse 12px 15px at 35% 65%, #6BAA6B 0%, #5A9959 40%, transparent 60%),
+                radial-gradient(ellipse 13px 16px at 65% 65%, #6BAA6B 0%, #5A9959 40%, transparent 60%);
+            animation: grass-sway 3s ease-in-out infinite;
+            transform-origin: bottom center;
+        }
+
+        @keyframes grass-sway {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-2deg); }
+            75% { transform: rotate(2deg); }
+        }
+
+        .grass-tuft:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .grass-tuft:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        .grass-tuft:nth-child(4) {
+            animation-delay: 1.5s;
+        }
+
+        .grass-tuft:nth-child(5) {
+            animation-delay: 2s;
+        }
+
+        .grass-tuft:nth-child(6) {
+            animation-delay: 2.5s;
+        }
+
+        /* Small rocks */
+        .rock {
+            position: absolute;
+            background: 
+                radial-gradient(ellipse at 40% 35%, #9B8A7A 0%, #8B7A6A 50%, #6B5A4A 100%);
+            border-radius: 50%;
+            box-shadow: 
+                inset -2px -2px 4px rgba(0,0,0,0.3),
+                inset 1px 1px 2px rgba(255,255,255,0.3),
+                0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .small-rock {
+            width: 16px;
+            height: 14px;
+        }
+
+        .rock:nth-child(odd) {
+            transform: rotate(25deg);
+        }
+
+        .rock:nth-child(even) {
+            transform: rotate(-15deg);
         }
 
         .bush-screen h2 {
             color: white;
-            font-size: 2.5em;
+            font-size: 2em;
             font-weight: 700;
             text-align: center;
-            text-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            background: linear-gradient(135deg, #FFFFFF 0%, #F0F0F0 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            text-shadow: 
+                2px 2px 0 rgba(0,0,0,0.3),
+                0 4px 12px rgba(0,0,0,0.4);
+            z-index: 10;
+            position: relative;
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin-bottom: 0;
         }
 
         .bushes-container {
             display: flex;
-            gap: var(--spacing-xl);
+            gap: 60px;
             justify-content: center;
+            align-items: flex-end;
             flex-wrap: wrap;
-            padding: var(--spacing-lg);
+            padding: var(--spacing-xl);
+            z-index: 10;
+            position: relative;
+            margin-bottom: 80px;
         }
 
         .bush {
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: center;
             position: relative;
-            background: rgba(255, 255, 255, 0.1);
-            padding: var(--spacing-lg);
-            border-radius: var(--radius-xl);
-            backdrop-filter: blur(10px);
-            border: var(--border-width) solid rgba(255, 255, 255, 0.2);
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+            backdrop-filter: none;
+            border: none;
+            filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4));
+        }
+
+        /* Stagger bush heights for natural look */
+        .bush:nth-child(1) {
+            transform: translateY(-20px);
+        }
+
+        .bush:nth-child(2) {
+            transform: translateY(10px);
+        }
+
+        .bush:nth-child(3) {
+            transform: translateY(-5px);
         }
 
         .bush:hover {
-            transform: translateY(-10px) scale(1.08);
-            box-shadow: 0 12px 32px rgba(59, 76, 202, 0.3);
-            border-color: rgba(255, 255, 255, 0.4);
-            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-15px) scale(1.1);
+            filter: drop-shadow(0 16px 24px rgba(0,0,0,0.5)) brightness(1.2);
+        }
+
+        /* Maintain stagger on hover */
+        .bush:nth-child(1):hover {
+            transform: translateY(-35px) scale(1.1);
+        }
+
+        .bush:nth-child(2):hover {
+            transform: translateY(-5px) scale(1.1);
+        }
+
+        .bush:nth-child(3):hover {
+            transform: translateY(-20px) scale(1.1);
         }
 
         .bush.checked {
             opacity: 0.4;
             cursor: not-allowed;
-            background: rgba(0, 0, 0, 0.2);
         }
 
         .bush.checked:hover {
-            transform: none;
-            box-shadow: none;
+            transform: translateY(0);
+            filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4)) grayscale(1);
+        }
+
+        /* Maintain stagger when checked */
+        .bush.checked:nth-child(1),
+        .bush.checked:nth-child(1):hover {
+            transform: translateY(-20px);
+        }
+
+        .bush.checked:nth-child(2),
+        .bush.checked:nth-child(2):hover {
+            transform: translateY(10px);
+        }
+
+        .bush.checked:nth-child(3),
+        .bush.checked:nth-child(3):hover {
+            transform: translateY(-5px);
         }
 
         .bush.checked .bush-image {
-            filter: grayscale(1) drop-shadow(0 4px 12px rgba(0,0,0,0.2));
+            filter: grayscale(1) brightness(0.6);
         }
 
         .bush.checked .bush-label {
@@ -447,25 +788,78 @@
             opacity: 0.5;
         }
 
+        /* Realistic Pixelated Bush Sprite */
         .bush-image {
-            width: 150px;
-            height: 150px;
-            font-size: 8em;
-            filter: drop-shadow(0 8px 16px rgba(0,0,0,0.2));
+            width: 120px;
+            height: 120px;
+            position: relative;
+            display: inline-block;
             transition: all 0.3s;
         }
 
+        /* Create layered bush using box-shadows for pixel art effect */
+        .bush-image::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            background: 
+                /* Dark green base (bottom layer - shadow) */
+                radial-gradient(ellipse 50px 40px at 50% 70%, #2C5F2D 0%, #2C5F2D 60%, transparent 60%),
+                radial-gradient(ellipse 45px 35px at 35% 65%, #1F4620 0%, #1F4620 60%, transparent 60%),
+                radial-gradient(ellipse 45px 35px at 65% 65%, #1F4620 0%, #1F4620 60%, transparent 60%),
+                /* Bright green leaves (top layer) */
+                radial-gradient(ellipse 45px 35px at 50% 50%, #7FDB7F 0%, #5EC55E 70%, transparent 70%),
+                radial-gradient(ellipse 40px 30px at 30% 45%, #6BCF6B 0%, #4FB84F 70%, transparent 70%),
+                radial-gradient(ellipse 40px 30px at 70% 45%, #6BCF6B 0%, #4FB84F 70%, transparent 70%),
+                radial-gradient(ellipse 35px 25px at 50% 35%, #8FE58F 0%, #6BCF6B 70%, transparent 70%),
+                /* Highlight spots */
+                radial-gradient(circle 8px at 45% 40%, #B8F0B8 0%, transparent 70%),
+                radial-gradient(circle 6px at 58% 38%, #B8F0B8 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        /* Add texture and pixel-like details */
+        .bush-image::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            background: 
+                /* Small dark spots for depth */
+                radial-gradient(circle 3px at 35% 50%, rgba(0,0,0,0.3) 0%, transparent 70%),
+                radial-gradient(circle 3px at 65% 52%, rgba(0,0,0,0.3) 0%, transparent 70%),
+                radial-gradient(circle 4px at 50% 60%, rgba(0,0,0,0.2) 0%, transparent 70%),
+                /* Light green highlights */
+                radial-gradient(circle 4px at 40% 42%, rgba(200,255,200,0.4) 0%, transparent 70%),
+                radial-gradient(circle 3px at 60% 45%, rgba(200,255,200,0.3) 0%, transparent 70%);
+        }
+
         .bush:hover .bush-image {
-            transform: scale(1.1);
-            filter: drop-shadow(0 12px 24px rgba(59, 76, 202, 0.4));
+            transform: scale(1.05);
+            animation: bush-shake 0.5s ease-in-out infinite;
+        }
+
+        @keyframes bush-shake {
+            0%, 100% { transform: scale(1.05) rotate(0deg); }
+            25% { transform: scale(1.05) rotate(-2deg); }
+            75% { transform: scale(1.05) rotate(2deg); }
         }
 
         .bush-label {
             color: white;
             font-size: 1.2em;
-            font-weight: 600;
+            font-weight: 700;
             margin-top: var(--spacing-sm);
-            text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            text-shadow: 
+                2px 2px 0 rgba(0,0,0,0.6),
+                0 3px 8px rgba(0,0,0,0.7);
         }
 
         .empty-bush-message {
@@ -1235,7 +1629,7 @@
         .pokeball {
             width: 60px;
             height: 60px;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="%23ff0000" stroke="%23000" stroke-width="2"/><rect x="0" y="48" width="100" height="4" fill="%23000"/><circle cx="50" cy="50" r="15" fill="%23fff" stroke="%23000" stroke-width="2"/><circle cx="50" cy="50" r="8" fill="%23fff" stroke="%23000" stroke-width="2"/></svg>') center/contain no-repeat;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><clipPath id="top-half"><rect x="0" y="0" width="100" height="50"/></clipPath><clipPath id="bottom-half"><rect x="0" y="50" width="100" height="50"/></clipPath></defs><circle cx="50" cy="50" r="48" fill="%23ff0000" stroke="%23000" stroke-width="3" clip-path="url(%23top-half)"/><circle cx="50" cy="50" r="48" fill="%23ffffff" stroke="%23000" stroke-width="3" clip-path="url(%23bottom-half)"/><line x1="0" y1="50" x2="100" y2="50" stroke="%23000" stroke-width="3"/><circle cx="50" cy="50" r="16" fill="%23ffffff" stroke="%23000" stroke-width="3"/><circle cx="50" cy="50" r="8" fill="%23ffffff" stroke="%23000" stroke-width="2"/><circle cx="50" cy="50" r="4" fill="%23000"/></svg>') center/contain no-repeat;
         }
 
         .pokeball.throwing {
@@ -3356,18 +3750,47 @@
     <!-- BUSH HUNTING PAGE -->
     <div class="page" id="huntPage">
         <div class="bush-screen">
+            <!-- Animated clouds -->
+            <div class="clouds-layer">
+                <div class="cloud cloud-1"></div>
+                <div class="cloud cloud-2"></div>
+                <div class="cloud cloud-3"></div>
+            </div>
+            
+            <!-- Dirt path -->
+            <div class="dirt-path"></div>
+            
+            <!-- Decorative elements -->
+            <div class="decorations">
+                <!-- Left grass tufts -->
+                <div class="grass-tuft" style="left: 8%; top: 65%;"></div>
+                <div class="grass-tuft" style="left: 13%; top: 60%;"></div>
+                <div class="grass-tuft" style="left: 18%; top: 72%;"></div>
+                
+                <!-- Right grass tufts -->
+                <div class="grass-tuft" style="right: 8%; top: 65%;"></div>
+                <div class="grass-tuft" style="right: 13%; top: 60%;"></div>
+                <div class="grass-tuft" style="right: 18%; top: 72%;"></div>
+                
+                <!-- Small rocks -->
+                <div class="rock small-rock" style="left: 33%; top: 68%;"></div>
+                <div class="rock small-rock" style="left: 35%; top: 72%;"></div>
+                <div class="rock small-rock" style="right: 33%; top: 68%;"></div>
+                <div class="rock small-rock" style="right: 35%; top: 72%;"></div>
+            </div>
+            
             <h2 id="bushHeader">🌿 Choose a bush to search! 🌿</h2>
             <div class="bushes-container">
                 <div class="bush" id="bush-0" onclick="selectBush(0)">
-                    <div class="bush-image">🌳</div>
+                    <div class="bush-image"></div>
                     <div class="bush-label">Bush 1</div>
                 </div>
                 <div class="bush" id="bush-1" onclick="selectBush(1)">
-                    <div class="bush-image">🌳</div>
+                    <div class="bush-image"></div>
                     <div class="bush-label">Bush 2</div>
                 </div>
                 <div class="bush" id="bush-2" onclick="selectBush(2)">
-                    <div class="bush-image">🌳</div>
+                    <div class="bush-image"></div>
                     <div class="bush-label">Bush 3</div>
                 </div>
             </div>
