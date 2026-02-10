@@ -5,6 +5,58 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Pokémon Math Challenge</title>
     <style>
+        /* ===== MODERN POKÉMON DESIGN SYSTEM ===== */
+        :root {
+            /* Official Pokémon Colors */
+            --pokemon-red: #EE1515;
+            --pokemon-blue: #3B4CCA;
+            --pokemon-yellow: #FFCB05;
+            --pokemon-white: #FFFFFF;
+            
+            /* UI Colors */
+            --primary: #3B4CCA;
+            --primary-dark: #2D3A9F;
+            --primary-light: #5B6FE8;
+            --secondary: #FFCB05;
+            --secondary-dark: #E0B000;
+            --accent: #EE1515;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #F44336;
+            
+            /* Neutral Colors */
+            --bg-light: #F5F7FA;
+            --bg-white: #FFFFFF;
+            --text-dark: #2C3E50;
+            --text-medium: #546E7A;
+            --text-light: #90A4AE;
+            
+            /* Design System */
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 20px;
+            --radius-xl: 24px;
+            
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.15);
+            --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.18);
+            
+            --border-width: 2px;
+            --spacing-xs: 8px;
+            --spacing-sm: 12px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-blue: linear-gradient(135deg, #4A90E2 0%, #3B4CCA 100%);
+            --gradient-red: linear-gradient(135deg, #FF6B6B 0%, #EE1515 100%);
+            --gradient-yellow: linear-gradient(135deg, #FFD93D 0%, #FFCB05 100%);
+            --gradient-card: linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 100%);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -12,11 +64,12 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            background: var(--gradient-primary);
             min-height: 100vh;
             padding: 0;
             overflow-x: hidden;
+            color: var(--text-dark);
         }
 
         /* Page Routing */
@@ -30,19 +83,21 @@
             display: block;
         }
 
-        /* Navigation Bar */
+        /* Modern Navigation Bar */
         .nav-bar {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            background: rgba(59, 76, 202, 0.95);
-            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            padding: var(--spacing-md) var(--spacing-lg);
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            box-shadow: var(--shadow-md);
+            border-bottom: var(--border-width) solid rgba(59, 76, 202, 0.1);
         }
 
         .nav-bar.hidden {
@@ -50,44 +105,48 @@
         }
 
         .nav-brand {
-            color: #ffcb05;
+            color: var(--primary);
             font-size: 1.5em;
-            font-weight: bold;
-            text-shadow: 2px 2px 0 #3b4cca;
+            font-weight: 800;
+            letter-spacing: -0.5px;
         }
 
         .nav-buttons {
             display: flex;
-            gap: 10px;
+            gap: var(--spacing-sm);
         }
 
         .nav-btn {
-            background: rgba(255,255,255,0.2);
-            border: 2px solid white;
-            color: white;
+            background: var(--bg-white);
+            border: var(--border-width) solid var(--primary);
+            color: var(--primary);
             padding: 10px 20px;
-            border-radius: 10px;
-            font-weight: bold;
+            border-radius: var(--radius-md);
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-sm);
         }
 
         .nav-btn:hover {
-            background: rgba(255,255,255,0.4);
+            background: var(--primary);
+            color: white;
             transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
         .nav-btn.active {
-            background: #ffcb05;
-            color: #3b4cca;
-            border-color: #ffcb05;
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md);
         }
 
         .page-content {
             margin-top: 80px;
         }
 
-        /* Start Screen */
+        /* Modern Start Screen */
         .start-screen {
             display: flex;
             flex-direction: column;
@@ -95,6 +154,7 @@
             justify-content: center;
             min-height: 100vh;
             text-align: center;
+            gap: var(--spacing-xl);
         }
 
         .game-logo {
@@ -125,42 +185,69 @@
             gap: 20px;
         }
 
+        /* Modern Button System */
         .start-btn, .settings-btn {
-            background: #3b4cca;
+            background: var(--gradient-blue);
             color: white;
             border: none;
-            padding: 20px 60px;
-            font-size: 1.5em;
-            font-weight: bold;
-            border-radius: 15px;
+            padding: var(--spacing-lg) var(--spacing-xl);
+            font-size: 1.3em;
+            font-weight: 600;
+            border-radius: var(--radius-lg);
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .start-btn::before, .settings-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .start-btn:hover::before, .settings-btn:hover::before {
+            left: 100%;
         }
 
         .start-btn:hover, .settings-btn:hover {
-            background: #2a3799;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .start-btn:active, .settings-btn:active {
+            transform: translateY(-1px) scale(0.98);
         }
 
         .settings-btn {
-            background: #6b7280;
-        }
-
-        .settings-btn:hover {
-            background: #4b5563;
+            background: linear-gradient(135deg, #6B7280 0%, #4B5563 100%);
+            font-size: 1.1em;
         }
 
         .reset-game-btn {
-            background: #ef4444;
+            background: var(--gradient-red);
         }
 
         .reset-game-btn:hover {
-            background: #dc2626;
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: var(--shadow-lg);
         }
 
-        /* Settings Modal */
+        .start-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Modern Settings Modal */
         .settings-modal {
             display: none;
             position: fixed;
@@ -168,169 +255,224 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(4px);
             z-index: 3000;
             justify-content: center;
             align-items: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .settings-modal.active {
             display: flex;
         }
 
+        /* Modern Settings Content */
         .settings-content {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
+            background: var(--bg-white);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-xl);
             max-width: 600px;
             width: 90%;
             max-height: 90vh;
             overflow-y: auto;
+            box-shadow: var(--shadow-xl);
+            border: var(--border-width) solid rgba(59, 76, 202, 0.1);
         }
 
         .settings-content h2 {
-            color: #3b4cca;
-            margin-bottom: 30px;
+            color: var(--primary);
+            margin-bottom: var(--spacing-xl);
             text-align: center;
+            font-size: 2em;
+            font-weight: 700;
         }
 
         .setting-group {
-            margin-bottom: 25px;
+            margin-bottom: var(--spacing-lg);
+            background: var(--bg-light);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            border: var(--border-width) solid rgba(0,0,0,0.05);
         }
 
         .setting-group label {
             display: block;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: var(--spacing-sm);
             font-size: 1.1em;
         }
 
         .setting-group select,
         .setting-group input {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
+            padding: var(--spacing-sm);
+            border: var(--border-width) solid #E5E7EB;
+            border-radius: var(--radius-sm);
             font-size: 1em;
+            background: white;
+            transition: all 0.2s;
+        }
+
+        .setting-group select:focus,
+        .setting-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 76, 202, 0.1);
         }
 
         .operation-settings {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-top: 10px;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-sm);
         }
 
         .operation-checkbox {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 10px;
-            background: #f3f4f6;
-            border-radius: 8px;
+            gap: var(--spacing-xs);
+            padding: var(--spacing-sm);
+            background: white;
+            border-radius: var(--radius-sm);
+            border: var(--border-width) solid #E5E7EB;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .operation-checkbox:hover {
+            border-color: var(--primary);
+            background: #F8F9FA;
         }
 
         .operation-checkbox input[type="checkbox"] {
             width: 20px;
             height: 20px;
             cursor: pointer;
+            accent-color: var(--primary);
         }
 
         .save-settings-btn {
             width: 100%;
-            background: #3b4cca;
+            background: var(--gradient-blue);
             color: white;
             border: none;
-            padding: 15px;
+            padding: var(--spacing-md);
             font-size: 1.2em;
-            font-weight: bold;
-            border-radius: 10px;
+            font-weight: 600;
+            border-radius: var(--radius-md);
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .save-settings-btn:hover {
-            background: #2a3799;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
 
-        /* Bush Selection Screen */
+        /* Modern Bush Selection Screen */
         .bush-screen {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
+            gap: var(--spacing-xl);
         }
 
         .bush-screen h2 {
             color: white;
             font-size: 2.5em;
-            margin-bottom: 40px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-weight: 700;
+            text-align: center;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            background: linear-gradient(135deg, #FFFFFF 0%, #F0F0F0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .bushes-container {
             display: flex;
-            gap: 40px;
+            gap: var(--spacing-xl);
             justify-content: center;
             flex-wrap: wrap;
+            padding: var(--spacing-lg);
         }
 
         .bush {
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: center;
             position: relative;
+            background: rgba(255, 255, 255, 0.1);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-xl);
+            backdrop-filter: blur(10px);
+            border: var(--border-width) solid rgba(255, 255, 255, 0.2);
         }
 
         .bush:hover {
-            transform: translateY(-10px) scale(1.05);
-            animation: bushPulse 0.6s ease-in-out infinite;
-        }
-
-        @keyframes bushPulse {
-            0%, 100% { transform: translateY(-10px) scale(1.05); }
-            50% { transform: translateY(-15px) scale(1.1); }
+            transform: translateY(-10px) scale(1.08);
+            box-shadow: 0 12px 32px rgba(59, 76, 202, 0.3);
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.15);
         }
 
         .bush.checked {
-            opacity: 0.5;
+            opacity: 0.4;
             cursor: not-allowed;
+            background: rgba(0, 0, 0, 0.2);
         }
 
         .bush.checked:hover {
             transform: none;
-            animation: none;
+            box-shadow: none;
         }
 
         .bush.checked .bush-image {
-            filter: grayscale(1) drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+            filter: grayscale(1) drop-shadow(0 4px 12px rgba(0,0,0,0.2));
         }
 
         .bush.checked .bush-label {
             text-decoration: line-through;
+            opacity: 0.5;
         }
 
         .bush-image {
             width: 150px;
             height: 150px;
             font-size: 8em;
-            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+            filter: drop-shadow(0 8px 16px rgba(0,0,0,0.2));
+            transition: all 0.3s;
+        }
+
+        .bush:hover .bush-image {
+            transform: scale(1.1);
+            filter: drop-shadow(0 12px 24px rgba(59, 76, 202, 0.4));
         }
 
         .bush-label {
             color: white;
             font-size: 1.2em;
-            font-weight: bold;
-            margin-top: 10px;
+            font-weight: 600;
+            margin-top: var(--spacing-sm);
+            text-shadow: 0 2px 8px rgba(0,0,0,0.4);
         }
 
         .empty-bush-message {
             display: none;
         }
 
-        /* Game Screen */
+        /* Modern Game Screen */
         .game-screen {
             min-height: 100vh;
         }
@@ -338,20 +480,39 @@
         .pokedex-header {
             text-align: center;
             color: white;
-            margin-bottom: 30px;
+            margin-bottom: var(--spacing-xl);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-xl);
+            border: var(--border-width) solid rgba(255, 255, 255, 0.2);
         }
 
         .pokedex-title {
             font-size: 3em;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
-            margin-bottom: 20px;
+            font-weight: 800;
+            text-shadow: 0 4px 16px rgba(0,0,0,0.3);
+            margin-bottom: var(--spacing-md);
+            background: linear-gradient(135deg, #FFFFFF 0%, #FFCB05 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .pokedex-title-logo {
+            max-width: 400px;
+            width: 80%;
+            height: auto;
+            margin: 0 auto var(--spacing-md) auto;
+            display: block;
+            filter: drop-shadow(0 4px 16px rgba(0,0,0,0.2));
         }
 
         .pokedex-controls {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
             flex-wrap: wrap;
         }
 
@@ -367,25 +528,19 @@
             margin: 0 auto;
         }
 
-        .pokedex-filters {
-            background: rgba(255,255,255,0.1);
-            padding: 20px;
-            border-radius: 20px;
-            margin-bottom: 30px;
-        }
-
         header {
             text-align: center;
             color: white;
-            margin-bottom: 30px;
+            margin-bottom: var(--spacing-xl);
         }
 
+        /* Modern Control Buttons */
         .mute-button {
             position: absolute;
             top: 0;
             right: 0;
-            background: rgba(255,255,255,0.2);
-            border: 3px solid white;
+            background: rgba(255, 255, 255, 0.95);
+            border: var(--border-width) solid var(--primary);
             border-radius: 50%;
             width: 60px;
             height: 60px;
@@ -394,18 +549,20 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
-            color: white;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-md);
         }
 
         .mute-button:hover {
-            background: rgba(255,255,255,0.3);
-            transform: scale(1.1);
+            background: white;
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: var(--shadow-lg);
         }
 
         .mute-button.muted {
-            background: rgba(255,0,0,0.3);
-            border-color: #ff6b6b;
+            background: rgba(244, 67, 54, 0.9);
+            color: white;
+            border-color: var(--danger);
         }
 
         .reset-button {
@@ -446,77 +603,105 @@
             font-weight: bold;
         }
 
+        /* Force dark text in stat boxes */
+        .stat-box.stats,
+        .stat-box.stats .stat-label,
+        .stat-box.stats .stat-value {
+            color: var(--text-dark) !important;
+        }
+
+        /* Modern Stats Container */
         .stats-container {
             display: flex;
-            gap: 15px;
+            gap: var(--spacing-md);
             justify-content: center;
             flex-wrap: wrap;
             align-items: stretch;
         }
 
         .stat-box {
-            background: rgba(255,255,255,0.2);
-            padding: 15px 20px;
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-radius: var(--radius-lg);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
+            gap: var(--spacing-xs);
             min-width: 150px;
+            border: var(--border-width) solid rgba(255, 255, 255, 0.5);
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .stat-box:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
         }
 
         .stat-label {
-            font-size: 0.85em;
-            opacity: 0.9;
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--text-dark);
         }
 
         .stat-value {
-            font-size: 1.3em;
-            font-weight: bold;
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--text-dark);
         }
 
+        /* Modern Badges Button */
         .badges-button {
-            background: rgba(255,203,5,0.3);
-            border: 3px solid #ffcb05;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 15px;
-            font-size: 1em;
-            font-weight: bold;
+            background: var(--gradient-yellow);
+            border: var(--border-width) solid var(--secondary-dark);
+            color: var(--text-dark);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            font-size: 1.1em;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: var(--spacing-sm);
+            box-shadow: var(--shadow-md);
+            min-width: 150px;
         }
 
         .badges-button:hover {
-            background: rgba(255,203,5,0.5);
-            transform: translateY(-2px);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
         }
 
         .badge-notification {
             position: relative;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
         }
 
         .badge-count {
             position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #ef4444;
+            top: -10px;
+            right: -10px;
+            background: var(--gradient-red);
             color: white;
             border-radius: 50%;
-            width: 24px;
-            height: 24px;
+            width: 28px;
+            height: 28px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.75em;
-            font-weight: bold;
-            border: 2px solid white;
+            font-size: 0.8em;
+            font-weight: 700;
+            border: 3px solid white;
+            box-shadow: var(--shadow-sm);
         }
 
-        /* Badge Modal */
+        /* Modern Badge Modal */
         .badge-modal {
             display: none;
             position: fixed;
@@ -524,11 +709,13 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
             z-index: 2000;
             justify-content: center;
             align-items: center;
             overflow-y: auto;
+            animation: fadeIn 0.3s ease-out;
         }
 
         .badge-modal.active {
@@ -537,18 +724,21 @@
 
         .badge-modal-content {
             background: white;
-            border-radius: 20px;
-            padding: 40px;
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-xl);
             max-width: 800px;
             width: 90%;
             max-height: 90vh;
             overflow-y: auto;
             position: relative;
+            box-shadow: var(--shadow-xl);
+            border: var(--border-width) solid rgba(59, 76, 202, 0.1);
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .badge-modal-content h2 {
-            color: #3b4cca;
-            margin-bottom: 10px;
+            color: var(--primary);
+            margin-bottom: var(--spacing-sm);
             text-align: center;
             font-size: 2em;
         }
@@ -2259,55 +2449,66 @@
             outline: 2px solid #ffcb05;
         }
 
+        /* Modern Pokemon Grid */
         .pokemon-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 15px;
-            background: rgba(255,255,255,0.9);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+            gap: var(--spacing-md);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            border: var(--border-width) solid rgba(255, 255, 255, 0.5);
         }
 
+        /* Modern Pokemon Card */
         .pokemon-card {
-            background: white;
-            border: 3px solid #ffcb05;
-            border-radius: 10px;
-            padding: 10px;
+            background: var(--gradient-card);
+            border: var(--border-width) solid var(--secondary);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-sm);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: center;
+            box-shadow: var(--shadow-sm);
         }
 
         .pokemon-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
         }
 
         .pokemon-card.caught {
-            background: white;
-            border-color: #22c55e;
+            background: linear-gradient(135deg, #FFFFFF 0%, #E8F5E9 100%);
+            border-color: var(--success);
+        }
+
+        .pokemon-card.caught:hover {
+            border-color: #2E7D32;
         }
 
         .pokemon-card.uncaught {
-            background: #f3f4f6;
-            border-color: #9ca3af;
+            background: linear-gradient(135deg, #F5F5F5 0%, #E0E0E0 100%);
+            border-color: #BDBDBD;
+            opacity: 0.7;
         }
 
         .pokemon-card.uncaught .pokemon-sprite {
-            filter: brightness(0.7);
+            filter: grayscale(0.8) brightness(0.7);
         }
 
         .pokemon-sprite {
-            width: 64px;
-            height: 64px;
+            width: 70px;
+            height: 70px;
             margin: 0 auto;
-            transition: transform 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .pokemon-card:hover .pokemon-sprite {
-            transform: scale(1.2) translateY(-5px);
-            filter: brightness(1.1);
+            transform: scale(1.2);
+            filter: brightness(1.1) drop-shadow(0 4px 12px rgba(59, 76, 202, 0.3));
         }
 
         .pokemon-card.caught:hover .pokemon-sprite {
@@ -2315,24 +2516,25 @@
         }
 
         @keyframes wiggle {
-            0%, 100% { transform: scale(1.2) translateY(-5px) rotate(0deg); }
-            25% { transform: scale(1.2) translateY(-5px) rotate(-5deg); }
-            75% { transform: scale(1.2) translateY(-5px) rotate(5deg); }
+            0%, 100% { transform: scale(1.2) rotate(0deg); }
+            25% { transform: scale(1.2) rotate(-8deg); }
+            75% { transform: scale(1.2) rotate(8deg); }
         }
 
         .pokemon-name {
-            font-size: 0.75em;
-            margin-top: 5px;
-            font-weight: bold;
-            color: #333;
+            font-size: 0.8em;
+            margin-top: var(--spacing-xs);
+            font-weight: 600;
+            color: var(--text-dark);
         }
 
         .pokemon-number {
-            font-size: 0.65em;
-            color: #666;
+            font-size: 0.7em;
+            color: var(--text-medium);
+            font-weight: 500;
         }
 
-        /* Modal Styles */
+        /* Modern Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -2340,10 +2542,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(4px);
             z-index: 1000;
             justify-content: center;
             align-items: center;
+            animation: fadeIn 0.3s ease-out;
         }
 
         .modal.active {
@@ -2352,23 +2556,44 @@
 
         .modal-content {
             background: white;
-            border-radius: 20px;
-            padding: 40px;
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-xl);
             max-width: 600px;
             width: 90%;
             position: relative;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            box-shadow: var(--shadow-xl);
+            border: var(--border-width) solid rgba(59, 76, 202, 0.1);
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .close-btn {
             position: absolute;
-            top: 15px;
-            right: 20px;
+            top: var(--spacing-md);
+            right: var(--spacing-md);
             font-size: 2em;
             cursor: pointer;
-            color: #666;
-            background: none;
+            color: var(--text-medium);
+            background: var(--bg-light);
             border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            line-height: 1;
         }
 
         .close-btn:hover {
@@ -3251,7 +3476,7 @@
     <div class="page" id="pokedexPage">
         <div class="page-content">
             <div class="pokedex-header">
-                <h1 class="pokedex-title">📖 Pokédex 📖</h1>
+                <img src="logo.png" alt="Pokédex" class="pokedex-title-logo">
                 
                 <div class="pokedex-controls">
                     <button class="mute-button" id="muteButton" onclick="toggleMute()" title="Toggle Sound">
