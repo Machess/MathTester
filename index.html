@@ -182,7 +182,9 @@
         .start-buttons {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: var(--spacing-md);
+            width: 100%;
+            max-width: 400px;
         }
 
         /* Modern Button System */
@@ -237,14 +239,6 @@
         .reset-game-btn:hover {
             transform: translateY(-3px) scale(1.02);
             box-shadow: var(--shadow-lg);
-        }
-
-        .start-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-md);
-            width: 100%;
-            max-width: 400px;
         }
 
         /* Modern Settings Modal */
@@ -905,6 +899,261 @@
 
         .empty-bush-message {
             display: none;
+        }
+
+        /* ===== POKÉMON CENTER STYLES ===== */
+        .pokecenter-screen {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: var(--spacing-xl);
+        }
+
+        .pokecenter-title {
+            font-size: 3em;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 4px 16px rgba(0,0,0,0.3);
+            margin-bottom: var(--spacing-xl);
+            text-align: center;
+        }
+
+        .nurse-message {
+            background: rgba(255, 255, 255, 0.95);
+            border: var(--border-width) solid var(--primary);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+            max-width: 600px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .nurse-message p {
+            color: var(--text-dark);
+            font-size: 1.2em;
+            text-align: center;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .healing-container {
+            display: flex;
+            gap: var(--spacing-xl);
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        /* Healing Machine */
+        .healing-machine {
+            background: linear-gradient(135deg, #EF5350 0%, #C62828 100%);
+            border: 4px solid #8B0000;
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-xl);
+            min-width: 350px;
+        }
+
+        .machine-top {
+            background: linear-gradient(135deg, #1976D2 0%, #0D47A1 100%);
+            border: 3px solid #0D47A1;
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .pokeball-slot {
+            width: 80px;
+            height: 80px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .pokeball-slot.filled::before {
+            content: '';
+            width: 60px;
+            height: 60px;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><clipPath id="top-half"><rect x="0" y="0" width="100" height="50"/></clipPath><clipPath id="bottom-half"><rect x="0" y="50" width="100" height="50"/></clipPath></defs><circle cx="50" cy="50" r="48" fill="%23ff0000" stroke="%23000" stroke-width="3" clip-path="url(%23top-half)"/><circle cx="50" cy="50" r="48" fill="%23ffffff" stroke="%23000" stroke-width="3" clip-path="url(%23bottom-half)"/><line x1="0" y1="50" x2="100" y2="50" stroke="%23000" stroke-width="3"/><circle cx="50" cy="50" r="16" fill="%23ffffff" stroke="%23000" stroke-width="3"/><circle cx="50" cy="50" r="8" fill="%23ffffff" stroke="%23000" stroke-width="2"/><circle cx="50" cy="50" r="4" fill="%23000"/></svg>') center/contain no-repeat;
+        }
+
+        .pokeball-slot.healing::before {
+            animation: pokeball-blink 0.6s ease-in-out infinite;
+        }
+
+        @keyframes pokeball-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .machine-display {
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            border: 3px solid #333;
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .display-light {
+            width: 16px;
+            height: 16px;
+            background: #4CAF50;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #4CAF50;
+        }
+
+        .display-light.healing {
+            animation: light-pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes light-pulse {
+            0%, 100% { 
+                background: #4CAF50;
+                box-shadow: 0 0 10px #4CAF50;
+            }
+            50% { 
+                background: #81C784;
+                box-shadow: 0 0 20px #4CAF50;
+            }
+        }
+
+        .display-text {
+            color: #4CAF50;
+            font-family: 'Courier New', monospace;
+            font-size: 1.3em;
+            font-weight: 700;
+            text-shadow: 0 0 5px #4CAF50;
+        }
+
+        /* Injured Pokemon List */
+        .injured-pokemon-container {
+            background: rgba(255, 255, 255, 0.95);
+            border: var(--border-width) solid var(--primary);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-lg);
+            min-width: 400px;
+        }
+
+        .injured-pokemon-container h3 {
+            color: var(--primary);
+            margin-bottom: var(--spacing-md);
+            text-align: center;
+            font-size: 1.3em;
+        }
+
+        .injured-pokemon-list {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .injured-pokemon-item {
+            background: var(--gradient-card);
+            border: var(--border-width) solid #E0E0E0;
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .injured-pokemon-item:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .injured-pokemon-item.selected {
+            background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .injured-pokemon-item.selected::after {
+            content: '✓';
+            position: absolute;
+            right: var(--spacing-md);
+            color: var(--success);
+            font-size: 1.5em;
+            font-weight: 700;
+        }
+
+        .injured-pokemon-item {
+            position: relative;
+        }
+
+        .injured-pokemon-sprite {
+            width: 60px;
+            height: 60px;
+            filter: grayscale(0.5) brightness(0.8);
+        }
+
+        .injured-pokemon-item.selected .injured-pokemon-sprite {
+            filter: none;
+        }
+
+        .injured-pokemon-info {
+            flex: 1;
+        }
+
+        .injured-pokemon-name {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .injured-status {
+            font-size: 0.9em;
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .heal-button {
+            width: 100%;
+            background: var(--gradient-blue);
+            color: white;
+            border: none;
+            padding: var(--spacing-md);
+            font-size: 1.3em;
+            font-weight: 700;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s;
+        }
+
+        .heal-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .heal-button:disabled {
+            background: linear-gradient(135deg, #9E9E9E 0%, #757575 100%);
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .no-injured-message {
+            text-align: center;
+            padding: var(--spacing-xl);
+            color: var(--text-medium);
+            font-size: 1.1em;
         }
 
         /* Modern Game Screen */
@@ -2139,6 +2388,17 @@
         .selectable-pokemon.disabled {
             opacity: 0.3;
             cursor: not-allowed;
+        }
+
+        .selectable-pokemon.injured {
+            opacity: 0.5;
+            cursor: not-allowed;
+            border-color: #EF5350;
+            background: #FFEBEE;
+        }
+
+        .selectable-pokemon.injured:hover {
+            transform: none;
         }
 
         .selected-team {
@@ -3764,6 +4024,7 @@
         <div class="nav-buttons">
             <button class="nav-btn" onclick="navigateTo('menu')">🏠 Menu</button>
             <button class="nav-btn" onclick="navigateTo('hunt')">🌳 Hunt</button>
+            <button class="nav-btn" onclick="navigateTo('pokecenter')">🏥 Center</button>
             <button class="nav-btn" onclick="navigateTo('battle')">⚔️ Battle</button>
             <button class="nav-btn" onclick="navigateTo('pokedex')">📖 Pokédex</button>
         </div>
@@ -3774,16 +4035,16 @@
         <div class="start-screen">
             <img src="logo.png" alt="Pokémon" style="max-width: 500px; width: 90%; height: auto; margin-bottom: 50px; display: block; margin-left: auto; margin-right: auto; background: transparent;">
             <div class="start-buttons">
-                <button class="start-btn" onclick="startGame()">▶ Start Game</button>
-                <button class="start-btn" onclick="startBattleFromMenu()" style="background: #ef4444;">⚔️ Battle Mode</button>
-                <button class="settings-btn" onclick="openSettings()">⚙ Settings</button>
-                <button class="badges-button" style="margin-top: 20px;" onclick="openBadgeModal()">
+                <button class="start-btn" id="startGameBtn">▶ Start Game</button>
+                <button class="start-btn" id="startBattleBtn" style="background: linear-gradient(135deg, #FF6B6B 0%, #EE1515 100%);">⚔️ Battle Mode</button>
+                <button class="settings-btn" id="openSettingsBtn">⚙ Settings</button>
+                <button class="badges-button" style="margin-top: 20px;" id="openBadgesBtn">
                     <div class="badge-notification">
                         🏆 My Badges
                         <span class="badge-count" id="badge-count-menu">0</span>
                     </div>
                 </button>
-                <button class="reset-game-btn start-btn" onclick="showFullResetConfirmation()">🔄 Reset All Progress</button>
+                <button class="reset-game-btn start-btn" id="resetGameBtn">🔄 Reset All Progress</button>
             </div>
         </div>
     </div>
@@ -3838,6 +4099,45 @@
         </div>
     </div>
 
+    <!-- POKÉMON CENTER PAGE -->
+    <div class="page" id="pokecenterPage">
+        <div class="page-content">
+            <div class="pokecenter-screen">
+                <h1 class="pokecenter-title">🏥 Pokémon Center ⚕️</h1>
+                
+                <div class="nurse-message">
+                    <p id="nurseText">Welcome to the Pokémon Center! Would you like me to heal your Pokémon?</p>
+                </div>
+                
+                <div class="healing-container">
+                    <!-- Healing Machine -->
+                    <div class="healing-machine">
+                        <div class="machine-top">
+                            <div class="pokeball-slot" id="slot1"></div>
+                            <div class="pokeball-slot" id="slot2"></div>
+                            <div class="pokeball-slot" id="slot3"></div>
+                        </div>
+                        <div class="machine-display">
+                            <div class="display-light"></div>
+                            <div class="display-text" id="healingStatus">Ready</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Injured Pokemon List -->
+                    <div class="injured-pokemon-container">
+                        <h3>Select Pokémon to Heal (Max 3)</h3>
+                        <div class="injured-pokemon-list" id="injuredPokemonList">
+                            <!-- Dynamically populated -->
+                        </div>
+                        <button class="heal-button" id="startHealingBtn" onclick="startHealing()" disabled>
+                            Start Healing
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- BATTLE MODE PAGE -->
     <div class="page" id="battlePage">
         <div class="battle-screen">
@@ -3854,7 +4154,7 @@
                     <h3 style="text-align: center; margin: 20px 0;">Available Pokémon:</h3>
                     <div class="available-pokemon" id="availablePokemon"></div>
 
-                    <button class="start-battle-btn" onclick="startBattleMode()" id="startBattleBtn" disabled>
+                    <button class="start-battle-btn" id="startBattleModeBtn" disabled>
                         ⚔️ Start Battle!
                     </button>
                 </div>
@@ -4216,6 +4516,7 @@
         ];
 
         let caughtPokemon = JSON.parse(localStorage.getItem('caughtPokemon')) || {};
+        let injuredPokemon = JSON.parse(localStorage.getItem('injuredPokemon')) || []; // Track injured Pokemon
         let currentPokemon = null;
         let currentAnswer = 0;
         let isMuted = JSON.parse(localStorage.getItem('isMuted')) || false;
@@ -4236,7 +4537,9 @@
             hunt: '06 Pallet Town Theme.mp3',
             battle: '03 ~Opening~.mp3',
             pokedex: '03 ~Opening~.mp3',
-            catchFanfare: '14 Fanfare Item Get 1.mp3'
+            pokecenter: '06 Pallet Town Theme.mp3',
+            catchFanfare: '14 Fanfare Item Get 1.mp3',
+            recovery: '23 Pokemon Recovery.mp3'
         };
         
         // ===== POKEBALL CATCH ANIMATION =====
@@ -4917,9 +5220,17 @@
                     if (!isMuted) {
                         playBackgroundMusic('hunt');
                     }
+                } else if (page === 'pokecenter') {
+                    document.getElementById('pokecenterPage').classList.add('active');
+                    document.querySelectorAll('.nav-btn')[2].classList.add('active');
+                    initializePokecenter(); // Show injured Pokemon
+                    // Play pokecenter music (Pallet Town)
+                    if (!isMuted) {
+                        playBackgroundMusic('pokecenter');
+                    }
                 } else if (page === 'battle') {
                     document.getElementById('battlePage').classList.add('active');
-                    document.querySelectorAll('.nav-btn')[2].classList.add('active');
+                    document.querySelectorAll('.nav-btn')[3].classList.add('active');
                     initializeBattleMode(); // Initialize battle mode
                     // Play battle music (Opening theme)
                     if (!isMuted) {
@@ -4927,7 +5238,7 @@
                     }
                 } else if (page === 'pokedex') {
                     document.getElementById('pokedexPage').classList.add('active');
-                    document.querySelectorAll('.nav-btn')[3].classList.add('active');
+                    document.querySelectorAll('.nav-btn')[4].classList.add('active');
                     initializeGrid(); // Refresh the grid when viewing
                     // Play pokedex music (Opening theme)
                     if (!isMuted) {
@@ -4997,6 +5308,194 @@
                     decoration.style.top = topPos + '%';
                 }
             });
+        }
+
+        // ===== POKÉMON CENTER FUNCTIONS =====
+        let selectedForHealing = [];
+
+        function initializePokecenter() {
+            selectedForHealing = [];
+            updateInjuredPokemonList();
+            resetHealingMachine();
+            updateNurseMessage("Welcome to the Pokémon Center! Would you like me to heal your Pokémon?");
+        }
+
+        function updateInjuredPokemonList() {
+            const list = document.getElementById('injuredPokemonList');
+            
+            if (injuredPokemon.length === 0) {
+                list.innerHTML = '<div class="no-injured-message">All your Pokémon are healthy! 💚</div>';
+                document.getElementById('startHealingBtn').disabled = true;
+                return;
+            }
+            
+            list.innerHTML = injuredPokemon.map((pokemonName, index) => {
+                const pokemonIndex = pokemon.indexOf(pokemonName);
+                const pokemonId = pokemonIndex + 1;
+                
+                return `
+                    <div class="injured-pokemon-item" onclick="togglePokemonSelection('${pokemonName}')">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${pokemonId}.gif" 
+                             alt="${pokemonName}" 
+                             class="injured-pokemon-sprite"
+                             onerror="this.src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId}.png'">
+                        <div class="injured-pokemon-info">
+                            <div class="injured-pokemon-name">${pokemonName}</div>
+                            <div class="injured-status">❤️‍🩹 Fainted</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function togglePokemonSelection(pokemonName) {
+            const index = selectedForHealing.indexOf(pokemonName);
+            
+            if (index > -1) {
+                // Deselect
+                selectedForHealing.splice(index, 1);
+            } else {
+                // Select (max 3)
+                if (selectedForHealing.length < 3) {
+                    selectedForHealing.push(pokemonName);
+                } else {
+                    updateNurseMessage("You can only heal 3 Pokémon at a time!");
+                    return;
+                }
+            }
+            
+            updateSelectionUI();
+        }
+
+        function updateSelectionUI() {
+            // Update visual selection
+            document.querySelectorAll('.injured-pokemon-item').forEach(item => {
+                const pokemonName = item.querySelector('.injured-pokemon-name').textContent;
+                if (selectedForHealing.includes(pokemonName)) {
+                    item.classList.add('selected');
+                } else {
+                    item.classList.remove('selected');
+                }
+            });
+            
+            // Enable/disable heal button
+            document.getElementById('startHealingBtn').disabled = selectedForHealing.length === 0;
+            
+            // Update message
+            if (selectedForHealing.length > 0) {
+                updateNurseMessage(`${selectedForHealing.length} Pokémon selected. Ready to heal!`);
+            } else {
+                updateNurseMessage("Please select Pokémon to heal (up to 3).");
+            }
+        }
+
+        function startHealing() {
+            if (selectedForHealing.length === 0) return;
+            
+            // Disable button during healing
+            document.getElementById('startHealingBtn').disabled = true;
+            
+            // Update message
+            updateNurseMessage("Okay! I'll heal your Pokémon. Just a moment...");
+            
+            // Place pokeballs on machine
+            selectedForHealing.forEach((pokemon, index) => {
+                setTimeout(() => {
+                    const slot = document.getElementById(`slot${index + 1}`);
+                    slot.classList.add('filled');
+                }, index * 300);
+            });
+            
+            // Start healing animation after all pokeballs are placed
+            setTimeout(() => {
+                performHealing();
+            }, selectedForHealing.length * 300 + 500);
+        }
+
+        function performHealing() {
+            // Start blinking animation
+            document.querySelectorAll('.pokeball-slot.filled').forEach(slot => {
+                slot.classList.add('healing');
+            });
+            
+            // Pulsing display light
+            document.querySelector('.display-light').classList.add('healing');
+            document.getElementById('healingStatus').textContent = 'Healing...';
+            
+            // Play recovery sound
+            playRecoverySound();
+            
+            // Healing takes 6 seconds (recovery sound duration)
+            setTimeout(() => {
+                completeHealing();
+            }, 6000);
+        }
+
+        function completeHealing() {
+            // Stop animations
+            document.querySelectorAll('.pokeball-slot').forEach(slot => {
+                slot.classList.remove('healing');
+            });
+            document.querySelector('.display-light').classList.remove('healing');
+            document.getElementById('healingStatus').textContent = 'Complete!';
+            
+            // Remove from injured list
+            selectedForHealing.forEach(pokemonName => {
+                const index = injuredPokemon.indexOf(pokemonName);
+                if (index > -1) {
+                    injuredPokemon.splice(index, 1);
+                }
+            });
+            
+            // Save to localStorage
+            localStorage.setItem('injuredPokemon', JSON.stringify(injuredPokemon));
+            
+            // Update message
+            updateNurseMessage("Your Pokémon are now fully healed! We hope to see you again! 💚");
+            
+            // Reset after 2 seconds
+            setTimeout(() => {
+                selectedForHealing = [];
+                resetHealingMachine();
+                updateInjuredPokemonList();
+                
+                if (injuredPokemon.length > 0) {
+                    updateNurseMessage("Would you like to heal more Pokémon?");
+                }
+            }, 2000);
+        }
+
+        function resetHealingMachine() {
+            document.querySelectorAll('.pokeball-slot').forEach(slot => {
+                slot.classList.remove('filled', 'healing');
+            });
+            document.querySelector('.display-light').classList.remove('healing');
+            document.getElementById('healingStatus').textContent = 'Ready';
+        }
+
+        function updateNurseMessage(message) {
+            document.getElementById('nurseText').textContent = message;
+        }
+
+        function playRecoverySound() {
+            if (isMuted) return;
+            
+            const audio = new Audio(musicTracks.recovery);
+            audio.volume = 0.5;
+            audio.play().catch(err => console.log('Could not play recovery sound:', err));
+        }
+
+        // Mark Pokemon as injured after battle loss
+        function markPokemonAsInjured(pokemonName) {
+            if (!injuredPokemon.includes(pokemonName)) {
+                injuredPokemon.push(pokemonName);
+                localStorage.setItem('injuredPokemon', JSON.stringify(injuredPokemon));
+            }
+        }
+
+        // Check if Pokemon can battle
+        function canPokemonBattle(pokemonName) {
+            return !injuredPokemon.includes(pokemonName);
         }
 
         // Bush selection - ALWAYS show math problem
@@ -5191,11 +5690,17 @@
             operationMode = mode;
             localStorage.setItem('operationMode', mode);
             
-            // Update button states
-            document.querySelectorAll('.operation-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.querySelector(`[data-operation="${mode}"]`).classList.add('active');
+            // Update button states (only if operation buttons exist)
+            const operationButtons = document.querySelectorAll('.operation-btn');
+            if (operationButtons.length > 0) {
+                operationButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                const targetBtn = document.querySelector(`[data-operation="${mode}"]`);
+                if (targetBtn) {
+                    targetBtn.classList.add('active');
+                }
+            }
         }
 
         // Toggle mute on/off
@@ -5548,22 +6053,44 @@
                 const number = index + 1;
                 if (caughtPokemon[number]) {
                     const card = document.createElement('div');
-                    card.className = 'selectable-pokemon';
+                    const isInjured = !canPokemonBattle(name);
+                    
+                    card.className = `selectable-pokemon ${isInjured ? 'injured' : ''}`;
                     card.id = `select-${number}`;
-                    card.onclick = () => toggleTeamSelection(number, name);
+                    
+                    if (!isInjured) {
+                        card.onclick = () => toggleTeamSelection(number, name);
+                    } else {
+                        card.title = `${name} is injured! Visit the Pokémon Center to heal.`;
+                    }
                     
                     const sprite = document.createElement('img');
                     sprite.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${number}.gif`;
                     sprite.style.width = '60px';
                     sprite.style.height = '60px';
+                    if (isInjured) {
+                        sprite.style.filter = 'grayscale(1) brightness(0.6)';
+                    }
                     
                     const nameEl = document.createElement('div');
                     nameEl.style.fontSize = '0.8em';
                     nameEl.style.marginTop = '5px';
                     nameEl.textContent = name;
                     
-                    card.appendChild(sprite);
-                    card.appendChild(nameEl);
+                    if (isInjured) {
+                        const statusEl = document.createElement('div');
+                        statusEl.style.fontSize = '0.7em';
+                        statusEl.style.color = '#EF5350';
+                        statusEl.style.fontWeight = '600';
+                        statusEl.textContent = '❤️‍🩹 Fainted';
+                        card.appendChild(sprite);
+                        card.appendChild(nameEl);
+                        card.appendChild(statusEl);
+                    } else {
+                        card.appendChild(sprite);
+                        card.appendChild(nameEl);
+                    }
+                    
                     container.appendChild(card);
                 }
             });
@@ -5613,7 +6140,7 @@
                 container.appendChild(slot);
             }
             
-            const startBtn = document.getElementById('startBattleBtn');
+            const startBtn = document.getElementById('startBattleModeBtn');
             if (selectedTeam.length === 3) {
                 startBtn.disabled = false;
             } else {
@@ -5917,6 +6444,9 @@
         function playerPokemonFainted() {
             const playerPokemon = currentBattle.playerTeam[currentBattle.playerIndex];
             playerPokemon.fainted = true;
+            
+            // Mark Pokemon as injured (needs healing)
+            markPokemonAsInjured(playerPokemon.name);
             
             document.getElementById('playerSprite').classList.add('fainted');
             addBattleLog(`${playerPokemon.name} fainted!`, 'damage');
@@ -6496,6 +7026,16 @@
                     checkAnswer();
                 }
             });
+            
+            // Menu button event listeners
+            document.getElementById('startGameBtn').addEventListener('click', startGame);
+            document.getElementById('startBattleBtn').addEventListener('click', startBattleFromMenu);
+            document.getElementById('openSettingsBtn').addEventListener('click', openSettings);
+            document.getElementById('openBadgesBtn').addEventListener('click', openBadgeModal);
+            document.getElementById('resetGameBtn').addEventListener('click', showFullResetConfirmation);
+            
+            // Battle mode start button
+            document.getElementById('startBattleModeBtn').addEventListener('click', startBattleMode);
             
             updateMuteButton(); // Initialize mute button state
             setOperation(operationMode); // Initialize operation mode button state
