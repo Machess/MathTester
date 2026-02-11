@@ -901,6 +901,793 @@
             display: none;
         }
 
+        /* ===== GYM CHALLENGE STYLES ===== */
+        
+        /* Gym Map */
+        .gym-map-title {
+            font-size: 3em;
+            font-weight: 800;
+            color: white;
+            text-align: center;
+            margin-bottom: var(--spacing-md);
+            text-shadow: 0 4px 16px rgba(0,0,0,0.4);
+        }
+
+        .gym-map-subtitle {
+            text-align: center;
+            color: white;
+            font-size: 1.2em;
+            margin-bottom: var(--spacing-xl);
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        .gym-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-lg);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-lg);
+        }
+
+        .gym-card {
+            background: var(--gradient-card);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-lg);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: var(--shadow-md);
+            border: 3px solid;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gym-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+        }
+
+        .gym-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .gym-card.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+            filter: grayscale(0.7);
+        }
+
+        .gym-card.locked:hover {
+            transform: none;
+        }
+
+        .gym-card.completed {
+            background: linear-gradient(135deg, #FFF9C4 0%, #F0F4C3 100%);
+        }
+
+        .gym-icon {
+            font-size: 4em;
+            text-align: center;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .gym-name {
+            font-size: 1.5em;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: var(--spacing-xs);
+            color: var(--text-dark);
+        }
+
+        .gym-leader {
+            text-align: center;
+            color: var(--text-medium);
+            font-size: 1.1em;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .gym-table-info {
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.2em;
+            color: var(--primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .gym-badge-display {
+            text-align: center;
+            padding: var(--spacing-sm);
+            background: rgba(255, 203, 5, 0.2);
+            border-radius: var(--radius-md);
+            margin-top: var(--spacing-sm);
+            font-weight: 600;
+        }
+
+        .gym-status {
+            text-align: center;
+            padding: var(--spacing-xs);
+            border-radius: var(--radius-sm);
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-top: var(--spacing-sm);
+        }
+
+        .gym-status.unlocked {
+            background: #C8E6C9;
+            color: #2E7D32;
+        }
+
+        .gym-status.locked {
+            background: #FFCDD2;
+            color: #C62828;
+        }
+
+        .gym-status.completed {
+            background: #FFE082;
+            color: #F57F17;
+        }
+
+        /* Gym Entrance */
+        .back-to-map-btn {
+            background: var(--gradient-blue);
+            color: white;
+            border: none;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: var(--spacing-lg);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s;
+        }
+
+        .back-to-map-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .gym-entrance-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: var(--spacing-xl);
+        }
+
+        .gym-entrance-banner {
+            text-align: center;
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-xl);
+            margin-bottom: var(--spacing-xl);
+            box-shadow: var(--shadow-lg);
+            border: 4px solid;
+        }
+
+        .gym-entrance-icon {
+            font-size: 5em;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .gym-leader-sprite-container {
+            margin: var(--spacing-md) auto;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-lg);
+            background: rgba(0,0,0,0.3);
+            border: 3px solid rgba(255,255,255,0.5);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .gym-leader-sprite-img {
+            max-width: 90px;
+            max-height: 90px;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .gym-entrance-name {
+            font-size: 2.5em;
+            font-weight: 800;
+            margin-bottom: var(--spacing-sm);
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .gym-leader-intro {
+            font-size: 1.3em;
+            color: white;
+            margin-bottom: var(--spacing-md);
+            font-weight: 600;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        .gym-dialogue {
+            background: rgba(0,0,0,0.2);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            color: white;
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: var(--spacing-lg);
+            border-left: 4px solid white;
+        }
+
+        .gym-team-selection {
+            background: white;
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .team-selection-title {
+            font-size: 1.5em;
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+            color: var(--text-dark);
+        }
+
+        .gym-pokemon-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .gym-pokemon-slot {
+            background: var(--bg-light);
+            border: 2px solid var(--primary);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-sm);
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .gym-pokemon-slot:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--secondary);
+        }
+
+        .gym-pokemon-slot.selected {
+            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+            border-color: var(--success);
+            border-width: 3px;
+        }
+
+        .gym-pokemon-slot.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .gym-selected-team {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            margin-bottom: var(--spacing-lg);
+            padding: var(--spacing-md);
+            background: var(--bg-light);
+            border-radius: var(--radius-md);
+        }
+
+        .selected-pokemon-display {
+            width: 80px;
+            text-align: center;
+        }
+
+        .start-training-btn,
+        .start-battle-btn {
+            width: 100%;
+            background: var(--gradient-yellow);
+            color: var(--text-dark);
+            border: none;
+            padding: var(--spacing-md) var(--spacing-xl);
+            border-radius: var(--radius-lg);
+            font-size: 1.3em;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s;
+        }
+
+        .start-training-btn:hover,
+        .start-battle-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .start-training-btn:disabled,
+        .start-battle-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Gym Battle & Training Screens */
+        .gym-battle-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: var(--spacing-xl);
+        }
+
+        .gym-battle-header {
+            text-align: center;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .gym-battle-header h2 {
+            font-size: 2.5em;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .training-progress {
+            font-size: 1.3em;
+            color: white;
+            font-weight: 600;
+            margin-top: var(--spacing-sm);
+            text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        /* Battle Arena with Sprites */
+        .gym-battle-arena {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+            align-items: center;
+        }
+
+        .gym-battle-side {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .gym-pokemon-display {
+            min-height: 150px;
+            display: flex;
+            gap: var(--spacing-sm);
+            justify-content: center;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .gym-pokemon-sprite {
+            width: 96px;
+            height: 96px;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+        }
+
+        .gym-leader-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .gym-leader-battle-sprite {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-md);
+            background: rgba(0,0,0,0.3);
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .gym-leader-battle-sprite img {
+            max-width: 90px;
+            max-height: 90px;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .gym-vs-divider {
+            font-size: 3em;
+            font-weight: 900;
+            color: white;
+            text-shadow: 
+                3px 3px 0 #000,
+                -3px -3px 0 #000,
+                3px -3px 0 #000,
+                -3px 3px 0 #000,
+                0 4px 12px rgba(0,0,0,0.5);
+            padding: var(--spacing-lg);
+        }
+
+        .gym-health-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        /* Gym Battle Arena with Pokémon */
+        .gym-battle-arena {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: var(--spacing-lg);
+            align-items: center;
+            margin-bottom: var(--spacing-xl);
+            padding: var(--spacing-lg);
+            background: rgba(255,255,255,0.1);
+            border-radius: var(--radius-xl);
+        }
+
+        .gym-battle-side {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .gym-pokemon-display {
+            display: flex;
+            gap: var(--spacing-sm);
+            justify-content: center;
+            flex-wrap: wrap;
+            min-height: 100px;
+        }
+
+        .gym-pokemon-sprite {
+            width: 80px;
+            height: 80px;
+            image-rendering: pixelated;
+            transition: all 0.3s;
+        }
+
+        .gym-pokemon-sprite.fainted {
+            opacity: 0.3;
+            filter: grayscale(1);
+        }
+
+        .gym-vs-divider {
+            font-size: 3em;
+            font-weight: 800;
+            color: white;
+            text-shadow: 
+                3px 3px 0 rgba(0,0,0,0.3),
+                0 0 20px rgba(255,203,5,0.8);
+            animation: pulse-vs 2s infinite;
+        }
+
+        @keyframes pulse-vs {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .leader-side .gym-pokemon-display {
+            order: -1; /* Sprites above health bar for leader */
+        }
+
+        .player-side .gym-pokemon-display {
+            order: 1; /* Sprites below health bar for player */
+        }
+
+        .gym-health-bar {
+            background: white;
+            padding: var(--spacing-md);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .health-label {
+            font-size: 1.2em;
+            font-weight: 700;
+            margin-bottom: var(--spacing-xs);
+            color: var(--text-dark);
+        }
+
+        .health-bar-outer {
+            width: 100%;
+            height: 30px;
+            background: #E0E0E0;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            margin-bottom: var(--spacing-xs);
+            border: 2px solid #9E9E9E;
+        }
+
+        .health-bar-inner {
+            height: 100%;
+            transition: width 0.5s ease-out, background-color 0.3s;
+            border-radius: var(--radius-sm);
+        }
+
+        .player-health {
+            background: linear-gradient(90deg, #66BB6A 0%, #4CAF50 100%);
+        }
+
+        .leader-health {
+            background: linear-gradient(90deg, #EF5350 0%, #F44336 100%);
+        }
+
+        .health-bar-inner.low {
+            background: linear-gradient(90deg, #FFB74D 0%, #FF9800 100%);
+        }
+
+        .health-bar-inner.critical {
+            background: linear-gradient(90deg, #E57373 0%, #F44336 100%);
+            animation: pulse-health 0.5s infinite;
+        }
+
+        @keyframes pulse-health {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .health-text {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: var(--spacing-xs);
+            text-align: center;
+        }
+
+        .gym-question-area {
+            background: white;
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .question-display {
+            font-size: 3em;
+            font-weight: 800;
+            text-align: center;
+            color: var(--primary);
+            margin-bottom: var(--spacing-lg);
+            padding: var(--spacing-lg);
+            background: var(--bg-light);
+            border-radius: var(--radius-lg);
+        }
+
+        .gym-answer-input {
+            width: 100%;
+            padding: var(--spacing-md);
+            font-size: 1.5em;
+            text-align: center;
+            border: 3px solid var(--primary);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--spacing-md);
+            font-weight: 600;
+        }
+
+        .gym-answer-input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 4px rgba(255, 203, 5, 0.2);
+        }
+
+        .gym-submit-btn {
+            width: 100%;
+            background: var(--gradient-blue);
+            color: white;
+            border: none;
+            padding: var(--spacing-md);
+            font-size: 1.5em;
+            font-weight: 700;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s;
+        }
+
+        .gym-submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .gym-submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .gym-feedback {
+            margin-top: var(--spacing-md);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: 600;
+            display: none;
+        }
+
+        .gym-feedback.correct {
+            background: #C8E6C9;
+            color: #2E7D32;
+            display: block;
+            animation: slideIn 0.3s;
+        }
+
+        .gym-feedback.incorrect {
+            background: #FFCDD2;
+            color: #C62828;
+            display: block;
+            animation: shake 0.5s;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        @keyframes shake-damage {
+            0%, 100% { transform: translateX(0) scale(1); }
+            10% { transform: translateX(-8px) scale(1.05); }
+            20% { transform: translateX(8px) scale(1.05); }
+            30% { transform: translateX(-8px) scale(1.05); }
+            40% { transform: translateX(8px) scale(1.05); }
+            50% { transform: translateX(0) scale(1); }
+        }
+
+        .battle-log {
+            background: rgba(0,0,0,0.1);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 0.95em;
+        }
+
+        .battle-log-entry {
+            padding: var(--spacing-xs);
+            margin-bottom: var(--spacing-xs);
+            border-radius: var(--radius-sm);
+            animation: fadeIn 0.3s;
+        }
+
+        .log-damage {
+            background: #FFCDD2;
+            color: #C62828;
+        }
+
+        .log-heal {
+            background: #C8E6C9;
+            color: #2E7D32;
+        }
+
+        /* Victory & Defeat Screens */
+        .gym-victory-container,
+        .gym-defeat-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: var(--spacing-xl);
+            text-align: center;
+        }
+
+        .victory-title {
+            font-size: 3.5em;
+            font-weight: 800;
+            color: var(--secondary);
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            margin-bottom: var(--spacing-lg);
+            animation: bounceIn 0.6s;
+        }
+
+        .gym-leader-victory-sprite {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-lg);
+            background: rgba(0,0,0,0.3);
+            border: 3px solid var(--secondary);
+            box-shadow: 0 0 20px rgba(255,203,5,0.5);
+        }
+
+        .gym-leader-victory-sprite img {
+            max-width: 110px;
+            max-height: 110px;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.4));
+        }
+
+        .defeat-title {
+            font-size: 3em;
+            font-weight: 800;
+            color: white;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .badge-earned {
+            font-size: 6em;
+            margin: var(--spacing-xl) 0;
+            animation: rotate3d 1s ease-out;
+        }
+
+        @keyframes rotate3d {
+            from { transform: rotateY(0deg) scale(0.5); opacity: 0; }
+            to { transform: rotateY(720deg) scale(1); opacity: 1; }
+        }
+
+        .victory-message,
+        .defeat-message {
+            background: white;
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--spacing-lg);
+            font-size: 1.3em;
+            color: var(--text-dark);
+            box-shadow: var(--shadow-md);
+            line-height: 1.6;
+        }
+
+        .unlock-message {
+            background: linear-gradient(135deg, #FFE082 0%, #FFD54F 100%);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--spacing-lg);
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text-dark);
+            box-shadow: var(--shadow-md);
+            border: 3px solid var(--secondary-dark);
+        }
+
+        .return-to-map-btn,
+        .retry-gym-btn {
+            padding: var(--spacing-md) var(--spacing-xl);
+            font-size: 1.3em;
+            font-weight: 700;
+            border-radius: var(--radius-lg);
+            border: none;
+            cursor: pointer;
+            box-shadow: var(--shadow-md);
+            transition: all 0.3s;
+            margin: var(--spacing-sm);
+        }
+
+        .return-to-map-btn {
+            background: var(--gradient-blue);
+            color: white;
+        }
+
+        .retry-gym-btn {
+            background: var(--gradient-yellow);
+            color: var(--text-dark);
+        }
+
+        .return-to-map-btn:hover,
+        .retry-gym-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+        }
+
         /* ===== POKÉMON CENTER STYLES ===== */
         .pokecenter-screen {
             min-height: 100vh;
@@ -1057,6 +1844,50 @@
             max-height: 400px;
             overflow-y: auto;
             margin-bottom: var(--spacing-md);
+        }
+
+        .pokecenter-locked-message {
+            text-align: center;
+            padding: var(--spacing-xl);
+            background: linear-gradient(135deg, #FFCDD2 0%, #EF9A9A 100%);
+            border-radius: var(--radius-lg);
+            border: 3px solid #C62828;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .pokecenter-locked-message .lock-icon {
+            font-size: 4em;
+            margin-bottom: var(--spacing-md);
+            animation: shake 0.5s infinite;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-10deg); }
+            75% { transform: rotate(10deg); }
+        }
+
+        .pokecenter-locked-message h3 {
+            font-size: 1.8em;
+            font-weight: 700;
+            color: #C62828;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .pokecenter-locked-message p {
+            font-size: 1.1em;
+            color: var(--text-dark);
+            margin-bottom: var(--spacing-sm);
+            line-height: 1.6;
+        }
+
+        .unlock-hint {
+            background: rgba(255,255,255,0.5);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            color: #1976D2;
+            margin-top: var(--spacing-md);
         }
 
         .injured-pokemon-item {
@@ -3194,6 +4025,28 @@
             filter: grayscale(0.8) brightness(0.7);
         }
 
+        .pokemon-card.locked-legendary {
+            background: linear-gradient(135deg, #1A237E 0%, #283593 100%);
+            border: 3px solid #FFD700;
+            opacity: 1;
+            position: relative;
+            animation: pulse-legendary 2s infinite;
+        }
+
+        @keyframes pulse-legendary {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+        }
+
+        .pokemon-card.locked-legendary .pokemon-name {
+            color: #FFD700;
+            font-weight: 700;
+        }
+
+        .pokemon-card.locked-legendary .pokemon-number {
+            color: #FFF9C4;
+        }
+
         .pokemon-sprite {
             width: 70px;
             height: 70px;
@@ -3548,6 +4401,93 @@
 
         .confirm-btn.confirm:hover {
             background: #dc2626;
+        }
+
+        /* Reset Options Menu */
+        .reset-menu-content {
+            max-width: 900px;
+            width: 95%;
+        }
+
+        .reset-menu-content h2 {
+            color: var(--primary);
+        }
+
+        .reset-options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .reset-option-card {
+            background: var(--gradient-card);
+            border: 3px solid var(--primary);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .reset-option-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .reset-option-card.danger {
+            background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%);
+            border-color: #EF5350;
+        }
+
+        .reset-icon {
+            font-size: 3em;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .reset-option-card h3 {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .reset-option-card p {
+            font-size: 0.95em;
+            color: var(--text-medium);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .reset-count {
+            font-size: 0.85em;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .reset-option-btn {
+            width: 100%;
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: var(--gradient-blue);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .reset-option-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .reset-option-btn.danger {
+            background: linear-gradient(135deg, #EF5350 0%, #E53935 100%);
+        }
+
+        .reset-option-btn.danger:hover {
+            background: linear-gradient(135deg, #E53935 0%, #D32F2F 100%);
         }
 
         /* Mobile Responsive Styles */
@@ -4036,6 +4976,7 @@
             <img src="logo.png" alt="Pokémon" style="max-width: 500px; width: 90%; height: auto; margin-bottom: 50px; display: block; margin-left: auto; margin-right: auto; background: transparent;">
             <div class="start-buttons">
                 <button class="start-btn" id="startGameBtn">▶ Start Game</button>
+                <button class="start-btn" id="gymChallengeBtn" style="background: linear-gradient(135deg, #FFD93D 0%, #FFCB05 100%);">🏛️ Gym Challenge</button>
                 <button class="start-btn" id="startBattleBtn" style="background: linear-gradient(135deg, #FF6B6B 0%, #EE1515 100%);">⚔️ Battle Mode</button>
                 <button class="settings-btn" id="openSettingsBtn">⚙ Settings</button>
                 <button class="badges-button" style="margin-top: 20px;" id="openBadgesBtn">
@@ -4044,7 +4985,124 @@
                         <span class="badge-count" id="badge-count-menu">0</span>
                     </div>
                 </button>
-                <button class="reset-game-btn start-btn" id="resetGameBtn">🔄 Reset All Progress</button>
+                <button class="reset-game-btn start-btn" id="resetGameBtn">🔄 Reset Options</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GYM CHALLENGE PAGE -->
+    <div class="page" id="gymPage">
+        <div class="page-content">
+            <!-- Gym Map View -->
+            <div id="gymMapView">
+                <h1 class="gym-map-title">🏛️ Gym Challenge 🏛️</h1>
+                <p class="gym-map-subtitle">Master the multiplication tables and earn all 9 badges!</p>
+                
+                <div class="gym-grid" id="gymGrid">
+                    <!-- Gyms will be populated here -->
+                </div>
+            </div>
+
+            <!-- Gym Entrance View -->
+            <div id="gymEntranceView" style="display: none;">
+                <div class="gym-entrance-container">
+                    <button class="back-to-map-btn" onclick="backToGymMap()">← Back to Gym Map</button>
+                    
+                    <div class="gym-entrance-content" id="gymEntranceContent">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gym Training View -->
+            <div id="gymTrainingView" style="display: none;">
+                <div class="gym-battle-container">
+                    <div class="gym-battle-header">
+                        <h2 id="gymTrainingTitle">Gym Training</h2>
+                        <div class="training-progress" id="trainingProgress">Question 1 / 11</div>
+                    </div>
+
+                    <div class="gym-question-area">
+                        <div class="question-display" id="gymQuestion">2 × 2 = ?</div>
+                        <input type="number" id="gymAnswerInput" class="gym-answer-input" placeholder="Your answer">
+                        <button class="gym-submit-btn" onclick="checkGymAnswer()">Submit Answer</button>
+                        <div class="gym-feedback" id="gymFeedback"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gym Leader Battle View -->
+            <div id="gymBattleView" style="display: none;">
+                <div class="gym-battle-container">
+                    <div class="gym-battle-header">
+                        <h2 id="gymBattleTitle">Gym Leader Battle!</h2>
+                    </div>
+
+                    <!-- Battle Arena with Pokémon Sprites -->
+                    <div class="gym-battle-arena">
+                        <!-- Player Side -->
+                        <div class="gym-battle-side player-side">
+                            <div class="gym-pokemon-display" id="gymPlayerPokemon">
+                                <!-- Will be populated with player's team -->
+                            </div>
+                            <div class="gym-health-bar">
+                                <div class="health-label">Your Team</div>
+                                <div class="health-text"><span id="playerHP">100</span> / 100 HP</div>
+                                <div class="health-bar-outer">
+                                    <div class="health-bar-inner player-health" id="playerHealthBar" style="width: 100%"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VS Divider -->
+                        <div class="gym-vs-divider">VS</div>
+
+                        <!-- Leader Side -->
+                        <div class="gym-battle-side leader-side">
+                            <div class="gym-pokemon-display" id="gymLeaderPokemon">
+                                <!-- Will be populated with leader's Pokémon -->
+                            </div>
+                            <div class="gym-health-bar">
+                                <div class="health-label" id="leaderName">Gym Leader</div>
+                                <div class="health-text"><span id="leaderHP">100</span> / 100 HP</div>
+                                <div class="health-bar-outer">
+                                    <div class="health-bar-inner leader-health" id="leaderHealthBar" style="width: 100%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="gym-question-area">
+                        <div class="question-display" id="gymBattleQuestion">2 × 2 = ?</div>
+                        <input type="number" id="gymBattleInput" class="gym-answer-input" placeholder="Your answer">
+                        <button class="gym-submit-btn" onclick="checkBattleAnswer()">Attack!</button>
+                        <div class="gym-feedback" id="gymBattleFeedback"></div>
+                    </div>
+
+                    <div class="battle-log" id="battleLog"></div>
+                </div>
+            </div>
+
+            <!-- Victory Screen -->
+            <div id="gymVictoryView" style="display: none;">
+                <div class="gym-victory-container">
+                    <h1 class="victory-title">🎉 VICTORY! 🎉</h1>
+                    <div class="gym-leader-victory-sprite" id="gymLeaderVictorySprite"></div>
+                    <div class="badge-earned" id="badgeEarned"></div>
+                    <div class="victory-message" id="victoryMessage"></div>
+                    <div class="unlock-message" id="unlockMessage"></div>
+                    <button class="return-to-map-btn" onclick="returnToGymMap()">Return to Gym Map</button>
+                </div>
+            </div>
+
+            <!-- Defeat Screen -->
+            <div id="gymDefeatView" style="display: none;">
+                <div class="gym-defeat-container">
+                    <h1 class="defeat-title">😢 Defeated... 😢</h1>
+                    <div class="defeat-message" id="defeatMessage"></div>
+                    <button class="retry-gym-btn" onclick="retryGym()">Try Again</button>
+                    <button class="return-to-map-btn" onclick="returnToGymMap()">Return to Gym Map</button>
+                </div>
             </div>
         </div>
     </div>
@@ -4376,20 +5434,49 @@
 
     <!-- Full Game Reset Confirmation Modal -->
     <div class="confirm-modal" id="fullResetModal">
-        <div class="confirm-content">
-            <h2>⚠️ RESET EVERYTHING?</h2>
-            <p style="color: #ef4444; font-weight: bold;">This will delete ALL your progress including:</p>
-            <ul style="text-align: left; margin: 20px 40px; color: #666;">
-                <li>All <strong><span id="fullResetCount">0</span> caught Pokémon</strong></li>
-                <li>All <strong><span id="fullResetBadges">0</span> unlocked badges</strong></li>
-                <li>All stats and streak records</li>
-                <li>Settings will be reset to defaults</li>
-            </ul>
-            <p><strong>THIS CANNOT BE UNDONE!</strong></p>
-            <div class="confirm-buttons">
-                <button class="confirm-btn cancel" onclick="closeFullResetConfirmation()">Cancel</button>
-                <button class="confirm-btn confirm" onclick="confirmFullReset()">Delete Everything</button>
+        <div class="confirm-content reset-menu-content">
+            <h2>🔄 Reset Options</h2>
+            <p style="color: #666; margin-bottom: 30px;">Choose what you'd like to reset:</p>
+            
+            <div class="reset-options-grid">
+                <!-- Reset Pokémon -->
+                <div class="reset-option-card">
+                    <div class="reset-icon">📕</div>
+                    <h3>Reset Pokédex</h3>
+                    <p>Clear all caught Pokémon</p>
+                    <p class="reset-count">(<span id="resetPokedexCount">0</span> Pokémon)</p>
+                    <button class="reset-option-btn" onclick="resetPokedex()">Reset Pokédex</button>
+                </div>
+
+                <!-- Reset Badges -->
+                <div class="reset-option-card">
+                    <div class="reset-icon">🏆</div>
+                    <h3>Reset Badges</h3>
+                    <p>Clear all achievement badges</p>
+                    <p class="reset-count">(<span id="resetBadgesCount">0</span> badges)</p>
+                    <button class="reset-option-btn" onclick="resetBadges()">Reset Badges</button>
+                </div>
+
+                <!-- Reset Gyms -->
+                <div class="reset-option-card">
+                    <div class="reset-icon">🏛️</div>
+                    <h3>Reset Gyms</h3>
+                    <p>Reset all gym progress & unlocks</p>
+                    <p class="reset-count">(<span id="resetGymsCount">0</span> gyms beaten)</p>
+                    <button class="reset-option-btn" onclick="resetGyms()">Reset Gyms</button>
+                </div>
+
+                <!-- Full Reset -->
+                <div class="reset-option-card danger">
+                    <div class="reset-icon">⚠️</div>
+                    <h3>Full Reset</h3>
+                    <p>Delete EVERYTHING</p>
+                    <p class="reset-count">All progress lost!</p>
+                    <button class="reset-option-btn danger" onclick="confirmFullReset()">Full Reset</button>
+                </div>
             </div>
+
+            <button class="confirm-btn cancel" onclick="closeFullResetConfirmation()" style="margin-top: 20px; width: 100%;">Close</button>
         </div>
     </div>
 
@@ -4538,8 +5625,231 @@
             battle: '03 ~Opening~.mp3',
             pokedex: '03 ~Opening~.mp3',
             pokecenter: '21 Pokemon Center.mp3',
+            gym: '25_Pokemon_Gym.mp3',
             catchFanfare: '14 Fanfare Item Get 1.mp3',
             recovery: '23 Pokemon Recovery.mp3'
+        };
+
+        // ===== GYM CHALLENGE SYSTEM =====
+        
+        // Gym definitions
+        const gyms = [
+            {
+                id: 1,
+                table: 2,
+                name: "Pewter Gym",
+                leader: "Brock",
+                type: "Rock",
+                badge: "Boulder Badge",
+                icon: "🪨",
+                color: "#8B7355",
+                darkColor: "#5C4033",
+                accentColor: "#A1887F",
+                borderColor: "#3E2723",
+                dialogue: {
+                    entry: "Welcome to Pewter Gym! I'm Brock, the Rock-solid trainer!",
+                    training: "Let's warm up! Multiply by 2 - as reliable as stone!",
+                    preBattle: "My defenses are rock-hard! Let's see if your math is twice as strong!",
+                    victory: "Your calculations crumbled my defense! Take the Boulder Badge!",
+                },
+                unlock: "healing" // Pokémon healing feature
+            },
+            {
+                id: 2,
+                table: 3,
+                name: "Celadon Gym",
+                leader: "Erika",
+                type: "Grass",
+                badge: "Rainbow Badge",
+                icon: "🌿",
+                color: "#81C784",
+                darkColor: "#66BB6A",
+                accentColor: "#AED581",
+                borderColor: "#2E7D32",
+                dialogue: {
+                    entry: "Nature's beauty requires mathematical harmony!",
+                    training: "Like leaves on a tree, multiplication by 3 grows naturally!",
+                    preBattle: "My grass Pokémon multiply faster than you think! ×3 speed ahead!",
+                    victory: "Your math bloomed beautifully! The Rainbow Badge is yours!",
+                },
+                unlock: "charmander_voice"
+            },
+            {
+                id: 3,
+                table: 4,
+                name: "Cerulean Gym",
+                leader: "Misty",
+                type: "Water",
+                badge: "Cascade Badge",
+                icon: "💧",
+                color: "#4FC3F7",
+                darkColor: "#29B6F6",
+                accentColor: "#81D4FA",
+                borderColor: "#0277BD",
+                dialogue: {
+                    entry: "I'll show you the flowing power of water!",
+                    training: "Water takes many forms - just like 4 × 1, 4 × 2, 4 × 3...",
+                    preBattle: "My calculations flow in 4 streams! Can you keep up with the tide?",
+                    victory: "You didn't drown in my math! Here's the Cascade Badge!",
+                },
+                unlock: "articuno" // Pokémon #144
+            },
+            {
+                id: 4,
+                table: 5,
+                name: "Vermilion Gym",
+                leader: "Lt. Surge",
+                type: "Electric",
+                badge: "Thunder Badge",
+                icon: "⚡",
+                color: "#FFD54F",
+                darkColor: "#FFC107",
+                accentColor: "#FFEB3B",
+                borderColor: "#F57F17",
+                dialogue: {
+                    entry: "Hey kid! Ready for a shocking challenge?",
+                    training: "Electric power multiplies by 5! ZAP! ZAP! ZAP!",
+                    preBattle: "My Pokémon strike 5 times faster! BOOM! Let's battle!",
+                    victory: "WHOA! You short-circuited my strategy! Thunder Badge earned!",
+                },
+                unlock: "zapdos" // Pokémon #145
+            },
+            {
+                id: 5,
+                table: 6,
+                name: "Fuchsia Gym",
+                leader: "Koga",
+                type: "Poison",
+                badge: "Soul Badge",
+                icon: "☠️",
+                color: "#9C27B0",
+                darkColor: "#7B1FA2",
+                accentColor: "#BA68C8",
+                borderColor: "#4A148C",
+                dialogue: {
+                    entry: "Poison spreads silently... like multiplication by 6.",
+                    training: "Each toxic drop multiplies. Master the ×6 technique!",
+                    preBattle: "My poison compounds 6-fold! Prepare for a venomous challenge!",
+                    victory: "Your mind proved immune to my tricks! Soul Badge awarded!",
+                },
+                unlock: "moltres" // Pokémon #146
+            },
+            {
+                id: 6,
+                table: 7,
+                name: "Cinnabar Gym",
+                leader: "Blaine",
+                type: "Fire",
+                badge: "Volcano Badge",
+                icon: "🔥",
+                color: "#FF6F00",
+                darkColor: "#E65100",
+                accentColor: "#FF9800",
+                borderColor: "#BF360C",
+                dialogue: {
+                    entry: "HAHA! The heat of multiplication burns at ×7!",
+                    training: "Fire spreads in 7 directions! Learn to control the blaze!",
+                    preBattle: "My flames multiply rapidly! Can you handle the ×7 inferno?",
+                    victory: "You extinguished my fire with pure math! Take the Volcano Badge!",
+                },
+                unlock: "pikachu_voice"
+            },
+            {
+                id: 7,
+                table: 8,
+                name: "Saffron Gym",
+                leader: "Sabrina",
+                type: "Psychic",
+                badge: "Marsh Badge",
+                icon: "🔮",
+                color: "#E91E63",
+                darkColor: "#C2185B",
+                accentColor: "#F48FB1",
+                borderColor: "#880E4F",
+                dialogue: {
+                    entry: "I foresaw your arrival... and your struggle with ×8.",
+                    training: "The mind works in 8 dimensions. Expand your calculations!",
+                    preBattle: "My psychic power multiplies thought itself by 8! Face your mental challenge!",
+                    victory: "Your mind was stronger than I predicted! Marsh Badge is yours!",
+                },
+                unlock: "jigglypuff_voice"
+            },
+            {
+                id: 8,
+                table: 9,
+                name: "Seafoam Gym",
+                leader: "Lorelei",
+                type: "Ice",
+                badge: "Glacier Badge",
+                icon: "❄️",
+                color: "#B3E5FC",
+                darkColor: "#81D4FA",
+                accentColor: "#E1F5FE",
+                borderColor: "#01579B",
+                dialogue: {
+                    entry: "Welcome to my frozen sanctuary of multiplication!",
+                    training: "Ice crystals form in 9-fold patterns. Study them carefully!",
+                    preBattle: "My ice Pokémon freeze time! ×9 calculations in zero degrees!",
+                    victory: "You melted my icy math! The Glacier Badge belongs to you!",
+                },
+                unlock: "mewtwo" // Pokémon #150
+            },
+            {
+                id: 9,
+                table: 10,
+                name: "Dragon's Den",
+                leader: "Lance",
+                type: "Dragon",
+                badge: "Dragon Badge",
+                icon: "🐉",
+                color: "#FFA726",
+                darkColor: "#F57C00",
+                accentColor: "#FFB74D",
+                borderColor: "#E65100",
+                dialogue: {
+                    entry: "You've come far, trainer! But dragons multiply power by 10!",
+                    training: "Master the table of 10 - the foundation of all multiplication!",
+                    preBattle: "Dragon power is legendary! My ×10 mastery is unmatched! Show me your ultimate strength!",
+                    victory: "INCREDIBLE! You've mastered the times tables! The Dragon Badge and the title of Math Champion are yours!",
+                },
+                unlock: "mew" // Pokémon #151
+            }
+        ];
+
+        // Gym progress from localStorage
+        let gymProgress = JSON.parse(localStorage.getItem('gymProgress')) || {
+            unlockedGyms: [1],
+            completedGyms: [],
+            badges: [],
+            healingUnlocked: false,
+            voicesUnlocked: {
+                charmander: false,
+                pikachu: false,
+                jigglypuff: false
+            },
+            legendariesUnlocked: {
+                articuno: false,
+                zapdos: false,
+                moltres: false,
+                mewtwo: false,
+                mew: false
+            }
+        };
+
+        // Current gym state
+        let currentGym = null;
+        let gymPhase = null; // 'training' or 'leader'
+        let gymQuestions = [];
+        let currentGymQuestion = 0;
+        let gymPlayerHP = 100;
+        let gymLeaderHP = 100;
+        let gymSelectedTeam = [];
+        
+        // Pokémon voices
+        const pokemonVoices = {
+            'Charmander': null, // Will be loaded when unlocked
+            'Pikachu': [], // Array of 3 sounds
+            'Jigglypuff': null
         };
         
         // ===== POKEBALL CATCH ANIMATION =====
@@ -5220,6 +6530,13 @@
                     if (!isMuted) {
                         playBackgroundMusic('hunt');
                     }
+                } else if (page === 'gym') {
+                    document.getElementById('gymPage').classList.add('active');
+                    initializeGymMap(); // Show gym selection
+                    // Play gym music
+                    if (!isMuted) {
+                        playBackgroundMusic('gym');
+                    }
                 } else if (page === 'pokecenter') {
                     document.getElementById('pokecenterPage').classList.add('active');
                     document.querySelectorAll('.nav-btn')[2].classList.add('active');
@@ -5314,6 +6631,26 @@
         let selectedForHealing = [];
 
         function initializePokecenter() {
+            // Check if healing is unlocked (requires beating Gym 1)
+            if (!gymProgress.healingUnlocked) {
+                const list = document.getElementById('injuredPokemonList');
+                list.innerHTML = `
+                    <div class="pokecenter-locked-message">
+                        <div class="lock-icon">🔒</div>
+                        <h3>Pokémon Center Locked</h3>
+                        <p>The healing machine is currently unavailable.</p>
+                        <p><strong>Defeat Brock at Pewter Gym</strong> to unlock the Pokémon Center!</p>
+                        <div class="unlock-hint">
+                            🏛️ Visit the Gym Challenge and beat the first gym to unlock healing.
+                        </div>
+                    </div>
+                `;
+                document.getElementById('startHealingBtn').disabled = true;
+                updateNurseMessage("I'm sorry, but the healing machine isn't working yet. Please come back after you've proven yourself at Pewter Gym!");
+                return;
+            }
+            
+            // Healing is unlocked, proceed normally
             selectedForHealing = [];
             updateInjuredPokemonList();
             resetHealingMachine();
@@ -5516,16 +6853,25 @@
             if (pokemonInBush) {
                 // Pokémon found! Pick random uncaught one
                 const uncaught = [];
-                for (let i = 1; i <= 150; i++) {
-                    if (!caughtPokemon[i]) uncaught.push(i);
+                for (let i = 1; i <= 151; i++) { // Include all 151 Pokémon (including Mew!)
+                    if (!caughtPokemon[i]) {
+                        // Check if legendary is unlocked before allowing it to spawn
+                        if (i === 144 && !gymProgress.legendariesUnlocked.articuno) continue; // Articuno - requires Gym 3
+                        if (i === 145 && !gymProgress.legendariesUnlocked.zapdos) continue;   // Zapdos - requires Gym 4
+                        if (i === 146 && !gymProgress.legendariesUnlocked.moltres) continue;  // Moltres - requires Gym 5
+                        if (i === 150 && !gymProgress.legendariesUnlocked.mewtwo) continue;   // Mewtwo - requires Gym 8
+                        if (i === 151 && !gymProgress.legendariesUnlocked.mew) continue;      // Mew - requires Gym 9
+                        
+                        uncaught.push(i);
+                    }
                 }
                 if (uncaught.length > 0) {
                     const randomIndex = Math.floor(Math.random() * uncaught.length);
                     const pokemonNumber = uncaught[randomIndex];
                     openModalWithPokemon(pokemonNumber, pokemon[pokemonNumber - 1]);
                 } else {
-                    // All caught!
-                    alert('You\'ve caught all 150 Pokémon! 🎉');
+                    // All available caught!
+                    alert('You\'ve caught all available Pokémon! 🎉\n\nBeat more gyms to unlock legendary Pokémon!');
                     navigateTo('pokedex');
                 }
             } else {
@@ -5673,13 +7019,19 @@
         // Update badge count display
         function updateBadgeCount() {
             const count = gameStats.unlockedBadges.length;
-            document.getElementById('badge-count').textContent = count;
-            document.getElementById('badge-count-menu').textContent = count;
+            const badgeCountEl = document.getElementById('badge-count');
+            const badgeCountMenuEl = document.getElementById('badge-count-menu');
+            
+            if (badgeCountEl) badgeCountEl.textContent = count;
+            if (badgeCountMenuEl) badgeCountMenuEl.textContent = count;
         }
 
         // Update streak display
         function updateStreakDisplay() {
-            document.getElementById('streak-count').textContent = gameStats.currentStreak;
+            const streakCountEl = document.getElementById('streak-count');
+            if (streakCountEl) {
+                streakCountEl.textContent = gameStats.currentStreak;
+            }
         }
 
         // Track operation type from current problem
@@ -5723,6 +7075,8 @@
         // Update mute button appearance
         function updateMuteButton() {
             const button = document.getElementById('muteButton');
+            if (!button) return; // Exit if button doesn't exist
+            
             if (isMuted) {
                 button.textContent = '🔇';
                 button.classList.add('muted');
@@ -5915,6 +7269,603 @@
             }
             
             navigateTo('battle');
+        }
+
+        // ===== GYM CHALLENGE SYSTEM FUNCTIONS =====
+        
+        // Initialize gym map
+        function initializeGymMap() {
+            // Show map view, hide others
+            document.getElementById('gymMapView').style.display = 'block';
+            document.getElementById('gymEntranceView').style.display = 'none';
+            document.getElementById('gymTrainingView').style.display = 'none';
+            document.getElementById('gymBattleView').style.display = 'none';
+            document.getElementById('gymVictoryView').style.display = 'none';
+            document.getElementById('gymDefeatView').style.display = 'none';
+            
+            renderGymGrid();
+        }
+
+        // Render gym selection grid
+        function renderGymGrid() {
+            const grid = document.getElementById('gymGrid');
+            grid.innerHTML = '';
+            
+            gyms.forEach(gym => {
+                const isUnlocked = gymProgress.unlockedGyms.includes(gym.id);
+                const isCompleted = gymProgress.completedGyms.includes(gym.id);
+                
+                const card = document.createElement('div');
+                card.className = `gym-card ${isUnlocked ? 'unlocked' : 'locked'} ${isCompleted ? 'completed' : ''}`;
+                card.style.borderColor = gym.borderColor;
+                
+                card.innerHTML = `
+                    <div class="gym-icon">${gym.icon}</div>
+                    <div class="gym-name">${gym.name}</div>
+                    <div class="gym-leader">Leader: ${gym.leader}</div>
+                    <div class="gym-table-info">Times Table: ×${gym.table}</div>
+                    ${isCompleted ? `<div class="gym-badge-display">${gym.badge} ✅</div>` : ''}
+                    <div class="gym-status ${isCompleted ? 'completed' : (isUnlocked ? 'unlocked' : 'locked')}">
+                        ${isCompleted ? '⭐ Completed' : (isUnlocked ? '🔓 Unlocked' : '🔒 Locked')}
+                    </div>
+                `;
+                
+                if (isUnlocked) {
+                    card.onclick = () => enterGym(gym.id);
+                }
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // Enter a gym
+        function enterGym(gymId) {
+            currentGym = gyms.find(g => g.id === gymId);
+            if (!currentGym) return;
+            
+            gymSelectedTeam = [];
+            gymPhase = null;
+            
+            // Show entrance view
+            document.getElementById('gymMapView').style.display = 'none';
+            document.getElementById('gymEntranceView').style.display = 'block';
+            
+            renderGymEntrance();
+        }
+
+        // Render gym entrance
+        function renderGymEntrance() {
+            const content = document.getElementById('gymEntranceContent');
+            
+            // Individual gym leader sprite files
+            const leaderSprites = {
+                1: 'brok.png',      // Brock
+                2: 'misty.png',     // Misty (changed order)
+                3: 'surge.png',     // Lt. Surge (changed order)
+                4: 'erika.png',     // Erika
+                5: 'koga.png',      // Koga
+                6: 'sabrina.png',   // Sabrina (changed order)
+                7: 'blaine.png',    // Blaine
+                8: 'lorelei.png',   // Lorelei
+                9: 'lance.png'      // Lance
+            };
+            
+            const spriteFile = leaderSprites[currentGym.id] || 'brok.png';
+            
+            content.innerHTML = `
+                <div class="gym-entrance-banner" style="background: linear-gradient(135deg, ${currentGym.color} 0%, ${currentGym.darkColor} 100%); border-color: ${currentGym.borderColor};">
+                    <div class="gym-entrance-icon">${currentGym.icon}</div>
+                    <div class="gym-leader-sprite-container">
+                        <img src="${spriteFile}" alt="${currentGym.leader}" class="gym-leader-sprite-img">
+                    </div>
+                    <div class="gym-entrance-name">${currentGym.name}</div>
+                    <div class="gym-leader-intro">Gym Leader: ${currentGym.leader}</div>
+                    <div class="gym-dialogue">"${currentGym.dialogue.entry}"</div>
+                </div>
+                
+                <div class="gym-team-selection">
+                    <div class="team-selection-title">Select Your Team (Choose 2 Pokémon)</div>
+                    <div class="gym-selected-team" id="gymSelectedTeam">
+                        <div class="selected-pokemon-display">Empty</div>
+                        <div class="selected-pokemon-display">Empty</div>
+                    </div>
+                    <div class="gym-pokemon-selection" id="gymPokemonSelection"></div>
+                    <button class="start-training-btn" id="startTrainingBtn" onclick="startGymTraining()" disabled>
+                        Begin Training! 📚
+                    </button>
+                </div>
+            `;
+            
+            renderGymPokemonSelection();
+        }
+
+        // Render pokemon selection for gym
+        function renderGymPokemonSelection() {
+            const container = document.getElementById('gymPokemonSelection');
+            container.innerHTML = '';
+            
+            // Loop through all Pokemon and show only caught ones
+            pokemon.forEach((pokemonName, index) => {
+                const pokemonNumber = index + 1;
+                const isCaught = caughtPokemon[pokemonNumber];
+                
+                if (!isCaught) return; // Skip uncaught Pokemon
+                
+                const slot = document.createElement('div');
+                slot.className = 'gym-pokemon-slot';
+                
+                const isSelected = gymSelectedTeam.includes(pokemonName);
+                if (isSelected) slot.classList.add('selected');
+                
+                slot.innerHTML = `
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonNumber}.png" 
+                         alt="${pokemonName}" style="width: 60px; height: 60px;">
+                    <div style="font-size: 0.8em; font-weight: 600;">${pokemonName}</div>
+                `;
+                
+                slot.onclick = () => toggleGymTeamSelection(pokemonName);
+                container.appendChild(slot);
+            });
+            
+            // Show message if no Pokemon caught
+            if (Object.keys(caughtPokemon).length === 0) {
+                container.innerHTML = '<div style="padding: 40px; text-align: center; color: #666;">No Pokémon caught yet! Go hunt some first!</div>';
+            }
+        }
+
+        // Toggle pokemon selection for gym
+        function toggleGymTeamSelection(pokemonName) {
+            const index = gymSelectedTeam.indexOf(pokemonName);
+            
+            if (index > -1) {
+                // Remove from team
+                gymSelectedTeam.splice(index, 1);
+            } else {
+                // Add to team (max 2)
+                if (gymSelectedTeam.length < 2) {
+                    gymSelectedTeam.push(pokemonName);
+                }
+            }
+            
+            // Update UI
+            updateGymSelectedTeam();
+            renderGymPokemonSelection();
+        }
+
+        // Update selected team display
+        function updateGymSelectedTeam() {
+            const teamDisplay = document.getElementById('gymSelectedTeam');
+            teamDisplay.innerHTML = '';
+            
+            for (let i = 0; i < 2; i++) {
+                const slot = document.createElement('div');
+                slot.className = 'selected-pokemon-display';
+                
+                if (gymSelectedTeam[i]) {
+                    const pokemonIndex = pokemon.indexOf(gymSelectedTeam[i]);
+                    slot.innerHTML = `
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonIndex + 1}.png" 
+                             alt="${gymSelectedTeam[i]}" style="width: 60px; height: 60px;">
+                        <div style="font-size: 0.7em;">${gymSelectedTeam[i]}</div>
+                    `;
+                } else {
+                    slot.innerHTML = '<div style="padding: 30px; color: #999;">Empty</div>';
+                }
+                
+                teamDisplay.appendChild(slot);
+            }
+            
+            // Enable/disable start button
+            const startBtn = document.getElementById('startTrainingBtn');
+            if (startBtn) {
+                startBtn.disabled = gymSelectedTeam.length !== 2;
+            }
+        }
+
+        // Start gym training phase
+        function startGymTraining() {
+            if (gymSelectedTeam.length !== 2) return;
+            
+            gymPhase = 'training';
+            currentGymQuestion = 0;
+            
+            // Generate training questions (sequential 2-12)
+            gymQuestions = [];
+            for (let i = 2; i <= 12; i++) {
+                gymQuestions.push({
+                    multiplier: i,
+                    answer: currentGym.table * i
+                });
+            }
+            
+            // Show training view
+            document.getElementById('gymEntranceView').style.display = 'none';
+            document.getElementById('gymTrainingView').style.display = 'block';
+            
+            showGymQuestion();
+        }
+
+        // Show current gym question
+        function showGymQuestion() {
+            if (gymPhase === 'training') {
+                const question = gymQuestions[currentGymQuestion];
+                document.getElementById('gymQuestion').textContent = 
+                    `${currentGym.table} × ${question.multiplier} = ?`;
+                document.getElementById('gymAnswerInput').value = '';
+                document.getElementById('gymAnswerInput').focus();
+                document.getElementById('gymFeedback').className = 'gym-feedback';
+                document.getElementById('trainingProgress').textContent = 
+                    `Question ${currentGymQuestion + 1} / ${gymQuestions.length}`;
+            } else if (gymPhase === 'leader') {
+                const question = gymQuestions[currentGymQuestion];
+                document.getElementById('gymBattleQuestion').textContent = 
+                    `${currentGym.table} × ${question.multiplier} = ?`;
+                document.getElementById('gymBattleInput').value = '';
+                document.getElementById('gymBattleInput').focus();
+                document.getElementById('gymBattleFeedback').className = 'gym-feedback';
+            }
+        }
+
+        // Check gym training answer
+        function checkGymAnswer() {
+            const input = document.getElementById('gymAnswerInput');
+            const userAnswer = parseInt(input.value);
+            const question = gymQuestions[currentGymQuestion];
+            const feedback = document.getElementById('gymFeedback');
+            
+            if (userAnswer === question.answer) {
+                feedback.className = 'gym-feedback correct';
+                feedback.textContent = '✅ Correct!';
+                
+                setTimeout(() => {
+                    currentGymQuestion++;
+                    if (currentGymQuestion >= gymQuestions.length) {
+                        // Training complete, start leader battle
+                        startLeaderBattle();
+                    } else {
+                        showGymQuestion();
+                    }
+                }, 1000);
+            } else {
+                feedback.className = 'gym-feedback incorrect';
+                feedback.textContent = '❌ Try again!';
+            }
+        }
+
+        // Start gym leader battle
+        function startLeaderBattle() {
+            gymPhase = 'leader';
+            currentGymQuestion = 0;
+            gymPlayerHP = 100;
+            gymLeaderHP = 100;
+            
+            // Generate randomized questions (same table, 2-12 randomized)
+            const multipliers = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+            shuffleArray(multipliers);
+            
+            gymQuestions = multipliers.map(mult => ({
+                multiplier: mult,
+                answer: currentGym.table * mult
+            }));
+            
+            // Show battle view
+            document.getElementById('gymTrainingView').style.display = 'none';
+            document.getElementById('gymBattleView').style.display = 'block';
+            
+            document.getElementById('leaderName').textContent = currentGym.leader;
+            
+            // Render Pokémon sprites
+            renderGymBattlePokemon();
+            
+            updateGymHealth();
+            showGymQuestion();
+            
+            // Show pre-battle dialogue
+            addBattleLog(`${currentGym.leader}: "${currentGym.dialogue.preBattle}"`);
+        }
+
+        // Render Pokémon sprites in gym battle
+        function renderGymBattlePokemon() {
+            // Player's team
+            const playerContainer = document.getElementById('gymPlayerPokemon');
+            playerContainer.innerHTML = '';
+            
+            gymSelectedTeam.forEach(pokemonName => {
+                const pokemonIndex = pokemon.indexOf(pokemonName);
+                const img = document.createElement('img');
+                img.className = 'gym-pokemon-sprite';
+                img.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonIndex + 1}.png`;
+                img.alt = pokemonName;
+                img.title = pokemonName;
+                playerContainer.appendChild(img);
+            });
+            
+            // Leader's side - show leader sprite and Pokémon
+            const leaderContainer = document.getElementById('gymLeaderPokemon');
+            leaderContainer.innerHTML = '';
+            
+            // Create leader display container
+            const leaderDisplay = document.createElement('div');
+            leaderDisplay.className = 'gym-leader-display';
+            
+            // Individual gym leader sprite files
+            const leaderSprites = {
+                1: 'brok.png',
+                2: 'misty.png',
+                3: 'surge.png',
+                4: 'erika.png',
+                5: 'koga.png',
+                6: 'sabrina.png',
+                7: 'blaine.png',
+                8: 'lorelei.png',
+                9: 'lance.png'
+            };
+            
+            const spriteFile = leaderSprites[currentGym.id] || 'brok.png';
+            
+            // Gym leader sprite
+            const leaderSpriteContainer = document.createElement('div');
+            leaderSpriteContainer.className = 'gym-leader-battle-sprite';
+            leaderSpriteContainer.innerHTML = `
+                <img src="${spriteFile}" alt="${currentGym.leader}" class="gym-leader-sprite-img">
+            `;
+            leaderDisplay.appendChild(leaderSpriteContainer);
+            
+            // Leader's Pokémon
+            const leaderPokemon = getGymLeaderPokemon(currentGym.type);
+            const pokemonImg = document.createElement('img');
+            pokemonImg.className = 'gym-pokemon-sprite';
+            pokemonImg.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${leaderPokemon.id}.png`;
+            pokemonImg.alt = leaderPokemon.name;
+            pokemonImg.title = `${currentGym.leader}'s ${leaderPokemon.name}`;
+            leaderDisplay.appendChild(pokemonImg);
+            
+            leaderContainer.appendChild(leaderDisplay);
+        }
+
+        // Get appropriate Pokémon for gym leader based on type
+        function getGymLeaderPokemon(type) {
+            const leaderPokemon = {
+                'Rock': { id: 95, name: 'Onix' },
+                'Grass': { id: 71, name: 'Victreebel' },
+                'Water': { id: 121, name: 'Starmie' },
+                'Electric': { id: 26, name: 'Raichu' },
+                'Poison': { id: 89, name: 'Muk' },
+                'Fire': { id: 59, name: 'Arcanine' },
+                'Psychic': { id: 65, name: 'Alakazam' },
+                'Ice': { id: 87, name: 'Dewgong' },
+                'Dragon': { id: 149, name: 'Dragonite' }
+            };
+            
+            return leaderPokemon[type] || { id: 1, name: 'Bulbasaur' };
+        }
+
+        // Check battle answer
+        function checkBattleAnswer() {
+            const input = document.getElementById('gymBattleInput');
+            const userAnswer = parseInt(input.value);
+            const question = gymQuestions[currentGymQuestion];
+            const feedback = document.getElementById('gymBattleFeedback');
+            
+            if (userAnswer === question.answer) {
+                // Correct answer: deal damage to leader, small damage to player
+                gymLeaderHP -= 10;
+                gymPlayerHP -= 2;
+                
+                feedback.className = 'gym-feedback correct';
+                feedback.textContent = '✅ Critical Hit! -10 HP to Leader!';
+                addBattleLog('💚 Your Pokémon attacked! Leader took 10 damage!');
+                
+                // Shake leader's Pokémon
+                shakeGymPokemon('leader');
+                
+            } else {
+                // Wrong answer: take damage
+                gymPlayerHP -= 15;
+                
+                feedback.className = 'gym-feedback incorrect';
+                feedback.textContent = '❌ Miss! You took 15 damage!';
+                addBattleLog('❤️ Your Pokémon got confused! You took 15 damage!');
+                
+                // Shake player's Pokémon
+                shakeGymPokemon('player');
+            }
+            
+            updateGymHealth();
+            
+            setTimeout(() => {
+                // Check win/lose
+                if (gymLeaderHP <= 0) {
+                    winGym();
+                } else if (gymPlayerHP <= 0) {
+                    loseGym();
+                } else {
+                    currentGymQuestion++;
+                    if (currentGymQuestion >= gymQuestions.length) {
+                        // All questions answered, determine winner
+                        if (gymPlayerHP > 0) {
+                            winGym();
+                        } else {
+                            loseGym();
+                        }
+                    } else {
+                        showGymQuestion();
+                    }
+                }
+            }, 1500);
+        }
+
+        // Shake Pokémon sprite on damage
+        function shakeGymPokemon(side) {
+            const container = side === 'player' ? 
+                document.getElementById('gymPlayerPokemon') : 
+                document.getElementById('gymLeaderPokemon');
+            
+            const sprites = container.querySelectorAll('.gym-pokemon-sprite');
+            sprites.forEach(sprite => {
+                sprite.style.animation = 'none';
+                setTimeout(() => {
+                    sprite.style.animation = 'shake-damage 0.5s';
+                }, 10);
+            });
+        }
+
+        // Update health bars
+        function updateGymHealth() {
+            const playerBar = document.getElementById('playerHealthBar');
+            const leaderBar = document.getElementById('leaderHealthBar');
+            const playerHPText = document.getElementById('playerHP');
+            const leaderHPText = document.getElementById('leaderHP');
+            
+            const playerPercent = Math.max(0, gymPlayerHP);
+            const leaderPercent = Math.max(0, gymLeaderHP);
+            
+            playerBar.style.width = playerPercent + '%';
+            leaderBar.style.width = leaderPercent + '%';
+            
+            playerHPText.textContent = Math.max(0, gymPlayerHP);
+            leaderHPText.textContent = Math.max(0, gymLeaderHP);
+            
+            // Color coding
+            if (playerPercent <= 30) playerBar.classList.add('critical');
+            else if (playerPercent <= 50) playerBar.classList.add('low');
+            
+            if (leaderPercent <= 30) leaderBar.classList.add('critical');
+            else if (leaderPercent <= 50) leaderBar.classList.add('low');
+        }
+
+        // Add battle log entry
+        function addBattleLog(message) {
+            const log = document.getElementById('battleLog');
+            const entry = document.createElement('div');
+            entry.className = 'battle-log-entry';
+            entry.textContent = message;
+            log.insertBefore(entry, log.firstChild);
+            
+            // Keep only last 10 entries
+            while (log.children.length > 10) {
+                log.removeChild(log.lastChild);
+            }
+        }
+
+        // Win gym
+        function winGym() {
+            // Update progress
+            if (!gymProgress.completedGyms.includes(currentGym.id)) {
+                gymProgress.completedGyms.push(currentGym.id);
+                gymProgress.badges.push(currentGym.badge);
+                
+                // Unlock next gym
+                if (currentGym.id < 9 && !gymProgress.unlockedGyms.includes(currentGym.id + 1)) {
+                    gymProgress.unlockedGyms.push(currentGym.id + 1);
+                }
+                
+                // Process unlock reward
+                processGymReward(currentGym.unlock);
+                
+                // Save progress
+                localStorage.setItem('gymProgress', JSON.stringify(gymProgress));
+            }
+            
+            // Show victory screen
+            document.getElementById('gymBattleView').style.display = 'none';
+            document.getElementById('gymVictoryView').style.display = 'block';
+            
+            // Show gym leader sprite
+            const leaderSprites = {
+                1: 'brok.png',
+                2: 'misty.png',
+                3: 'surge.png',
+                4: 'erika.png',
+                5: 'koga.png',
+                6: 'sabrina.png',
+                7: 'blaine.png',
+                8: 'lorelei.png',
+                9: 'lance.png'
+            };
+            
+            const spriteFile = leaderSprites[currentGym.id] || 'brok.png';
+            
+            document.getElementById('gymLeaderVictorySprite').innerHTML = `
+                <img src="${spriteFile}" alt="${currentGym.leader}" class="gym-leader-sprite-img">
+            `;
+            
+            document.getElementById('badgeEarned').textContent = `${currentGym.icon} ${currentGym.badge}`;
+            document.getElementById('victoryMessage').textContent = currentGym.dialogue.victory;
+            document.getElementById('unlockMessage').textContent = getUnlockMessage(currentGym.unlock);
+            
+            // Play fanfare
+            playSound('14 Fanfare Item Get 1.mp3');
+        }
+
+        // Lose gym
+        function loseGym() {
+            document.getElementById('gymBattleView').style.display = 'none';
+            document.getElementById('gymDefeatView').style.display = 'block';
+            
+            document.getElementById('defeatMessage').textContent = 
+                `${currentGym.leader} was too strong! Train more and try again!`;
+        }
+
+        // Process gym reward
+        function processGymReward(reward) {
+            if (reward === 'healing') {
+                gymProgress.healingUnlocked = true;
+            } else if (reward === 'charmander_voice') {
+                gymProgress.voicesUnlocked.charmander = true;
+            } else if (reward === 'pikachu_voice') {
+                gymProgress.voicesUnlocked.pikachu = true;
+            } else if (reward === 'jigglypuff_voice') {
+                gymProgress.voicesUnlocked.jigglypuff = true;
+            } else if (reward === 'articuno') {
+                gymProgress.legendariesUnlocked.articuno = true;
+            } else if (reward === 'zapdos') {
+                gymProgress.legendariesUnlocked.zapdos = true;
+            } else if (reward === 'moltres') {
+                gymProgress.legendariesUnlocked.moltres = true;
+            } else if (reward === 'mewtwo') {
+                gymProgress.legendariesUnlocked.mewtwo = true;
+            } else if (reward === 'mew') {
+                gymProgress.legendariesUnlocked.mew = true;
+            }
+        }
+
+        // Get unlock message
+        function getUnlockMessage(reward) {
+            const messages = {
+                'healing': '🏥 Pokémon Center Healing Feature Unlocked!',
+                'charmander_voice': '🔊 Charmander Voice Unlocked!',
+                'pikachu_voice': '🔊 Pikachu Voice Unlocked!',
+                'jigglypuff_voice': '🔊 Jigglypuff Voice Unlocked!',
+                'articuno': '❄️ Articuno can now appear in bushes!',
+                'zapdos': '⚡ Zapdos can now appear in bushes!',
+                'moltres': '🔥 Moltres can now appear in bushes!',
+                'mewtwo': '🧬 Mewtwo can now appear in bushes!',
+                'mew': '✨ Mew can now appear in bushes!'
+            };
+            return messages[reward] || 'New feature unlocked!';
+        }
+
+        // Navigation functions
+        function backToGymMap() {
+            initializeGymMap();
+        }
+
+        function returnToGymMap() {
+            initializeGymMap();
+        }
+
+        function retryGym() {
+            enterGym(currentGym.id);
+        }
+
+        // Utility: Shuffle array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
         }
 
         function openSettings() {
@@ -6599,35 +8550,65 @@
         // Initialize grid
         function initializeGrid() {
             const grid = document.getElementById('pokemonGrid');
+            if (!grid) return; // Exit if grid doesn't exist
+            
             grid.innerHTML = '';
 
             pokemon.forEach((name, index) => {
                 const number = index + 1;
                 const isCaught = caughtPokemon[number];
                 
+                // Check if this is a locked legendary
+                const isLockedLegendary = (
+                    (number === 144 && !gymProgress.legendariesUnlocked.articuno) ||
+                    (number === 145 && !gymProgress.legendariesUnlocked.zapdos) ||
+                    (number === 146 && !gymProgress.legendariesUnlocked.moltres) ||
+                    (number === 150 && !gymProgress.legendariesUnlocked.mewtwo) ||
+                    (number === 151 && !gymProgress.legendariesUnlocked.mew)
+                );
+                
                 const card = document.createElement('div');
-                card.className = `pokemon-card ${isCaught ? 'caught' : 'uncaught'}`;
+                card.className = `pokemon-card ${isCaught ? 'caught' : 'uncaught'} ${isLockedLegendary ? 'locked-legendary' : ''}`;
                 card.onclick = () => {
                     // Can view caught Pokemon info
                     if (isCaught) {
                         showPokemonInfo(number, name);
+                    } else if (isLockedLegendary) {
+                        // Show which gym unlocks this legendary
+                        const unlockGym = {
+                            144: 'Gym 3 (Lt. Surge)',
+                            145: 'Gym 4 (Erika)',
+                            146: 'Gym 5 (Koga)',
+                            150: 'Gym 8 (Lorelei)',
+                            151: 'Gym 9 (Lance)'
+                        };
+                        alert(`🔒 This legendary Pokémon is locked!\n\nDefeat ${unlockGym[number]} to unlock.`);
                     }
                 };
 
-                // Add pointer cursor for caught Pokemon
-                if (isCaught) {
+                // Add pointer cursor for caught Pokemon or locked legendaries
+                if (isCaught || isLockedLegendary) {
                     card.style.cursor = 'pointer';
                 }
 
                 const sprite = document.createElement('img');
                 sprite.className = 'pokemon-sprite';
-                // Show pokeball for uncaught, Pokemon sprite for caught
-                sprite.src = isCaught ? getPokemonSpriteUrl(number, false) : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png';
-                sprite.alt = isCaught ? name : '???';
+                // Show pokeball for uncaught, lock icon for locked legendaries, Pokemon sprite for caught
+                if (isCaught) {
+                    sprite.src = getPokemonSpriteUrl(number, false);
+                    sprite.alt = name;
+                } else if (isLockedLegendary) {
+                    sprite.src = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png';
+                    sprite.alt = '🔒 Locked';
+                    sprite.style.filter = 'grayscale(1) brightness(0.5)';
+                } else {
+                    sprite.src = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png';
+                    sprite.alt = '???';
+                }
 
                 const nameEl = document.createElement('div');
                 nameEl.className = 'pokemon-name';
-                nameEl.textContent = isCaught ? name : '???';
+                nameEl.textContent = isCaught ? name : (isLockedLegendary ? '🔒 Locked' : '???');
 
                 const numberEl = document.createElement('div');
                 numberEl.className = 'pokemon-number';
@@ -6866,9 +8847,11 @@
         function showFullResetConfirmation() {
             const pokemonCount = Object.keys(caughtPokemon).length;
             const badgeCount = gameStats.unlockedBadges.length;
+            const gymsBeaten = gymProgress.completedGyms.length;
             
-            document.getElementById('fullResetCount').textContent = pokemonCount;
-            document.getElementById('fullResetBadges').textContent = badgeCount;
+            document.getElementById('resetPokedexCount').textContent = pokemonCount;
+            document.getElementById('resetBadgesCount').textContent = badgeCount;
+            document.getElementById('resetGymsCount').textContent = gymsBeaten;
             document.getElementById('fullResetModal').classList.add('active');
         }
 
@@ -6877,18 +8860,30 @@
             document.getElementById('fullResetModal').classList.remove('active');
         }
 
-        // Confirm and execute full game reset
-        function confirmFullReset() {
-            // Clear all data
-            localStorage.removeItem('caughtPokemon');
-            localStorage.removeItem('gameStats');
-            localStorage.removeItem('operationMode');
-            localStorage.removeItem('gradeLevel');
-            localStorage.removeItem('allowedOperations');
-            localStorage.removeItem('isMuted');
+        // Reset Pokédex only
+        function resetPokedex() {
+            if (!confirm('⚠️ Reset Pokédex?\n\nThis will release all your caught Pokémon!\n\nThis cannot be undone!')) {
+                return;
+            }
             
-            // Reset all variables to defaults
+            localStorage.removeItem('caughtPokemon');
+            localStorage.removeItem('injuredPokemon');
             caughtPokemon = {};
+            injuredPokemon = [];
+            
+            alert('✅ Pokédex has been reset!\n\nAll Pokémon have been released.');
+            closeFullResetConfirmation();
+            initializeGrid();
+            updateStats();
+        }
+
+        // Reset Badges only
+        function resetBadges() {
+            if (!confirm('⚠️ Reset Badges?\n\nThis will clear all your achievement badges and stats!\n\nThis cannot be undone!')) {
+                return;
+            }
+            
+            localStorage.removeItem('gameStats');
             gameStats = {
                 totalProblems: 0,
                 correctAnswers: 0,
@@ -6896,6 +8891,88 @@
                 bestStreak: 0,
                 operationCounts: { addition: 0, subtraction: 0, multiplication: 0, division: 0 },
                 unlockedBadges: []
+            };
+            
+            alert('✅ Badges have been reset!\n\nAll achievements cleared. Time to earn them again!');
+            closeFullResetConfirmation();
+            updateBadgeCount();
+            updateStreakDisplay();
+        }
+
+        // Reset Gyms only
+        function resetGyms() {
+            if (!confirm('⚠️ Reset Gym Progress?\n\nThis will:\n• Lock all gyms except Gym 1\n• Remove all gym badges\n• Lock Pokémon Center\n• Lock all legendary Pokémon\n\nThis cannot be undone!')) {
+                return;
+            }
+            
+            localStorage.removeItem('gymProgress');
+            gymProgress = {
+                unlockedGyms: [1],
+                completedGyms: [],
+                badges: [],
+                healingUnlocked: false,
+                voicesUnlocked: {
+                    charmander: false,
+                    pikachu: false,
+                    jigglypuff: false
+                },
+                legendariesUnlocked: {
+                    articuno: false,
+                    zapdos: false,
+                    moltres: false,
+                    mewtwo: false,
+                    mew: false
+                }
+            };
+            
+            alert('✅ Gym progress has been reset!\n\n• All gyms locked except Gym 1\n• Pokémon Center locked\n• Legendary Pokémon locked\n\nDefeat Brock to begin your journey!');
+            closeFullResetConfirmation();
+        }
+
+        // Confirm and execute full game reset
+        function confirmFullReset() {
+            if (!confirm('⚠️⚠️⚠️ FULL RESET ⚠️⚠️⚠️\n\nThis will DELETE EVERYTHING:\n• All Pokémon\n• All Badges\n• All Gym Progress\n• All Stats\n• All Settings\n\nTHIS CANNOT BE UNDONE!\n\nAre you ABSOLUTELY SURE?')) {
+                return;
+            }
+            
+            // Clear all data
+            localStorage.removeItem('caughtPokemon');
+            localStorage.removeItem('injuredPokemon');
+            localStorage.removeItem('gameStats');
+            localStorage.removeItem('gymProgress');
+            localStorage.removeItem('operationMode');
+            localStorage.removeItem('gradeLevel');
+            localStorage.removeItem('allowedOperations');
+            localStorage.removeItem('isMuted');
+            
+            // Reset all variables to defaults
+            caughtPokemon = {};
+            injuredPokemon = [];
+            gameStats = {
+                totalProblems: 0,
+                correctAnswers: 0,
+                currentStreak: 0,
+                bestStreak: 0,
+                operationCounts: { addition: 0, subtraction: 0, multiplication: 0, division: 0 },
+                unlockedBadges: []
+            };
+            gymProgress = {
+                unlockedGyms: [1],
+                completedGyms: [],
+                badges: [],
+                healingUnlocked: false,
+                voicesUnlocked: {
+                    charmander: false,
+                    pikachu: false,
+                    jigglypuff: false
+                },
+                legendariesUnlocked: {
+                    articuno: false,
+                    zapdos: false,
+                    moltres: false,
+                    mewtwo: false,
+                    mew: false
+                }
             };
             operationMode = 'random';
             gradeLevel = 4;
@@ -7016,7 +9093,10 @@
         // Update stats
         function updateStats() {
             const count = Object.keys(caughtPokemon).length;
-            document.getElementById('caught-count').textContent = count;
+            const caughtCountEl = document.getElementById('caught-count');
+            if (caughtCountEl) {
+                caughtCountEl.textContent = count;
+            }
         }
 
         // Enter key support
@@ -7027,8 +9107,21 @@
                 }
             });
             
+            // Gym answer inputs Enter key support
+            document.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const activeElement = document.activeElement;
+                    if (activeElement && activeElement.id === 'gymAnswerInput') {
+                        checkGymAnswer();
+                    } else if (activeElement && activeElement.id === 'gymBattleInput') {
+                        checkBattleAnswer();
+                    }
+                }
+            });
+            
             // Menu button event listeners
             document.getElementById('startGameBtn').addEventListener('click', startGame);
+            document.getElementById('gymChallengeBtn').addEventListener('click', () => navigateTo('gym'));
             document.getElementById('startBattleBtn').addEventListener('click', startBattleFromMenu);
             document.getElementById('openSettingsBtn').addEventListener('click', openSettings);
             document.getElementById('openBadgesBtn').addEventListener('click', openBadgeModal);
@@ -7039,7 +9132,13 @@
             
             updateMuteButton(); // Initialize mute button state
             setOperation(operationMode); // Initialize operation mode button state
-            document.getElementById('gradeLevel').value = gradeLevel; // Initialize grade level dropdown
+            
+            // Initialize grade level dropdown if it exists
+            const gradeLevelDropdown = document.getElementById('gradeLevel');
+            if (gradeLevelDropdown) {
+                gradeLevelDropdown.value = gradeLevel;
+            }
+            
             updateBadgeCount(); // Initialize badge count
             updateStreakDisplay(); // Initialize streak display
             initializeGrid();
