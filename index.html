@@ -3045,8 +3045,10 @@
         }
 
         .battle-field {
-            background: url('battle_backgrounds.png') center center / cover no-repeat;
-            background-position: 0 0; /* Will change based on battle type */
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            /* Background image set dynamically via JavaScript */
             border-radius: 20px;
             padding: 0;
             margin-bottom: 20px;
@@ -3068,13 +3070,13 @@
         }
 
         .battle-info-box.opponent-info {
-            top: 30px;
-            left: 30px;
+            bottom: 30px;  /* Lowered from 100px to match player spacing */
+            right: 30px;
         }
 
         .battle-info-box.player-info {
-            bottom: 100px;
-            right: 30px;
+            top: 30px;
+            left: 30px;
         }
 
         .pokemon-name-label {
@@ -3145,7 +3147,7 @@
         .health-text {
             font-size: 0.85em;
             font-weight: 600;
-            color: #2C2C2C;
+            color: #000000 !important;  /* Pure black with !important to override any conflicts */
             font-family: 'Courier New', monospace;
             width: 100%;
             text-align: right;
@@ -5643,6 +5645,16 @@
         let gymLeaderHP = 100;
         let gymSelectedTeam = [];
         
+        // Battle backgrounds mapping
+        const battleBackgrounds = {
+            neutral: 'neutral_bg.png',
+            grass: 'battle_backgrounds.png',
+            water: 'water_bg.png',
+            ground: 'ground_rock_bg.png',
+            rock: 'ground_rock_bg.png',
+            ice: 'ice_bg.png'
+        };
+        
         // Pokémon voices
         const pokemonVoices = {
             'Charmander': null, // Will be loaded when unlocked
@@ -6416,7 +6428,7 @@
                 const pokemonId = pokemonIndex + 1;
                 
                 return `
-                    <div class="injured-pokemon-item" onclick="togglePokemonSelection('${pokemonName}')">
+                    <div class="injured-pokemon-item" data-pokemon="${pokemonName}">
                         <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${pokemonId}.gif" 
                              alt="${pokemonName}" 
                              class="injured-pokemon-sprite"
@@ -6428,6 +6440,13 @@
                     </div>
                 `;
             }).join('');
+            
+            // Add event listeners after rendering
+            document.querySelectorAll('.injured-pokemon-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    togglePokemonSelection(this.dataset.pokemon);
+                });
+            });
         }
 
         function togglePokemonSelection(pokemonName) {
@@ -7321,6 +7340,23 @@
             const playerPokemonIndex = pokemon.indexOf(playerPokemonName);
             const leaderPokemon = getGymLeaderPokemon(currentGym.type);
             
+            // Set background based on gym type
+            const gymType = currentGym.type.toLowerCase();
+            const backgroundMap = {
+                'rock': 'ground',
+                'grass': 'grass',
+                'water': 'water',
+                'electric': 'neutral',
+                'poison': 'neutral',
+                'fire': 'ground',
+                'psychic': 'neutral',
+                'ice': 'ice',
+                'dragon': 'neutral'
+            };
+            const bgKey = backgroundMap[gymType] || 'neutral';
+            const bgFile = battleBackgrounds[bgKey];
+            document.getElementById('gymBattleField').style.backgroundImage = `url('${bgFile}')`;
+            
             // Update Player Pokémon sprite and info
             document.getElementById('gymPlayerSprite').src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${playerPokemonIndex + 1}.gif`;
             document.getElementById('gymPlayerPokemonName').textContent = playerPokemonName.toUpperCase();
@@ -7905,6 +7941,14 @@
             // Clear any previous fainted classes
             document.getElementById('playerSprite').classList.remove('fainted');
             document.getElementById('opponentSprite').classList.remove('fainted');
+            
+            // Set random background for normal battles (only on first load)
+            if (currentBattle.playerIndex === 0 && currentBattle.opponentIndex === 0) {
+                const bgOptions = ['neutral', 'grass', 'water', 'ground', 'ice'];
+                const randomBg = bgOptions[Math.floor(Math.random() * bgOptions.length)];
+                const bgFile = battleBackgrounds[randomBg];
+                document.getElementById('battleField').style.backgroundImage = `url('${bgFile}')`;
+            }
             
             // Player Pokemon
             document.getElementById('playerSprite').src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${playerPokemon.number}.gif`;
