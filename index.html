@@ -380,344 +380,25 @@
             justify-content: center;
             min-height: 100vh;
             gap: var(--spacing-xl);
-            background: 
-                /* Sky gradient */
-                linear-gradient(180deg, #87CEEB 0%, #B0E0E6 40%, #E0F6FF 100%);
+            background: url('1770852882435_image.png') center center / cover no-repeat;
             position: relative;
             overflow: hidden;
         }
 
-        /* Animated Clouds */
+        /* Optional: Add subtle overlay to make text more readable */
         .bush-screen::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 35%;
-            background:
-                /* Cloud 1 */
-                radial-gradient(ellipse 80px 40px at 15% 20%, white 0%, white 50%, transparent 50%),
-                radial-gradient(ellipse 60px 35px at 10% 22%, white 0%, white 50%, transparent 50%),
-                radial-gradient(ellipse 70px 38px at 20% 22%, white 0%, white 50%, transparent 50%),
-                /* Cloud 2 */
-                radial-gradient(ellipse 90px 45px at 60% 15%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.9) 50%, transparent 50%),
-                radial-gradient(ellipse 70px 40px at 55% 17%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.9) 50%, transparent 50%),
-                radial-gradient(ellipse 75px 42px at 65% 17%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.9) 50%, transparent 50%),
-                /* Cloud 3 */
-                radial-gradient(ellipse 70px 35px at 85% 25%, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.8) 50%, transparent 50%),
-                radial-gradient(ellipse 55px 30px at 82% 27%, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.8) 50%, transparent 50%),
-                radial-gradient(ellipse 60px 32px at 88% 27%, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.8) 50%, transparent 50%);
-            animation: clouds-drift 120s linear infinite;
-            z-index: 0;
-        }
-
-        @keyframes clouds-drift {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100px); }
-        }
-
-        /* Grass tufts and rocks container - positioned above grass layer */
-        .bushes-container::before {
-            content: '';
-            position: absolute;
-            bottom: -80px;
-            left: 0;
-            right: 0;
-            height: 200px;
-            background:
-                /* Left side grass tufts */
-                radial-gradient(ellipse 25px 30px at 8% 60%, #6BAA6B 0%, #5A9959 40%, transparent 60%),
-                radial-gradient(ellipse 20px 25px at 6% 65%, #7FBA7F 0%, #6BAA6B 40%, transparent 60%),
-                radial-gradient(ellipse 22px 28px at 10% 63%, #7FBA7F 0%, #6BAA6B 40%, transparent 60%),
-                
-                radial-gradient(ellipse 28px 32px at 15% 55%, #6BAA6B 0%, #5A9959 40%, transparent 60%),
-                radial-gradient(ellipse 23px 27px at 13% 58%, #7FBA7F 0%, #6BAA6B 40%, transparent 60%),
-                
-                /* Right side grass tufts */
-                radial-gradient(ellipse 26px 31px at 92% 60%, #6BAA6B 0%, #5A9959 40%, transparent 60%),
-                radial-gradient(ellipse 21px 26px at 94% 65%, #7FBA7F 0%, #6BAA6B 40%, transparent 60%),
-                radial-gradient(ellipse 24px 29px at 90% 63%, #7FBA7F 0%, #6BAA6B 40%, transparent 60%),
-                
-                radial-gradient(ellipse 27px 33px at 85% 55%, #6BAA6B 0%, #5A9959 40%, transparent 60%),
-                radial-gradient(ellipse 22px 28px at 87% 58%, #7FBA7F 0%, #6BAA6B 40%, transparent 60%),
-                
-                /* Small rocks on path edges */
-                radial-gradient(circle 12px at 35% 70%, #8B7A6A 0%, #6B5A4A 60%, transparent 60%),
-                radial-gradient(circle 8px at 37% 72%, #9B8A7A 0%, #7B6A5A 60%, transparent 60%),
-                radial-gradient(circle 10px at 33% 68%, #8B7A6A 0%, #6B5A4A 60%, transparent 60%),
-                
-                radial-gradient(circle 14px at 65% 70%, #8B7A6A 0%, #6B5A4A 60%, transparent 60%),
-                radial-gradient(circle 9px at 67% 72%, #9B8A7A 0%, #7B6A5A 60%, transparent 60%),
-                radial-gradient(circle 11px at 63% 68%, #8B7A6A 0%, #6B5A4A 60%, transparent 60%),
-                
-                /* More scattered grass */
-                radial-gradient(ellipse 18px 22px at 20% 75%, #7FBA7F 0%, #6BAA6B 40%, transparent 60%),
-                radial-gradient(ellipse 20px 24px at 80% 75%, #7FBA7F 0%, #6BAA6B 40%, transparent 60%),
-                radial-gradient(ellipse 16px 20px at 25% 80%, #6BAA6B 0%, #5A9959 40%, transparent 60%),
-                radial-gradient(ellipse 17px 21px at 75% 80%, #6BAA6B 0%, #5A9959 40%, transparent 60%);
+            height: 100%;
+            background: rgba(0, 0, 0, 0.1);
             pointer-events: none;
-            z-index: 9;
-        }
-
-        /* Route grass background */
-        .bush-screen::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 70%;
-            background: 
-                /* Grass texture */
-                repeating-linear-gradient(
-                    90deg,
-                    #7FBA7F 0px,
-                    #6BAA6B 2px,
-                    #7FBA7F 4px
-                ),
-                /* Base grass */
-                linear-gradient(180deg, #8BC34A 0%, #689F38 100%);
             z-index: 0;
         }
 
         /* Dirt path in center */
-        .dirt-path {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 45%;
-            height: 70%;
-            background: 
-                /* Dirt texture */
-                repeating-linear-gradient(
-                    45deg,
-                    #C5A572 0px,
-                    #C5A572 3px,
-                    #B89968 3px,
-                    #B89968 6px
-                ),
-                /* Base dirt */
-                linear-gradient(180deg, #D4B896 0%, #A88B5C 100%);
-            border-left: 8px solid #8BC34A;
-            border-right: 8px solid #8BC34A;
-            box-shadow: 
-                inset 0 10px 20px rgba(0,0,0,0.1),
-                inset 0 -10px 20px rgba(0,0,0,0.05);
-            z-index: 1;
-        }
-
-        /* Animated clouds layer */
-        .clouds-layer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 40%;
-            z-index: 0;
-            animation: clouds-drift 180s linear infinite;
-        }
-
-        @keyframes clouds-drift {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(100px); }
-        }
-
-        .cloud {
-            position: absolute;
-            background: transparent;
-        }
-
-        /* Pixel art cloud using box-shadow for pixel blocks */
-        .cloud-1 {
-            width: 8px;
-            height: 8px;
-            top: 12%;
-            left: 10%;
-            box-shadow:
-                /* Bottom row */
-                0px 32px 0 8px white, 8px 32px 0 8px white, 16px 32px 0 8px white, 24px 32px 0 8px white, 32px 32px 0 8px white, 40px 32px 0 8px white, 48px 32px 0 8px white,
-                /* Second row */
-                0px 24px 0 8px white, 8px 24px 0 8px white, 16px 24px 0 8px white, 24px 24px 0 8px white, 32px 24px 0 8px white, 40px 24px 0 8px white, 48px 24px 0 8px white, 56px 24px 0 8px white,
-                /* Third row */
-                8px 16px 0 8px white, 16px 16px 0 8px white, 24px 16px 0 8px white, 32px 16px 0 8px white, 40px 16px 0 8px white, 48px 16px 0 8px white, 56px 16px 0 8px white, 64px 16px 0 8px white,
-                /* Fourth row - top puffs */
-                16px 8px 0 8px white, 24px 8px 0 8px white, 32px 8px 0 8px white, 48px 8px 0 8px white, 56px 8px 0 8px white,
-                /* Top row - peaks */
-                24px 0px 0 8px white, 32px 0px 0 8px white, 56px 0px 0 8px white;
-        }
-
-        .cloud-1::before,
-        .cloud-1::after {
-            display: none;
-        }
-
-        .cloud-2 {
-            width: 8px;
-            height: 8px;
-            top: 8%;
-            right: 12%;
-            box-shadow:
-                /* Large pixelated cloud */
-                /* Bottom */
-                0px 40px 0 8px white, 8px 40px 0 8px white, 16px 40px 0 8px white, 24px 40px 0 8px white, 32px 40px 0 8px white, 40px 40px 0 8px white, 48px 40px 0 8px white, 56px 40px 0 8px white, 64px 40px 0 8px white, 72px 40px 0 8px white,
-                /* Second */
-                0px 32px 0 8px white, 8px 32px 0 8px white, 16px 32px 0 8px white, 24px 32px 0 8px white, 32px 32px 0 8px white, 40px 32px 0 8px white, 48px 32px 0 8px white, 56px 32px 0 8px white, 64px 32px 0 8px white, 72px 32px 0 8px white, 80px 32px 0 8px white,
-                /* Third */
-                8px 24px 0 8px white, 16px 24px 0 8px white, 24px 24px 0 8px white, 32px 24px 0 8px white, 40px 24px 0 8px white, 48px 24px 0 8px white, 56px 24px 0 8px white, 64px 24px 0 8px white, 72px 24px 0 8px white, 80px 24px 0 8px white, 88px 24px 0 8px white,
-                /* Fourth */
-                16px 16px 0 8px white, 24px 16px 0 8px white, 32px 16px 0 8px white, 40px 16px 0 8px white, 56px 16px 0 8px white, 64px 16px 0 8px white, 72px 16px 0 8px white, 80px 16px 0 8px white,
-                /* Top puffs */
-                24px 8px 0 8px white, 32px 8px 0 8px white, 40px 8px 0 8px white, 64px 8px 0 8px white, 72px 8px 0 8px white,
-                /* Peaks */
-                32px 0px 0 8px white, 72px 0px 0 8px white;
-        }
-
-        .cloud-2::before,
-        .cloud-2::after {
-            display: none;
-        }
-
-        .cloud-3 {
-            width: 8px;
-            height: 8px;
-            top: 18%;
-            right: 5%;
-            box-shadow:
-                /* Small pixel cloud */
-                0px 24px 0 8px white, 8px 24px 0 8px white, 16px 24px 0 8px white, 24px 24px 0 8px white, 32px 24px 0 8px white,
-                0px 16px 0 8px white, 8px 16px 0 8px white, 16px 16px 0 8px white, 24px 16px 0 8px white, 32px 16px 0 8px white, 40px 16px 0 8px white,
-                8px 8px 0 8px white, 16px 8px 0 8px white, 24px 8px 0 8px white, 32px 8px 0 8px white,
-                16px 0px 0 8px white, 24px 0px 0 8px white;
-        }
-
-        .cloud-3::before,
-        .cloud-3::after {
-            display: none;
-        }
-
-        /* Decorations layer */
-        .decorations {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            z-index: 9;
-            pointer-events: none;
-        }
-
-        /* Grass tufts - Pixel art style */
-        .grass-tuft {
-            position: absolute;
-            width: 40px;
-            height: 30px;
-            background: 
-                /* Pixel art grass blades - layered jagged shapes */
-                /* Dark green base shadows */
-                linear-gradient(90deg, transparent 0px, #1F5A1F 1px, transparent 1px) 5px 20px / 2px 10px no-repeat,
-                linear-gradient(90deg, transparent 0px, #1F5A1F 1px, transparent 1px) 10px 18px / 2px 12px no-repeat,
-                linear-gradient(90deg, transparent 0px, #1F5A1F 1px, transparent 1px) 15px 16px / 2px 14px no-repeat,
-                linear-gradient(90deg, transparent 0px, #1F5A1F 1px, transparent 1px) 20px 18px / 2px 12px no-repeat,
-                linear-gradient(90deg, transparent 0px, #1F5A1F 1px, transparent 1px) 25px 19px / 2px 11px no-repeat,
-                linear-gradient(90deg, transparent 0px, #1F5A1F 1px, transparent 1px) 30px 21px / 2px 9px no-repeat,
-                linear-gradient(90deg, transparent 0px, #1F5A1F 1px, transparent 1px) 35px 22px / 2px 8px no-repeat,
-                
-                /* Medium green blades */
-                linear-gradient(90deg, transparent 0px, #2E7D32 2px, transparent 2px) 6px 18px / 3px 12px no-repeat,
-                linear-gradient(90deg, transparent 0px, #2E7D32 2px, transparent 2px) 11px 16px / 3px 14px no-repeat,
-                linear-gradient(90deg, transparent 0px, #2E7D32 2px, transparent 2px) 16px 14px / 3px 16px no-repeat,
-                linear-gradient(90deg, transparent 0px, #2E7D32 2px, transparent 2px) 21px 16px / 3px 14px no-repeat,
-                linear-gradient(90deg, transparent 0px, #2E7D32 2px, transparent 2px) 26px 17px / 3px 13px no-repeat,
-                linear-gradient(90deg, transparent 0px, #2E7D32 2px, transparent 2px) 31px 19px / 3px 11px no-repeat,
-                
-                /* Bright green highlights */
-                linear-gradient(90deg, transparent 0px, #66BB6A 2px, transparent 2px) 7px 16px / 2px 14px no-repeat,
-                linear-gradient(90deg, transparent 0px, #66BB6A 2px, transparent 2px) 12px 14px / 2px 16px no-repeat,
-                linear-gradient(90deg, transparent 0px, #66BB6A 2px, transparent 2px) 17px 12px / 2px 18px no-repeat,
-                linear-gradient(90deg, transparent 0px, #66BB6A 2px, transparent 2px) 22px 14px / 2px 16px no-repeat,
-                linear-gradient(90deg, transparent 0px, #66BB6A 2px, transparent 2px) 27px 15px / 2px 15px no-repeat,
-                
-                /* Very bright tips */
-                linear-gradient(90deg, transparent 0px, #81C784 1px, transparent 1px) 13px 12px / 1px 2px no-repeat,
-                linear-gradient(90deg, transparent 0px, #81C784 1px, transparent 1px) 18px 10px / 1px 2px no-repeat,
-                linear-gradient(90deg, transparent 0px, #81C784 1px, transparent 1px) 23px 12px / 1px 2px no-repeat;
-            
-            animation: grass-sway 3s ease-in-out infinite;
-            transform-origin: bottom center;
-            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.3));
-        }
-
-        @keyframes grass-sway {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(-3deg); }
-            75% { transform: rotate(3deg); }
-        }
-
-        .grass-tuft:nth-child(2) {
-            animation-delay: 0.5s;
-            transform: scaleX(-1); /* Mirror for variety */
-        }
-
-        .grass-tuft:nth-child(3) {
-            animation-delay: 1s;
-        }
-
-        .grass-tuft:nth-child(4) {
-            animation-delay: 1.5s;
-            transform: scaleX(-1);
-        }
-
-        .grass-tuft:nth-child(5) {
-            animation-delay: 2s;
-        }
-
-        .grass-tuft:nth-child(6) {
-            animation-delay: 2.5s;
-            transform: scaleX(-1);
-        }
-
-        /* Pixel art rocks */
-        .rock {
-            position: absolute;
-            width: 24px;
-            height: 20px;
-            background: 
-                /* Rock pixel art using box-shadow technique */
-                /* Top highlight pixels */
-                linear-gradient(90deg, #C5A572 0px, #C5A572 4px, transparent 4px) 4px 2px / 8px 2px no-repeat,
-                linear-gradient(90deg, #D4B896 0px, #D4B896 4px, transparent 4px) 6px 4px / 6px 2px no-repeat,
-                
-                /* Main body - medium brown */
-                linear-gradient(90deg, #A88B5C 0px, #A88B5C 16px, transparent 16px) 2px 6px / 16px 2px no-repeat,
-                linear-gradient(90deg, #A88B5C 0px, #A88B5C 20px, transparent 20px) 0px 8px / 20px 4px no-repeat,
-                linear-gradient(90deg, #A88B5C 0px, #A88B5C 18px, transparent 18px) 2px 12px / 18px 2px no-repeat,
-                
-                /* Dark shadow pixels */
-                linear-gradient(90deg, #8B7A6A 0px, #8B7A6A 14px, transparent 14px) 4px 14px / 14px 2px no-repeat,
-                linear-gradient(90deg, #6B5A4A 0px, #6B5A4A 12px, transparent 12px) 6px 16px / 12px 2px no-repeat,
-                linear-gradient(90deg, #5A4938 0px, #5A4938 8px, transparent 8px) 8px 18px / 8px 2px no-repeat,
-                
-                /* Black outline pixels */
-                linear-gradient(90deg, #3A2918 0px, #3A2918 2px, transparent 2px) 10px 0px / 2px 2px no-repeat,
-                linear-gradient(90deg, #3A2918 0px, #3A2918 2px, transparent 2px) 0px 10px / 2px 4px no-repeat,
-                linear-gradient(90deg, #3A2918 0px, #3A2918 2px, transparent 2px) 22px 10px / 2px 4px no-repeat;
-            
-            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.4));
-        }
-
-        .small-rock {
-            width: 20px;
-            height: 16px;
-        }
-
-        .rock:nth-child(odd) {
-            transform: rotate(15deg);
-        }
-
-        .rock:nth-child(even) {
-            transform: rotate(-12deg) scaleX(-1);
-        }
-
         .bush-screen h2 {
             color: white;
             font-size: 2em;
@@ -789,33 +470,28 @@
         }
 
         .bush.checked {
-            opacity: 0.4;
+            opacity: 0.5;
             cursor: not-allowed;
         }
 
         .bush.checked:hover {
             transform: translateY(0);
-            filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4)) grayscale(1);
         }
 
         /* Maintain stagger when checked */
         .bush.checked:nth-child(1),
         .bush.checked:nth-child(1):hover {
-            transform: translateY(-20px);
+            transform: translateY(-20px) scale(0.9);
         }
 
         .bush.checked:nth-child(2),
         .bush.checked:nth-child(2):hover {
-            transform: translateY(10px);
+            transform: translateY(10px) scale(0.9);
         }
 
         .bush.checked:nth-child(3),
         .bush.checked:nth-child(3):hover {
-            transform: translateY(-5px);
-        }
-
-        .bush.checked .bush-image {
-            filter: grayscale(1) brightness(0.6);
+            transform: translateY(-5px) scale(0.9);
         }
 
         .bush.checked .bush-label {
@@ -830,61 +506,19 @@
             position: relative;
             display: inline-block;
             transition: all 0.3s;
-        }
-
-        /* Create layered bush using box-shadows for pixel art effect */
-        .bush-image::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            height: 100%;
-            background: 
-                /* Dark green base (bottom layer - shadow) */
-                radial-gradient(ellipse 50px 40px at 50% 70%, #2C5F2D 0%, #2C5F2D 60%, transparent 60%),
-                radial-gradient(ellipse 45px 35px at 35% 65%, #1F4620 0%, #1F4620 60%, transparent 60%),
-                radial-gradient(ellipse 45px 35px at 65% 65%, #1F4620 0%, #1F4620 60%, transparent 60%),
-                /* Bright green leaves (top layer) */
-                radial-gradient(ellipse 45px 35px at 50% 50%, #7FDB7F 0%, #5EC55E 70%, transparent 70%),
-                radial-gradient(ellipse 40px 30px at 30% 45%, #6BCF6B 0%, #4FB84F 70%, transparent 70%),
-                radial-gradient(ellipse 40px 30px at 70% 45%, #6BCF6B 0%, #4FB84F 70%, transparent 70%),
-                radial-gradient(ellipse 35px 25px at 50% 35%, #8FE58F 0%, #6BCF6B 70%, transparent 70%),
-                /* Highlight spots */
-                radial-gradient(circle 8px at 45% 40%, #B8F0B8 0%, transparent 70%),
-                radial-gradient(circle 6px at 58% 38%, #B8F0B8 0%, transparent 70%);
-            border-radius: 50%;
-        }
-
-        /* Add texture and pixel-like details */
-        .bush-image::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            height: 100%;
-            background: 
-                /* Small dark spots for depth */
-                radial-gradient(circle 3px at 35% 50%, rgba(0,0,0,0.3) 0%, transparent 70%),
-                radial-gradient(circle 3px at 65% 52%, rgba(0,0,0,0.3) 0%, transparent 70%),
-                radial-gradient(circle 4px at 50% 60%, rgba(0,0,0,0.2) 0%, transparent 70%),
-                /* Light green highlights */
-                radial-gradient(circle 4px at 40% 42%, rgba(200,255,200,0.4) 0%, transparent 70%),
-                radial-gradient(circle 3px at 60% 45%, rgba(200,255,200,0.3) 0%, transparent 70%);
+            background: url('pokeball.png') center center / contain no-repeat;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
         }
 
         .bush:hover .bush-image {
-            transform: scale(1.05);
-            animation: bush-shake 0.5s ease-in-out infinite;
+            transform: scale(1.1) rotate(5deg);
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.4));
         }
 
-        @keyframes bush-shake {
-            0%, 100% { transform: scale(1.05) rotate(0deg); }
-            25% { transform: scale(1.05) rotate(-2deg); }
-            75% { transform: scale(1.05) rotate(2deg); }
+        .bush.checked .bush-image {
+            transform: scale(0.9);
+            opacity: 0.6;
+            filter: grayscale(0.5) drop-shadow(0 2px 4px rgba(0,0,0,0.2));
         }
 
         .bush-label {
@@ -5110,48 +4744,19 @@
     <!-- BUSH HUNTING PAGE -->
     <div class="page" id="huntPage">
         <div class="bush-screen">
-            <!-- Animated clouds -->
-            <div class="clouds-layer">
-                <div class="cloud cloud-1"></div>
-                <div class="cloud cloud-2"></div>
-                <div class="cloud cloud-3"></div>
-            </div>
-            
-            <!-- Dirt path -->
-            <div class="dirt-path"></div>
-            
-            <!-- Decorative elements -->
-            <div class="decorations">
-                <!-- Left grass tufts -->
-                <div class="grass-tuft"></div>
-                <div class="grass-tuft"></div>
-                <div class="grass-tuft"></div>
-                
-                <!-- Right grass tufts -->
-                <div class="grass-tuft"></div>
-                <div class="grass-tuft"></div>
-                <div class="grass-tuft"></div>
-                
-                <!-- Small rocks -->
-                <div class="rock small-rock"></div>
-                <div class="rock small-rock"></div>
-                <div class="rock small-rock"></div>
-                <div class="rock small-rock"></div>
-            </div>
-            
-            <h2 id="bushHeader">🌿 Choose a bush to search! 🌿</h2>
+            <h2 id="bushHeader">Choose one</h2>
             <div class="bushes-container">
                 <div class="bush" id="bush-0" onclick="selectBush(0)">
                     <div class="bush-image"></div>
-                    <div class="bush-label">Bush 1</div>
+                    <div class="bush-label">Pokéball 1</div>
                 </div>
                 <div class="bush" id="bush-1" onclick="selectBush(1)">
                     <div class="bush-image"></div>
-                    <div class="bush-label">Bush 2</div>
+                    <div class="bush-label">Pokéball 2</div>
                 </div>
                 <div class="bush" id="bush-2" onclick="selectBush(2)">
                     <div class="bush-image"></div>
-                    <div class="bush-label">Bush 3</div>
+                    <div class="bush-label">Pokéball 3</div>
                 </div>
             </div>
         </div>
@@ -6571,60 +6176,7 @@
             document.querySelectorAll('.bush').forEach(bush => {
                 bush.classList.remove('checked');
             });
-            document.getElementById('bushHeader').textContent = '🌿 Choose a bush to search! 🌿';
-            
-            // Randomize decorations on hunt screen
-            randomizeDecorations();
-        }
-
-        // Randomize positions of grass tufts and rocks
-        function randomizeDecorations() {
-            const decorations = document.querySelectorAll('.grass-tuft, .rock');
-            
-            decorations.forEach((decoration, index) => {
-                const isGrass = decoration.classList.contains('grass-tuft');
-                
-                if (isGrass) {
-                    // Grass tufts on left or right sides
-                    const isLeft = index < 3; // First 3 are left, last 3 are right
-                    
-                    if (isLeft) {
-                        // Left side: 5% to 22% from left
-                        const leftPos = 5 + Math.random() * 17;
-                        decoration.style.left = leftPos + '%';
-                        decoration.style.right = 'auto';
-                    } else {
-                        // Right side: 5% to 22% from right
-                        const rightPos = 5 + Math.random() * 17;
-                        decoration.style.right = rightPos + '%';
-                        decoration.style.left = 'auto';
-                    }
-                    
-                    // Vertical position: 55% to 75%
-                    const topPos = 55 + Math.random() * 20;
-                    decoration.style.top = topPos + '%';
-                    
-                } else {
-                    // Rocks near path edges
-                    const isLeft = index < 2; // First 2 rocks on left, last 2 on right
-                    
-                    if (isLeft) {
-                        // Left edge of path: 30% to 35%
-                        const leftPos = 30 + Math.random() * 5;
-                        decoration.style.left = leftPos + '%';
-                        decoration.style.right = 'auto';
-                    } else {
-                        // Right edge of path: 30% to 35% from right
-                        const rightPos = 30 + Math.random() * 5;
-                        decoration.style.right = rightPos + '%';
-                        decoration.style.left = 'auto';
-                    }
-                    
-                    // Vertical position: 60% to 75%
-                    const topPos = 60 + Math.random() * 15;
-                    decoration.style.top = topPos + '%';
-                }
-            });
+            document.getElementById('bushHeader').textContent = 'Choose one';
         }
 
         // ===== POKÉMON CENTER FUNCTIONS =====
@@ -8758,7 +8310,7 @@
                             // All bushes checked, reset for new round
                             setTimeout(() => {
                                 resetBushes();
-                                document.getElementById('bushHeader').textContent = '🌿 No Pokémon this time! Try again! 🌿';
+                                document.getElementById('bushHeader').textContent = 'No Pokémon this time!';
                             }, 500);
                         }
                     }, 1500);
@@ -9142,7 +8694,6 @@
             updateBadgeCount(); // Initialize badge count
             updateStreakDisplay(); // Initialize streak display
             initializeGrid();
-            randomizeDecorations(); // Initialize random positions for decorations
         });
     </script>
 </body>
