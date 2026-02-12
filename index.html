@@ -397,6 +397,7 @@
             pointer-events: none;
             z-index: 0;
         }
+     
 
         /* Dirt path in center */
         .bush-screen h2 {
@@ -520,6 +521,7 @@
             opacity: 0.6;
             filter: grayscale(0.5) drop-shadow(0 2px 4px rgba(0,0,0,0.2));
         }
+
 
         .bush-label {
             color: white;
@@ -1176,32 +1178,6 @@
             30% { transform: translateX(-8px) scale(1.05); }
             40% { transform: translateX(8px) scale(1.05); }
             50% { transform: translateX(0) scale(1); }
-        }
-
-        .battle-log {
-            background: rgba(0,0,0,0.1);
-            padding: var(--spacing-md);
-            border-radius: var(--radius-md);
-            max-height: 200px;
-            overflow-y: auto;
-            font-size: 0.95em;
-        }
-
-        .battle-log-entry {
-            padding: var(--spacing-xs);
-            margin-bottom: var(--spacing-xs);
-            border-radius: var(--radius-sm);
-            animation: fadeIn 0.3s;
-        }
-
-        .log-damage {
-            background: #FFCDD2;
-            color: #C62828;
-        }
-
-        .log-heal {
-            background: #C8E6C9;
-            color: #2E7D32;
         }
 
         /* Victory & Defeat Screens */
@@ -2937,94 +2913,188 @@
         }
 
         .battle-field {
-            background: linear-gradient(to bottom, #87CEEB 0%, #98D8D8 50%, #8FBC8F 100%);
+            background: url('battle_backgrounds.png') center center / cover no-repeat;
+            background-position: 0 0; /* Will change based on battle type */
             border-radius: 20px;
-            padding: 30px;
+            padding: 0;
             margin-bottom: 20px;
-            min-height: 450px;
+            height: 480px;
             position: relative;
+            overflow: hidden;
         }
 
-        .battle-status {
+        /* Battle Info Boxes */
+        .battle-info-box {
+            position: absolute;
+            background: linear-gradient(135deg, #F5F5DC 0%, #E8E8D0 100%);
+            border: 3px solid #2C2C2C;
+            border-radius: 12px;
+            padding: 12px 16px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            min-width: 200px;
+            z-index: 10;
+        }
+
+        .battle-info-box.opponent-info {
+            top: 30px;
+            left: 30px;
+        }
+
+        .battle-info-box.player-info {
+            bottom: 100px;
+            right: 30px;
+        }
+
+        .pokemon-name-label {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #2C2C2C;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            font-family: 'Courier New', monospace;
+        }
+
+        .pokemon-health-display {
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            gap: 20px;
-        }
-
-        .trainer-side {
-            flex: 1;
-            background: rgba(255,255,255,0.9);
-            padding: 15px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-
-        .trainer-side.player {
-            text-align: left;
-            border: 3px solid #22c55e;
-        }
-
-        .trainer-side.opponent {
-            text-align: right;
-            border: 3px solid #ef4444;
-        }
-
-        .trainer-name {
-            font-size: 1.3em;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .trainer-side.player .trainer-name {
-            color: #22c55e;
-        }
-
-        .trainer-side.opponent .trainer-name {
-            color: #ef4444;
-        }
-
-        .battle-pokemon-display {
-            display: flex;
-            justify-content: center;
             align-items: center;
-            padding: 20px;
-            min-height: 350px;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .health-label {
+            font-size: 0.9em;
+            font-weight: 700;
+            color: #FF6B1A;
+            font-family: 'Courier New', monospace;
+        }
+
+        .health-bar-container {
+            flex: 1;
+            min-width: 120px;
+            height: 8px;
+            background: #B8B8A8;
+            border: 2px solid #2C2C2C;
+            border-radius: 4px;
+            overflow: hidden;
             position: relative;
         }
 
-        .battle-pokemon {
-            text-align: center;
-            max-width: 500px;
+        .health-bar-fill {
+            display: block;
+            height: 100%;
             width: 100%;
+            background: #58D858;
+            background: linear-gradient(to bottom, #58D858 0%, #40C040 100%);
+            transition: width 0.5s ease, background 0.3s ease;
+            position: relative;
         }
 
-        /* Hide Pokemon by default, show only during their turn */
-        .battle-pokemon.player-pokemon {
-            display: none;
+        .health-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
         }
 
-        .battle-pokemon.opponent-pokemon {
-            display: none;
+        /* Health bar colors based on HP */
+        .health-bar-fill.health-low {
+            background: #F83820;
+            background: linear-gradient(to bottom, #F83820 0%, #D02810 100%);
         }
 
-        /* Show Pokemon when it's their turn */
-        .battle-pokemon.player-pokemon.active-turn {
-            display: block;
+        .health-bar-fill.health-medium {
+            background: #F8D030;
+            background: linear-gradient(to bottom, #F8D030 0%, #E0B818 100%);
         }
 
-        .battle-pokemon.opponent-pokemon.active-turn {
-            display: block;
+        .health-text {
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #2C2C2C;
+            font-family: 'Courier New', monospace;
+            width: 100%;
+            text-align: right;
+            margin-top: 4px;
+        }
+
+        /* Pokémon Sprite Containers */
+        .battle-pokemon-container {
+            position: absolute;
+            z-index: 5;
+        }
+
+        .battle-pokemon-container.opponent-position {
+            top: 25%;
+            right: 22%;
+        }
+
+        .battle-pokemon-container.player-position {
+            bottom: 20%;
+            left: 8%;  /* Moved from 18% to 8% - more to the left corner */
         }
 
         .battle-pokemon-sprite {
-            width: 220px;
-            height: 220px;
+            width: 160px;
+            height: 160px;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4));
             transition: all 0.3s ease;
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
-            margin: 20px auto;
         }
 
+        .opponent-sprite {
+            width: 140px;
+            height: 140px;
+        }
+
+        .player-sprite {
+            width: 180px;
+            height: 180px;
+        }
+
+        /* Pokéball Team Display */
+        .team-pokeballs {
+            position: absolute;
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .team-pokeballs.opponent-team {
+            top: 30px;
+            right: 30px;
+        }
+
+        .team-pokeballs.player-team {
+            bottom: 30px;
+            left: 30px;
+        }
+
+        .pokeball-slot {
+            width: 24px;
+            height: 24px;
+            background: url('pokeball.png') center center / contain no-repeat;
+            opacity: 0.4;
+            filter: grayscale(1);
+            transition: all 0.3s ease;
+        }
+
+        .pokeball-slot.active {
+            opacity: 1;
+            filter: grayscale(0);
+            transform: scale(1.2);
+        }
+
+        .pokeball-slot.fainted {
+            opacity: 0.2;
+            filter: grayscale(1) brightness(0.5);
+        }
+
+        /* Attack Animations */
         .battle-pokemon-sprite.attacking {
             animation: attackMove 0.6s ease;
         }
@@ -3034,7 +3104,7 @@
             50% { transform: translateX(40px) scale(1.2); }
         }
 
-        .battle-pokemon.opponent-pokemon .battle-pokemon-sprite.attacking {
+        .opponent-sprite.attacking {
             animation: attackMoveLeft 0.6s ease;
         }
 
@@ -3100,45 +3170,6 @@
             font-size: 1em;
             font-weight: bold;
             color: #1f2937;
-        }
-
-        .battle-log {
-            background: #1f2937;
-            color: white;
-            border-radius: 15px;
-            padding: 20px;
-            min-height: 120px;
-            max-height: 150px;
-            overflow-y: auto;
-            margin-bottom: 20px;
-            font-family: 'Courier New', monospace;
-            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
-            border: 3px solid #374151;
-        }
-
-        .battle-log-entry {
-            margin-bottom: 8px;
-            padding: 6px 10px;
-            border-left: 4px solid #3b82f6;
-            padding-left: 12px;
-            background: rgba(59, 130, 246, 0.1);
-            border-radius: 4px;
-        }
-
-        .battle-log-entry.damage {
-            border-left-color: #ef4444;
-            background: rgba(239, 68, 68, 0.1);
-        }
-
-        .battle-log-entry.heal {
-            border-left-color: #22c55e;
-            background: rgba(34, 197, 94, 0.1);
-        }
-
-        .battle-log-entry.super-effective {
-            border-left-color: #f59e0b;
-            background: rgba(245, 158, 11, 0.1);
-            font-weight: bold;
         }
 
         .battle-controls {
@@ -3318,7 +3349,7 @@
             100% { opacity: 0; transform: translateY(50px) scale(0.5); }
         }
 
-        .health-bar-container {
+        .old-battle-health-container {
             background: rgba(255,255,255,0.9);
             padding: 15px;
             border-radius: 15px;
@@ -3333,7 +3364,7 @@
             margin-bottom: 5px;
         }
 
-        .health-bar {
+        .old-health-bar {
             width: 200px;
             height: 25px;
             background: #ddd;
@@ -4356,12 +4387,6 @@
                 padding: 20px;
             }
 
-            .battle-log {
-                font-size: 0.85em;
-                max-height: 100px;
-                min-height: 80px;
-            }
-
             .available-pokemon {
                 grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
             }
@@ -4668,52 +4693,68 @@
             <!-- Gym Leader Battle View -->
             <div id="gymBattleView" style="display: none;">
                 <div class="gym-battle-container">
-                    <div class="gym-battle-header">
-                        <h2 id="gymBattleTitle">Gym Leader Battle!</h2>
-                    </div>
-
-                    <!-- Battle Arena with Pokémon Sprites -->
-                    <div class="gym-battle-arena">
-                        <!-- Player Side -->
-                        <div class="gym-battle-side player-side">
-                            <div class="gym-pokemon-display" id="gymPlayerPokemon">
-                                <!-- Will be populated with player's team -->
-                            </div>
-                            <div class="gym-health-bar">
-                                <div class="health-label">Your Team</div>
-                                <div class="health-text"><span id="playerHP">100</span> / 100 HP</div>
-                                <div class="health-bar-outer">
-                                    <div class="health-bar-inner player-health" id="playerHealthBar" style="width: 100%"></div>
+                    <!-- Battle Background with Platform -->
+                    <div class="battle-field" id="gymBattleField">
+                        <!-- Opponent Info Box (Top Left) - Gym Leader's Pokémon -->
+                        <div class="battle-info-box opponent-info">
+                            <div class="pokemon-name-label" id="gymLeaderPokemonName">LEADER'S POKÉMON</div>
+                            <div class="pokemon-health-display">
+                                <span class="health-label">HP</span>
+                                <div class="health-bar-container">
+                                    <div class="health-bar-fill" id="gymLeaderHealthFill" style="width: 100%;"></div>
                                 </div>
+                                <div class="health-text" id="gymLeaderHealthText">100/100 HP</div>
                             </div>
                         </div>
 
-                        <!-- VS Divider -->
-                        <div class="gym-vs-divider">VS</div>
-
-                        <!-- Leader Side -->
-                        <div class="gym-battle-side leader-side">
-                            <div class="gym-pokemon-display" id="gymLeaderPokemon">
-                                <!-- Will be populated with leader's Pokémon -->
-                            </div>
-                            <div class="gym-health-bar">
-                                <div class="health-label" id="leaderName">Gym Leader</div>
-                                <div class="health-text"><span id="leaderHP">100</span> / 100 HP</div>
-                                <div class="health-bar-outer">
-                                    <div class="health-bar-inner leader-health" id="leaderHealthBar" style="width: 100%"></div>
+                        <!-- Player Info Box (Bottom Right) -->
+                        <div class="battle-info-box player-info">
+                            <div class="pokemon-name-label" id="gymPlayerPokemonName">YOUR POKÉMON</div>
+                            <div class="pokemon-health-display">
+                                <span class="health-label">HP</span>
+                                <div class="health-bar-container">
+                                    <div class="health-bar-fill" id="gymPlayerHealthFill" style="width: 100%;"></div>
                                 </div>
+                                <div class="health-text" id="gymPlayerHealthText">100/100 HP</div>
                             </div>
+                        </div>
+
+                        <!-- Gym Leader's Pokémon (Top Right on Platform) -->
+                        <div class="battle-pokemon-container opponent-position">
+                            <img class="battle-pokemon-sprite opponent-sprite" id="gymLeaderSprite" src="" alt="Leader's Pokémon">
+                        </div>
+
+                        <!-- Player Pokémon (Bottom Left on Platform) -->
+                        <div class="battle-pokemon-container player-position">
+                            <img class="battle-pokemon-sprite player-sprite" id="gymPlayerSprite" src="" alt="Your Pokémon">
+                        </div>
+
+                        <!-- Team Pokéballs Display (Top - Gym Leader) -->
+                        <div class="team-pokeballs opponent-team">
+                            <div class="pokeball-slot" data-team="leader" data-index="0"></div>
+                            <div class="pokeball-slot" data-team="leader" data-index="1"></div>
+                        </div>
+
+                        <!-- Team Pokéballs Display (Bottom - Player) -->
+                        <div class="team-pokeballs player-team">
+                            <div class="pokeball-slot active" data-team="player" data-index="0"></div>
+                            <div class="pokeball-slot" data-team="player" data-index="1"></div>
                         </div>
                     </div>
 
-                    <div class="gym-question-area">
-                        <div class="question-display" id="gymBattleQuestion">2 × 2 = ?</div>
-                        <input type="number" id="gymBattleInput" class="gym-answer-input" placeholder="Your answer">
-                        <button class="gym-submit-btn" onclick="checkBattleAnswer()">Attack!</button>
-                        <div class="gym-feedback" id="gymBattleFeedback"></div>
-                    </div>
+                    <!-- Battle Controls -->
+                    <div class="battle-controls">
+                        <div class="battle-message" id="gymBattleMessage">
+                            Get ready to battle!
+                        </div>
 
-                    <div class="battle-log" id="battleLog"></div>
+                        <div class="battle-question" id="gymBattleQuestion">2 × 2 = ?</div>
+                        <div class="answer-section" style="text-align: center; margin-top: 20px;">
+                            <input type="number" inputmode="numeric" pattern="[0-9]*" class="answer-input" id="gymBattleInput" placeholder="Enter answer" style="font-size: 1.5em; padding: 15px; width: 200px;">
+                            <br>
+                            <button class="submit-btn" onclick="checkBattleAnswer()" style="margin-top: 15px; padding: 15px 40px; font-size: 1.2em;">⚔️ Attack!</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -4827,38 +4868,54 @@
                     <!-- Battle flash overlay -->
                     <div class="battle-flash" id="battleFlash"></div>
                     
+                    <!-- Battle Background with Platform -->
                     <div class="battle-field" id="battleField">
-                        <!-- Battle Status - Team Overview -->
-                        <div class="battle-status">
-                            <div class="trainer-side player">
-                                <div class="trainer-name">👤 YOUR TEAM</div>
-                                <div class="team-pokemon-list" id="playerTeamList"></div>
-                            </div>
-                            <div class="trainer-side opponent">
-                                <div class="trainer-name">RIVAL TRAINER 🤖</div>
-                                <div class="team-pokemon-list" id="opponentTeamList"></div>
+                        <!-- Opponent Info Box (Top Left) -->
+                        <div class="battle-info-box opponent-info">
+                            <div class="pokemon-name-label" id="opponentPokemonName">OPPONENT</div>
+                            <div class="pokemon-health-display">
+                                <span class="health-label">HP</span>
+                                <div class="health-bar-container">
+                                    <div class="health-bar-fill" id="opponentHealthFill" style="width: 100%;"></div>
+                                </div>
+                                <div class="health-text" id="opponentHealthText">100/100 HP</div>
                             </div>
                         </div>
 
-                        <!-- Pokemon Display - Main Battle Area -->
-                        <div class="battle-pokemon-display">
-                            <div class="battle-pokemon player-pokemon">
-                                <div class="pokemon-name-battle" id="playerPokemonName">Your Pokémon</div>
-                                <img class="battle-pokemon-sprite" id="playerSprite" src="" alt="">
-                                <div class="pokemon-health-bar">
-                                    <div class="health-fill" id="playerHealthFill" style="width: 100%;"></div>
+                        <!-- Player Info Box (Bottom Right) -->
+                        <div class="battle-info-box player-info">
+                            <div class="pokemon-name-label" id="playerPokemonName">YOUR POKÉMON</div>
+                            <div class="pokemon-health-display">
+                                <span class="health-label">HP</span>
+                                <div class="health-bar-container">
+                                    <div class="health-bar-fill" id="playerHealthFill" style="width: 100%;"></div>
                                 </div>
-                                <div class="pokemon-info-bar" id="playerHealthText">HP: 100/100</div>
+                                <div class="health-text" id="playerHealthText">100/100 HP</div>
                             </div>
+                        </div>
 
-                            <div class="battle-pokemon opponent-pokemon">
-                                <div class="pokemon-name-battle" id="opponentPokemonName">Opponent Pokémon</div>
-                                <img class="battle-pokemon-sprite" id="opponentSprite" src="" alt="">
-                                <div class="pokemon-health-bar">
-                                    <div class="health-fill" id="opponentHealthFill" style="width: 100%;"></div>
-                                </div>
-                                <div class="pokemon-info-bar" id="opponentHealthText">HP: 100/100</div>
-                            </div>
+                        <!-- Opponent Pokémon (Top Right on Platform) -->
+                        <div class="battle-pokemon-container opponent-position">
+                            <img class="battle-pokemon-sprite opponent-sprite" id="opponentSprite" src="" alt="Opponent Pokémon">
+                        </div>
+
+                        <!-- Player Pokémon (Bottom Left on Platform) -->
+                        <div class="battle-pokemon-container player-position">
+                            <img class="battle-pokemon-sprite player-sprite" id="playerSprite" src="" alt="Your Pokémon">
+                        </div>
+
+                        <!-- Team Pokéballs Display (Top - Opponent) -->
+                        <div class="team-pokeballs opponent-team">
+                            <div class="pokeball-slot" data-team="opponent" data-index="0"></div>
+                            <div class="pokeball-slot" data-team="opponent" data-index="1"></div>
+                            <div class="pokeball-slot" data-team="opponent" data-index="2"></div>
+                        </div>
+
+                        <!-- Team Pokéballs Display (Bottom - Player) -->
+                        <div class="team-pokeballs player-team">
+                            <div class="pokeball-slot active" data-team="player" data-index="0"></div>
+                            <div class="pokeball-slot" data-team="player" data-index="1"></div>
+                            <div class="pokeball-slot" data-team="player" data-index="2"></div>
                         </div>
                     </div>
 
@@ -4880,9 +4937,6 @@
                             <button class="submit-btn" onclick="submitBattleAnswer()" style="margin-top: 15px; padding: 15px 40px; font-size: 1.2em;">⚔️ Attack!</button>
                         </div>
                     </div>
-
-                    <!-- Battle Log -->
-                    <div class="battle-log" id="battleLog"></div>
                 </div>
             </div>
         </div>
@@ -5446,6 +5500,7 @@
         let gymPhase = null; // 'training' or 'leader'
         let gymQuestions = [];
         let currentGymQuestion = 0;
+        let currentGymPlayerIndex = 0; // Track which Pokémon is currently battling
         let gymPlayerHP = 100;
         let gymLeaderHP = 100;
         let gymSelectedTeam = [];
@@ -7088,6 +7143,7 @@
         function startLeaderBattle() {
             gymPhase = 'leader';
             currentGymQuestion = 0;
+            currentGymPlayerIndex = 0;  // Track which Pokémon is active
             gymPlayerHP = 100;
             gymLeaderHP = 100;
             
@@ -7104,75 +7160,34 @@
             document.getElementById('gymTrainingView').style.display = 'none';
             document.getElementById('gymBattleView').style.display = 'block';
             
-            document.getElementById('leaderName').textContent = currentGym.leader;
-            
             // Render Pokémon sprites
             renderGymBattlePokemon();
             
-            updateGymHealth();
             showGymQuestion();
             
-            // Show pre-battle dialogue
-            addBattleLog(`${currentGym.leader}: "${currentGym.dialogue.preBattle}"`);
+            // Show initial battle message
+            document.getElementById('gymBattleMessage').textContent = `${currentGym.leader} challenges you to a battle!`;
         }
 
         // Render Pokémon sprites in gym battle
         function renderGymBattlePokemon() {
-            // Player's team
-            const playerContainer = document.getElementById('gymPlayerPokemon');
-            playerContainer.innerHTML = '';
-            
-            gymSelectedTeam.forEach(pokemonName => {
-                const pokemonIndex = pokemon.indexOf(pokemonName);
-                const img = document.createElement('img');
-                img.className = 'gym-pokemon-sprite';
-                img.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonIndex + 1}.png`;
-                img.alt = pokemonName;
-                img.title = pokemonName;
-                playerContainer.appendChild(img);
-            });
-            
-            // Leader's side - show leader sprite and Pokémon
-            const leaderContainer = document.getElementById('gymLeaderPokemon');
-            leaderContainer.innerHTML = '';
-            
-            // Create leader display container
-            const leaderDisplay = document.createElement('div');
-            leaderDisplay.className = 'gym-leader-display';
-            
-            // Individual gym leader sprite files
-            const leaderSprites = {
-                1: 'brok.png',      // Brock
-                2: 'erika.png',     // Erika
-                3: 'misty.png',     // Misty
-                4: 'surge.png',     // Lt. Surge
-                5: 'koga.png',      // Koga
-                6: 'blaine.png',    // Blaine
-                7: 'sabrina.png',   // Sabrina
-                8: 'lorelei.png',   // Lorelei
-                9: 'lance.png'      // Lance
-            };
-            
-            const spriteFile = leaderSprites[currentGym.id] || 'brok.png';
-            
-            // Gym leader sprite
-            const leaderSpriteContainer = document.createElement('div');
-            leaderSpriteContainer.className = 'gym-leader-battle-sprite';
-            leaderSpriteContainer.innerHTML = `
-                <img src="${spriteFile}" alt="${currentGym.leader}" class="gym-leader-sprite-img">
-            `;
-            leaderDisplay.appendChild(leaderSpriteContainer);
-            
-            // Leader's Pokémon
+            // Get current active Pokémon for both sides
+            const playerPokemonName = gymSelectedTeam[currentGymPlayerIndex];
+            const playerPokemonIndex = pokemon.indexOf(playerPokemonName);
             const leaderPokemon = getGymLeaderPokemon(currentGym.type);
-            const pokemonImg = document.createElement('img');
-            pokemonImg.className = 'gym-pokemon-sprite';
-            pokemonImg.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${leaderPokemon.id}.png`;
-            pokemonImg.alt = leaderPokemon.name;
-            pokemonImg.title = `${currentGym.leader}'s ${leaderPokemon.name}`;
-            leaderDisplay.appendChild(pokemonImg);
             
-            leaderContainer.appendChild(leaderDisplay);
+            // Update Player Pokémon sprite and info
+            document.getElementById('gymPlayerSprite').src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${playerPokemonIndex + 1}.gif`;
+            document.getElementById('gymPlayerPokemonName').textContent = playerPokemonName.toUpperCase();
+            updateGymHealth('player', gymPlayerHP, 100);
+            
+            // Update Leader's Pokémon sprite and info
+            document.getElementById('gymLeaderSprite').src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${leaderPokemon.id}.gif`;
+            document.getElementById('gymLeaderPokemonName').textContent = leaderPokemon.name.toUpperCase();
+            updateGymHealth('leader', gymLeaderHP, 100);
+            
+            // Update Pokéball displays
+            updateGymPokeballs();
         }
 
         // Get appropriate Pokémon for gym leader based on type
@@ -7197,16 +7212,19 @@
             const input = document.getElementById('gymBattleInput');
             const userAnswer = parseInt(input.value);
             const question = gymQuestions[currentGymQuestion];
-            const feedback = document.getElementById('gymBattleFeedback');
+            const messageEl = document.getElementById('gymBattleMessage');
             
             if (userAnswer === question.answer) {
                 // Correct answer: deal damage to leader, small damage to player
                 gymLeaderHP -= 10;
                 gymPlayerHP -= 2;
                 
-                feedback.className = 'gym-feedback correct';
-                feedback.textContent = '✅ Critical Hit! -10 HP to Leader!';
-                addBattleLog('💚 Your Pokémon attacked! Leader took 10 damage!');
+                messageEl.textContent = `✅ Critical Hit! ${gymSelectedTeam[currentGymPlayerIndex]} dealt 10 damage!`;
+                messageEl.style.color = '#22c55e';
+                
+                // Update health bars
+                updateGymHealth('leader', gymLeaderHP, 100);
+                updateGymHealth('player', gymPlayerHP, 100);
                 
                 // Shake leader's Pokémon
                 shakeGymPokemon('leader');
@@ -7215,15 +7233,21 @@
                 // Wrong answer: take damage
                 gymPlayerHP -= 15;
                 
-                feedback.className = 'gym-feedback incorrect';
-                feedback.textContent = '❌ Miss! You took 15 damage!';
-                addBattleLog('❤️ Your Pokémon got confused! You took 15 damage!');
+                messageEl.textContent = `❌ Miss! You took 15 damage!`;
+                messageEl.style.color = '#ef4444';
+                
+                // Update health bars
+                updateGymHealth('player', gymPlayerHP, 100);
                 
                 // Shake player's Pokémon
                 shakeGymPokemon('player');
             }
             
-            updateGymHealth();
+            // Update Pokéballs
+            updateGymPokeballs();
+            
+            // Clear input
+            input.value = '';
             
             setTimeout(() => {
                 // Check win/lose
@@ -7249,57 +7273,64 @@
 
         // Shake Pokémon sprite on damage
         function shakeGymPokemon(side) {
-            const container = side === 'player' ? 
-                document.getElementById('gymPlayerPokemon') : 
-                document.getElementById('gymLeaderPokemon');
+            const sprite = side === 'player' ? 
+                document.getElementById('gymPlayerSprite') : 
+                document.getElementById('gymLeaderSprite');
             
-            const sprites = container.querySelectorAll('.gym-pokemon-sprite');
-            sprites.forEach(sprite => {
-                sprite.style.animation = 'none';
-                setTimeout(() => {
-                    sprite.style.animation = 'shake-damage 0.5s';
-                }, 10);
-            });
+            sprite.classList.add('hit');
+            setTimeout(() => {
+                sprite.classList.remove('hit');
+            }, 500);
         }
 
         // Update health bars
-        function updateGymHealth() {
-            const playerBar = document.getElementById('playerHealthBar');
-            const leaderBar = document.getElementById('leaderHealthBar');
-            const playerHPText = document.getElementById('playerHP');
-            const leaderHPText = document.getElementById('leaderHP');
+        function updateGymHealth(side, hp, maxHp) {
+            const healthBar = document.getElementById(side === 'player' ? 'gymPlayerHealthFill' : 'gymLeaderHealthFill');
+            const healthText = document.getElementById(side === 'player' ? 'gymPlayerHealthText' : 'gymLeaderHealthText');
             
-            const playerPercent = Math.max(0, gymPlayerHP);
-            const leaderPercent = Math.max(0, gymLeaderHP);
+            const percentage = Math.max(0, (hp / maxHp) * 100);
+            healthBar.style.width = percentage + '%';
+            healthText.textContent = `${Math.max(0, Math.floor(hp))}/${maxHp} HP`;
             
-            playerBar.style.width = playerPercent + '%';
-            leaderBar.style.width = leaderPercent + '%';
-            
-            playerHPText.textContent = Math.max(0, gymPlayerHP);
-            leaderHPText.textContent = Math.max(0, gymLeaderHP);
-            
-            // Color coding
-            if (playerPercent <= 30) playerBar.classList.add('critical');
-            else if (playerPercent <= 50) playerBar.classList.add('low');
-            
-            if (leaderPercent <= 30) leaderBar.classList.add('critical');
-            else if (leaderPercent <= 50) leaderBar.classList.add('low');
-        }
-
-        // Add battle log entry
-        function addBattleLog(message) {
-            const log = document.getElementById('battleLog');
-            const entry = document.createElement('div');
-            entry.className = 'battle-log-entry';
-            entry.textContent = message;
-            log.insertBefore(entry, log.firstChild);
-            
-            // Keep only last 10 entries
-            while (log.children.length > 10) {
-                log.removeChild(log.lastChild);
+            // Update health bar color
+            healthBar.classList.remove('health-low', 'health-medium');
+            if (percentage <= 25) {
+                healthBar.classList.add('health-low');
+            } else if (percentage <= 50) {
+                healthBar.classList.add('health-medium');
             }
         }
 
+        // Update Pokéball displays for gym battle
+        function updateGymPokeballs() {
+            // Update player Pokéballs (2 Pokéballs for gym)
+            const playerBalls = document.querySelectorAll('.team-pokeballs.player-team .pokeball-slot');
+            gymSelectedTeam.forEach((p, i) => {
+                if (playerBalls[i]) {
+                    playerBalls[i].classList.remove('active', 'fainted');
+                    if (gymPlayerHP <= 0 && i === currentGymPlayerIndex) {
+                        playerBalls[i].classList.add('fainted');
+                    } else if (i === currentGymPlayerIndex) {
+                        playerBalls[i].classList.add('active');
+                    }
+                }
+            });
+            
+            // Update leader Pokéballs (always just show 2 - gym leaders have 2 Pokémon in this game)
+            const leaderBalls = document.querySelectorAll('.team-pokeballs.opponent-team .pokeball-slot');
+            leaderBalls.forEach((ball, i) => {
+                ball.classList.remove('active', 'fainted');
+                if (i === 0) {  // Leader always uses first Pokémon
+                    if (gymLeaderHP <= 0) {
+                        ball.classList.add('fainted');
+                    } else {
+                        ball.classList.add('active');
+                    }
+                }
+            });
+        }
+
+        // Add battle log entry
         // Win gym
         function winGym() {
             // Update progress
@@ -7704,8 +7735,7 @@
                     opponentTeam: opponentTeam,
                     playerIndex: 0,
                     opponentIndex: 0,
-                    turn: 'player',
-                    log: []
+                    turn: 'player'
                 };
                 
                 document.getElementById('teamSelectionScreen').style.display = 'none';
@@ -7713,7 +7743,6 @@
                 
                 console.log('Loading battle Pokemon...');
                 loadBattlePokemon();
-                addBattleLog('Battle Start!', '');
                 startPlayerTurn();
                 
             } catch (error) {
@@ -7740,61 +7769,51 @@
             
             // Update team display
             updateTeamDisplay();
-            
-            // Show player's Pokemon initially (it's their turn)
-            showActivePokemon('player');
         }
 
-        // Show the active Pokemon based on whose turn it is
-        function showActivePokemon(side) {
-            const playerDiv = document.querySelector('.battle-pokemon.player-pokemon');
-            const opponentDiv = document.querySelector('.battle-pokemon.opponent-pokemon');
-            
-            playerDiv.classList.remove('active-turn');
-            opponentDiv.classList.remove('active-turn');
-            
-            if (side === 'player') {
-                playerDiv.classList.add('active-turn');
-            } else {
-                opponentDiv.classList.add('active-turn');
-            }
-        }
-
-        // Update health bar
+        // Update health bar with color coding
         function updateBattleHealth(side, hp, maxHp) {
             const healthBar = document.getElementById(`${side}HealthFill`);
             const healthText = document.getElementById(`${side}HealthText`);
             
             const percentage = Math.max(0, (hp / maxHp) * 100);
             healthBar.style.width = percentage + '%';
-            healthText.textContent = `HP: ${Math.max(0, Math.floor(hp))}/${maxHp}`;
             
-            healthBar.classList.remove('low', 'critical');
-            if (percentage <= 20) {
-                healthBar.classList.add('critical');
+            // Show HP numbers for BOTH player and opponent
+            healthText.textContent = `${Math.max(0, Math.floor(hp))}/${maxHp} HP`;
+            
+            // Update health bar color
+            healthBar.classList.remove('health-low', 'health-medium');
+            if (percentage <= 25) {
+                healthBar.classList.add('health-low');
             } else if (percentage <= 50) {
-                healthBar.classList.add('low');
+                healthBar.classList.add('health-medium');
             }
         }
 
-        // Update team display
+        // Update Pokéball team display
         function updateTeamDisplay() {
-            const playerTeamEl = document.getElementById('playerTeamList');
-            const opponentTeamEl = document.getElementById('opponentTeamList');
+            // Update player Pokéballs
+            const playerBalls = document.querySelectorAll('.team-pokeballs.player-team .pokeball-slot');
+            currentBattle.playerTeam.forEach((p, i) => {
+                playerBalls[i].classList.remove('active', 'fainted');
+                if (p.fainted) {
+                    playerBalls[i].classList.add('fainted');
+                } else if (i === currentBattle.playerIndex) {
+                    playerBalls[i].classList.add('active');
+                }
+            });
             
-            playerTeamEl.innerHTML = currentBattle.playerTeam.map((p, i) => `
-                <div class="team-pokemon-item ${i === currentBattle.playerIndex ? 'active' : ''} ${p.fainted ? 'fainted' : ''}">
-                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${p.number}.gif">
-                    <div style="font-size: 0.7em;">${p.name}</div>
-                </div>
-            `).join('');
-            
-            opponentTeamEl.innerHTML = currentBattle.opponentTeam.map((p, i) => `
-                <div class="team-pokemon-item ${i === currentBattle.opponentIndex ? 'active' : ''} ${p.fainted ? 'fainted' : ''}">
-                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${p.number}.gif">
-                    <div style="font-size: 0.7em;">${p.name}</div>
-                </div>
-            `).join('');
+            // Update opponent Pokéballs
+            const opponentBalls = document.querySelectorAll('.team-pokeballs.opponent-team .pokeball-slot');
+            currentBattle.opponentTeam.forEach((p, i) => {
+                opponentBalls[i].classList.remove('active', 'fainted');
+                if (p.fainted) {
+                    opponentBalls[i].classList.add('fainted');
+                } else if (i === currentBattle.opponentIndex) {
+                    opponentBalls[i].classList.add('active');
+                }
+            });
         }
 
         // Start player turn
@@ -7803,9 +7822,6 @@
             currentBattle.currentQuestion = mathData.problem;
             currentBattle.currentAnswer = mathData.answer;
             currentBattle.turn = 'player';
-            
-            // Show player's Pokemon
-            showActivePokemon('player');
             
             const playerPokemon = currentBattle.playerTeam[currentBattle.playerIndex];
             const pokemonType = playerPokemon.types[0].type.name;
@@ -7828,11 +7844,9 @@
             
             if (userAnswer === currentBattle.currentAnswer) {
                 playSuccessSound();
-                addBattleLog('Correct!', '');
                 playerAttack();
             } else {
                 playFailureSound();
-                addBattleLog('Wrong answer!', 'damage');
                 document.getElementById('battleMessage').textContent = 'Wrong answer! Opponent attacks!';
                 setTimeout(() => opponentAttack(), 1500);
             }
@@ -7865,21 +7879,15 @@
             playBattleAttackAnimation('player', playerType, damage, effectiveness === 'super', effectiveness);
             
             setTimeout(() => {
-                // Switch to show opponent getting hit
-                showActivePokemon('opponent');
-                
                 opponentPokemon.hp -= damage;
                 updateBattleHealth('opponent', opponentPokemon.hp, opponentPokemon.maxHp);
                 
                 let message = `${playerPokemon.name} used ${attackName}! ${damage} damage!`;
                 if (effectiveness === 'super') {
                     message += ' Super effective!';
-                    addBattleLog(message, 'super-effective');
                 } else if (effectiveness === 'weak') {
                     message += ' Not very effective...';
-                    addBattleLog(message, 'damage');
                 } else {
-                    addBattleLog(message, 'damage');
                 }
                 
                 document.getElementById('battleMessage').textContent = message;
@@ -7920,9 +7928,6 @@
             playBattleAttackAnimation('opponent', opponentType, damage, effectiveness === 'super', effectiveness);
             
             setTimeout(() => {
-                // Switch to show player getting hit
-                showActivePokemon('player');
-                
                 playerPokemon.hp -= damage;
                 updateBattleHealth('player', playerPokemon.hp, playerPokemon.maxHp);
                 
@@ -7930,7 +7935,6 @@
                 if (effectiveness === 'super') {
                     message += ' Super effective!';
                 }
-                addBattleLog(message, 'damage');
                 document.getElementById('battleMessage').textContent = message;
                 
                 setTimeout(() => {
@@ -7952,7 +7956,6 @@
             markPokemonAsInjured(playerPokemon.name);
             
             document.getElementById('playerSprite').classList.add('fainted');
-            addBattleLog(`${playerPokemon.name} fainted!`, 'damage');
             document.getElementById('battleMessage').textContent = `${playerPokemon.name} fainted!`;
             
             setTimeout(() => {
@@ -7964,7 +7967,6 @@
                 } else {
                     document.getElementById('playerSprite').classList.remove('fainted');
                     loadBattlePokemon();
-                    addBattleLog(`Go! ${currentBattle.playerTeam[currentBattle.playerIndex].name}!`, '');
                     setTimeout(() => startPlayerTurn(), 1500);
                 }
             }, 2000);
@@ -7976,7 +7978,6 @@
             opponentPokemon.fainted = true;
             
             document.getElementById('opponentSprite').classList.add('fainted');
-            addBattleLog(`Enemy ${opponentPokemon.name} fainted!`, 'heal');
             document.getElementById('battleMessage').textContent = `Enemy ${opponentPokemon.name} fainted!`;
             playSuccessSound();
             
@@ -7988,22 +7989,12 @@
                 } else {
                     document.getElementById('opponentSprite').classList.remove('fainted');
                     loadBattlePokemon();
-                    addBattleLog(`Opponent sent out ${currentBattle.opponentTeam[currentBattle.opponentIndex].name}!`, '');
                     setTimeout(() => startPlayerTurn(), 1500);
                 }
             }, 2000);
         }
 
         // Add entry to battle log
-        function addBattleLog(message, type) {
-            const log = document.getElementById('battleLog');
-            const entry = document.createElement('div');
-            entry.className = `battle-log-entry ${type}`;
-            entry.textContent = message;
-            log.appendChild(entry);
-            log.scrollTop = log.scrollHeight;
-        }
-
         // End battle
         function endBattle(playerWon) {
             const modal = document.getElementById('battleResultModal');
