@@ -397,7 +397,6 @@
             pointer-events: none;
             z-index: 0;
         }
-     
 
         /* Dirt path in center */
         .bush-screen h2 {
@@ -521,7 +520,6 @@
             opacity: 0.6;
             filter: grayscale(0.5) drop-shadow(0 2px 4px rgba(0,0,0,0.2));
         }
-
 
         .bush-label {
             color: white;
@@ -1304,156 +1302,290 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: var(--spacing-xl);
-        }
-
-        .pokecenter-title {
-            font-size: 3em;
-            font-weight: 800;
-            color: white;
-            text-shadow: 0 4px 16px rgba(0,0,0,0.3);
-            margin-bottom: var(--spacing-xl);
-            text-align: center;
-        }
-
-        .nurse-message {
-            background: rgba(255, 255, 255, 0.95);
-            border: var(--border-width) solid var(--primary);
-            border-radius: var(--radius-lg);
-            padding: var(--spacing-lg);
-            margin-bottom: var(--spacing-xl);
-            max-width: 600px;
-            box-shadow: var(--shadow-md);
-        }
-
-        .nurse-message p {
-            color: var(--text-dark);
-            font-size: 1.2em;
-            text-align: center;
-            margin: 0;
-            font-weight: 600;
-        }
-
-        .healing-container {
-            display: flex;
-            gap: var(--spacing-xl);
-            flex-wrap: wrap;
             justify-content: center;
-            width: 100%;
-            max-width: 1000px;
-        }
-
-        /* Healing Machine */
-        .healing-machine {
-            background: linear-gradient(135deg, #EF5350 0%, #C62828 100%);
-            border: 4px solid #8B0000;
-            border-radius: var(--radius-xl);
-            padding: var(--spacing-xl);
-            box-shadow: var(--shadow-xl);
-            min-width: 350px;
-        }
-
-        .machine-top {
-            background: linear-gradient(135deg, #1976D2 0%, #0D47A1 100%);
-            border: 3px solid #0D47A1;
-            border-radius: var(--radius-md);
-            padding: var(--spacing-lg);
-            display: flex;
-            gap: var(--spacing-md);
-            justify-content: center;
-            margin-bottom: var(--spacing-md);
-        }
-
-        .pokeball-slot {
-            width: 80px;
-            height: 80px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: var(--spacing-md);
+            background: linear-gradient(135deg, 
+                #f4e4c0 0%,      /* Cream/beige from floor */
+                #e8d4b0 25%,     /* Tan */
+                #f0dcc8 50%,     /* Light tan */
+                #dcc8a8 75%,     /* Medium tan */
+                #c8b090 100%     /* Darker tan */
+            );
             position: relative;
         }
 
-        .pokeball-slot.filled::before {
+        /* Subtle tile pattern overlay */
+        .pokecenter-screen::before {
             content: '';
-            width: 60px;
-            height: 60px;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><clipPath id="top-half"><rect x="0" y="0" width="100" height="50"/></clipPath><clipPath id="bottom-half"><rect x="0" y="50" width="100" height="50"/></clipPath></defs><circle cx="50" cy="50" r="48" fill="%23ff0000" stroke="%23000" stroke-width="3" clip-path="url(%23top-half)"/><circle cx="50" cy="50" r="48" fill="%23ffffff" stroke="%23000" stroke-width="3" clip-path="url(%23bottom-half)"/><line x1="0" y1="50" x2="100" y2="50" stroke="%23000" stroke-width="3"/><circle cx="50" cy="50" r="16" fill="%23ffffff" stroke="%23000" stroke-width="3"/><circle cx="50" cy="50" r="8" fill="%23ffffff" stroke="%23000" stroke-width="2"/><circle cx="50" cy="50" r="4" fill="%23000"/></svg>') center/contain no-repeat;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 30px,
+                    rgba(200, 180, 150, 0.1) 30px,
+                    rgba(200, 180, 150, 0.1) 32px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 30px,
+                    rgba(200, 180, 150, 0.1) 30px,
+                    rgba(200, 180, 150, 0.1) 32px
+                );
+            pointer-events: none;
+            z-index: 0;
         }
 
-        .pokeball-slot.healing::before {
-            animation: pokeball-blink 0.6s ease-in-out infinite;
-        }
-
-        @keyframes pokeball-blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        .machine-display {
-            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
-            border: 3px solid #333;
-            border-radius: var(--radius-md);
-            padding: var(--spacing-md);
+        .pokecenter-interior {
+            width: 100%;
+            max-width: 900px;
+            min-height: 650px;
+            border-radius: 20px;
+            border: 4px solid #8B4513;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            padding: 40px;
             display: flex;
-            align-items: center;
-            gap: var(--spacing-sm);
+            flex-direction: column;
+            gap: 40px;
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(135deg, 
+                rgba(244, 228, 192, 0.95) 0%,
+                rgba(232, 212, 176, 0.95) 100%
+            );
         }
 
-        .display-light {
-            width: 16px;
-            height: 16px;
+        /* Counter Area */
+        .pokecenter-counter {
+            display: flex;
+            gap: 50px;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Nurse Joy - BIGGER! */
+        .nurse-joy-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nurse-joy-sprite {
+            width: 200px;          /* Increased from 120px */
+            height: 200px;         /* Increased from 120px */
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4));
+            animation: nurse-float 3s ease-in-out infinite;
+        }
+
+        @keyframes nurse-float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .nurse-speech-bubble {
+            background: white;
+            border: 4px solid #FF1493;
+            border-radius: 20px;
+            padding: 25px 30px;
+            max-width: 400px;
+            position: relative;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+        }
+
+        .nurse-speech-bubble::before {
+            content: '';
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 18px solid transparent;
+            border-right: 18px solid transparent;
+            border-bottom: 18px solid #FF1493;
+        }
+
+        .nurse-speech-bubble::after {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 14px solid transparent;
+            border-right: 14px solid transparent;
+            border-bottom: 14px solid white;
+        }
+
+        .nurse-speech-bubble p {
+            color: #333;
+            font-size: 1.2em;
+            font-weight: 600;
+            text-align: center;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* Healing Machine - BIGGER! */
+        .healing-machine {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .machine-screen {
+            background: linear-gradient(135deg, #FF6B6B 0%, #C92A2A 100%);
+            border: 5px solid #8B0000;
+            border-radius: 25px 25px 12px 12px;
+            padding: 30px;             /* Increased from 20px */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            position: relative;
+        }
+
+        .machine-light {
+            width: 30px;               /* Increased from 20px */
+            height: 30px;              /* Increased from 20px */
             background: #4CAF50;
             border-radius: 50%;
-            box-shadow: 0 0 10px #4CAF50;
+            box-shadow: 0 0 20px #4CAF50, inset 0 3px 8px rgba(255,255,255,0.5);
+            margin: 0 auto 20px;
         }
 
-        .display-light.healing {
-            animation: light-pulse 1s ease-in-out infinite;
+        .machine-light.healing {
+            animation: machine-pulse 0.8s ease-in-out infinite;
         }
 
-        @keyframes light-pulse {
-            0%, 100% { 
+        @keyframes machine-pulse {
+            0%, 100% {
                 background: #4CAF50;
-                box-shadow: 0 0 10px #4CAF50;
+                box-shadow: 0 0 20px #4CAF50, inset 0 3px 8px rgba(255,255,255,0.5);
             }
-            50% { 
+            50% {
                 background: #81C784;
-                box-shadow: 0 0 20px #4CAF50;
+                box-shadow: 0 0 40px #4CAF50, inset 0 3px 8px rgba(255,255,255,0.5);
             }
         }
 
-        .display-text {
-            color: #4CAF50;
-            font-family: 'Courier New', monospace;
-            font-size: 1.3em;
-            font-weight: 700;
-            text-shadow: 0 0 5px #4CAF50;
+        .pokeball-slots {
+            display: flex;
+            gap: 20px;                 /* Increased from 15px */
+            justify-content: center;
         }
 
-        /* Injured Pokemon List */
-        .injured-pokemon-container {
+        .machine-pokeball-slot {
+            width: 80px;               /* Increased from 60px */
+            height: 80px;              /* Increased from 60px */
+            background: rgba(0,0,0,0.4);
+            border: 4px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 3px 10px rgba(0,0,0,0.5);
+        }
+
+        .machine-pokeball-slot.filled {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.6);
+        }
+
+        .machine-pokeball-slot.filled::before {
+            content: '';
+            width: 60px;               /* Increased from 45px */
+            height: 60px;              /* Increased from 45px */
+            background: url('pokeball.png') center center / contain no-repeat;
+        }
+
+        .machine-pokeball-slot.healing::before {
+            animation: slot-pulse 0.6s ease-in-out infinite;
+        }
+
+        @keyframes slot-pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.15); opacity: 0.7; }
+        }
+
+        .machine-base {
+            width: 300px;              /* Increased from 240px */
+            height: 40px;              /* Increased from 30px */
+            background: linear-gradient(135deg, #C92A2A 0%, #8B0000 100%);
+            border: 4px solid #5C0000;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+        }
+
+        /* Injured Pokemon Panel - SMALLER! */
+        .injured-pokemon-panel {
             background: rgba(255, 255, 255, 0.95);
-            border: var(--border-width) solid var(--primary);
-            border-radius: var(--radius-xl);
-            padding: var(--spacing-xl);
-            box-shadow: var(--shadow-lg);
-            min-width: 400px;
+            border: 4px solid #FF1493;
+            border-radius: 20px;
+            padding: 20px;             /* Reduced from 25px */
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            max-width: 700px;          /* Reduced from 800px */
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
         }
 
-        .injured-pokemon-container h3 {
-            color: var(--primary);
-            margin-bottom: var(--spacing-md);
+        .panel-title {
+            color: #FF1493;
+            font-size: 1.3em;          /* Reduced from 1.5em */
+            font-weight: 800;
             text-align: center;
-            font-size: 1.3em;
+            margin-bottom: 15px;       /* Reduced from 20px */
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
-        .injured-pokemon-list {
+        .injured-pokemon-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
             max-height: 400px;
             overflow-y: auto;
-            margin-bottom: var(--spacing-md);
+            margin-bottom: 15px;
+            padding: 0;
+        }
+
+        /* Heal Button */
+        .heal-button {
+            background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            padding: 15px 35px;        /* Slightly reduced */
+            font-size: 1.2em;          /* Slightly reduced */
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+            transition: all 0.3s ease;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .heal-button:hover:not(:disabled) {
+            background: linear-gradient(135deg, #66BB6A 0%, #388E3C 100%);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .heal-button:disabled {
+            background: linear-gradient(135deg, #BDBDBD 0%, #757575 100%);
+            cursor: not-allowed;
+            box-shadow: none;
         }
 
         .pokecenter-locked-message {
@@ -3078,8 +3210,8 @@
             width: 24px;
             height: 24px;
             background: url('pokeball.png') center center / contain no-repeat;
-            opacity: 0.4;
-            filter: grayscale(1);
+            opacity: 0.7;
+            filter: grayscale(0);  /* Show color by default */
             transition: all 0.3s ease;
         }
 
@@ -4807,34 +4939,40 @@
     <div class="page" id="pokecenterPage">
         <div class="page-content">
             <div class="pokecenter-screen">
-                <h1 class="pokecenter-title">🏥 Pokémon Center ⚕️</h1>
-                
-                <div class="nurse-message">
-                    <p id="nurseText">Welcome to the Pokémon Center! Would you like me to heal your Pokémon?</p>
-                </div>
-                
-                <div class="healing-container">
-                    <!-- Healing Machine -->
-                    <div class="healing-machine">
-                        <div class="machine-top">
-                            <div class="pokeball-slot" id="slot1"></div>
-                            <div class="pokeball-slot" id="slot2"></div>
-                            <div class="pokeball-slot" id="slot3"></div>
+                <!-- Pokémon Center Background -->
+                <div class="pokecenter-interior">
+                    <!-- Counter Area -->
+                    <div class="pokecenter-counter">
+                        <!-- Nurse Joy -->
+                        <div class="nurse-joy-container">
+                            <img src="nursejoy.png" alt="Nurse Joy" class="nurse-joy-sprite">
+                            <div class="nurse-speech-bubble">
+                                <p id="nurseText">Welcome to the Pokémon Center! Would you like me to heal your Pokémon?</p>
+                            </div>
                         </div>
-                        <div class="machine-display">
-                            <div class="display-light"></div>
-                            <div class="display-text" id="healingStatus">Ready</div>
+                        
+                        <!-- Healing Machine -->
+                        <div class="healing-machine">
+                            <div class="machine-screen">
+                                <div class="machine-light" id="machineLight"></div>
+                                <div class="pokeball-slots">
+                                    <div class="machine-pokeball-slot" id="slot1"></div>
+                                    <div class="machine-pokeball-slot" id="slot2"></div>
+                                    <div class="machine-pokeball-slot" id="slot3"></div>
+                                </div>
+                            </div>
+                            <div class="machine-base"></div>
                         </div>
                     </div>
                     
-                    <!-- Injured Pokemon List -->
-                    <div class="injured-pokemon-container">
-                        <h3>Select Pokémon to Heal (Max 3)</h3>
-                        <div class="injured-pokemon-list" id="injuredPokemonList">
+                    <!-- Injured Pokemon Selection Area -->
+                    <div class="injured-pokemon-panel">
+                        <h3 class="panel-title">🏥 Injured Pokémon</h3>
+                        <div class="injured-pokemon-grid" id="injuredPokemonList">
                             <!-- Dynamically populated -->
                         </div>
                         <button class="heal-button" id="startHealingBtn" onclick="startHealing()" disabled>
-                            Start Healing
+                            💊 Start Healing
                         </button>
                     </div>
                 </div>
@@ -6358,13 +6496,15 @@
 
         function performHealing() {
             // Start blinking animation
-            document.querySelectorAll('.pokeball-slot.filled').forEach(slot => {
+            document.querySelectorAll('.machine-pokeball-slot.filled').forEach(slot => {
                 slot.classList.add('healing');
             });
             
-            // Pulsing display light
-            document.querySelector('.display-light').classList.add('healing');
-            document.getElementById('healingStatus').textContent = 'Healing...';
+            // Pulsing machine light
+            const machineLight = document.getElementById('machineLight');
+            if (machineLight) {
+                machineLight.classList.add('healing');
+            }
             
             // Play recovery sound
             playRecoverySound();
@@ -6377,11 +6517,13 @@
 
         function completeHealing() {
             // Stop animations
-            document.querySelectorAll('.pokeball-slot').forEach(slot => {
+            document.querySelectorAll('.machine-pokeball-slot').forEach(slot => {
                 slot.classList.remove('healing');
             });
-            document.querySelector('.display-light').classList.remove('healing');
-            document.getElementById('healingStatus').textContent = 'Complete!';
+            const machineLight = document.getElementById('machineLight');
+            if (machineLight) {
+                machineLight.classList.remove('healing');
+            }
             
             // Remove from injured list
             selectedForHealing.forEach(pokemonName => {
@@ -6410,11 +6552,14 @@
         }
 
         function resetHealingMachine() {
-            document.querySelectorAll('.pokeball-slot').forEach(slot => {
+            document.querySelectorAll('.machine-pokeball-slot').forEach(slot => {
                 slot.classList.remove('filled', 'healing');
             });
-            document.querySelector('.display-light').classList.remove('healing');
-            document.getElementById('healingStatus').textContent = 'Ready';
+            const machineLight = document.getElementById('machineLight');
+            if (machineLight) {
+                machineLight.classList.remove('healing');
+            }
+            updateNurseMessage("Welcome to the Pokémon Center! Would you like me to heal your Pokémon?");
         }
 
         function updateNurseMessage(message) {
@@ -7757,6 +7902,10 @@
             const playerPokemon = currentBattle.playerTeam[currentBattle.playerIndex];
             const opponentPokemon = currentBattle.opponentTeam[currentBattle.opponentIndex];
             
+            // Clear any previous fainted classes
+            document.getElementById('playerSprite').classList.remove('fainted');
+            document.getElementById('opponentSprite').classList.remove('fainted');
+            
             // Player Pokemon
             document.getElementById('playerSprite').src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${playerPokemon.number}.gif`;
             document.getElementById('playerPokemonName').textContent = playerPokemon.name;
@@ -7796,22 +7945,28 @@
             // Update player Pokéballs
             const playerBalls = document.querySelectorAll('.team-pokeballs.player-team .pokeball-slot');
             currentBattle.playerTeam.forEach((p, i) => {
-                playerBalls[i].classList.remove('active', 'fainted');
-                if (p.fainted) {
-                    playerBalls[i].classList.add('fainted');
-                } else if (i === currentBattle.playerIndex) {
-                    playerBalls[i].classList.add('active');
+                if (playerBalls[i]) {
+                    playerBalls[i].classList.remove('active', 'fainted');
+                    if (p.fainted) {
+                        playerBalls[i].classList.add('fainted');
+                    } else if (i === currentBattle.playerIndex) {
+                        playerBalls[i].classList.add('active');
+                    }
+                    // If not fainted and not active, it stays with default visible state (no class needed)
                 }
             });
             
             // Update opponent Pokéballs
             const opponentBalls = document.querySelectorAll('.team-pokeballs.opponent-team .pokeball-slot');
             currentBattle.opponentTeam.forEach((p, i) => {
-                opponentBalls[i].classList.remove('active', 'fainted');
-                if (p.fainted) {
-                    opponentBalls[i].classList.add('fainted');
-                } else if (i === currentBattle.opponentIndex) {
-                    opponentBalls[i].classList.add('active');
+                if (opponentBalls[i]) {
+                    opponentBalls[i].classList.remove('active', 'fainted');
+                    if (p.fainted) {
+                        opponentBalls[i].classList.add('fainted');
+                    } else if (i === currentBattle.opponentIndex) {
+                        opponentBalls[i].classList.add('active');
+                    }
+                    // If not fainted and not active, it stays with default visible state (no class needed)
                 }
             });
         }
