@@ -128,6 +128,37 @@ To modify the game:
 - Edit **app.js** for game logic
 - Edit **index.html** for structure changes
 
+## Testing
+To set all gyms to active (test out if unlockables work)
+   // Unlock all 9 gyms
+   gymProgress.unlockedGyms = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+   gymProgress.completedGyms = [];
+   gymProgress.healingUnlocked = true;
+   gymProgress.legendariesUnlocked = {
+      articuno: true,
+      zapdos: true,
+      moltres: true,
+      mewtwo: true,
+      mew: true
+   };
+   localStorage.setItem('gymProgress', JSON.stringify(gymProgress));
+
+To set any pokemon to caught status
+   // Catch multiple Pokémon
+   const pokemonToCatch = ['Pikachu', 'Charmander', 'Squirtle', 'Bulbasaur', 'Jigglypuff'];
+
+   pokemonToCatch.forEach(name => {
+      const index = pokemon.indexOf(name);
+      if (index !== -1) {
+         caughtPokemon[index + 1] = true;
+         console.log(`✓ ${name} caught!`);
+      }
+   });
+
+   localStorage.setItem('caughtPokemon', JSON.stringify(caughtPokemon));
+   console.log('All Pokémon caught!');
+
+
 ## 📊 Game Stats
 
 - **151 Pokémon** from Generation 1
