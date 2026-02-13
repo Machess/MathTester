@@ -5655,12 +5655,44 @@
             ice: 'ice_bg.png'
         };
         
-        // Pokémon voices
+        // Pokémon voices (audio files)
         const pokemonVoices = {
-            'Charmander': null, // Will be loaded when unlocked
-            'Pikachu': [], // Array of 3 sounds
-            'Jigglypuff': null
+            'Charmander': 'charmender.mp3',  // Note: filename has typo 'charmender'
+            'Pikachu': ['pikachu.mp3', 'pikachu2.mp3'],  // 2 variations
+            'Jigglypuff': 'Jigglypuff.mp3'   // Note: capital J
         };
+        
+        // Play Pokémon voice/cry
+        function playPokemonVoice(pokemonName) {
+            if (isMuted) return;
+            
+            // Check if voice is unlocked
+            const voiceKey = pokemonName.toLowerCase();
+            if (!gymProgress.voicesUnlocked || !gymProgress.voicesUnlocked[voiceKey]) {
+                return; // Voice not unlocked yet
+            }
+            
+            // Get audio file
+            let audioFile = null;
+            if (pokemonVoices[pokemonName]) {
+                const voiceData = pokemonVoices[pokemonName];
+                
+                // If array (multiple sounds), pick random
+                if (Array.isArray(voiceData)) {
+                    const randomIndex = Math.floor(Math.random() * voiceData.length);
+                    audioFile = voiceData[randomIndex];
+                } else {
+                    audioFile = voiceData;
+                }
+            }
+            
+            // Play sound
+            if (audioFile) {
+                const audio = new Audio(audioFile);
+                audio.volume = 0.7;
+                audio.play().catch(err => console.log('Could not play voice:', err));
+            }
+        }
         
         // ===== POKEBALL CATCH ANIMATION =====
         function playPokeballCatchAnimation(pokemonType = 'normal') {
@@ -7240,9 +7272,9 @@
             gymPhase = 'training';
             currentGymQuestion = 0;
             
-            // Generate training questions (sequential 2-12)
+            // Generate training questions (sequential 1-12)
             gymQuestions = [];
-            for (let i = 2; i <= 12; i++) {
+            for (let i = 1; i <= 12; i++) {
                 gymQuestions.push({
                     multiplier: i,
                     answer: currentGym.table * i
@@ -7311,8 +7343,8 @@
             gymPlayerHP = 100;
             gymLeaderHP = 100;
             
-            // Generate randomized questions (same table, 2-12 randomized)
-            const multipliers = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+            // Generate randomized questions (same table, 1-12 randomized)
+            const multipliers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
             shuffleArray(multipliers);
             
             gymQuestions = multipliers.map(mult => ({
@@ -7689,6 +7721,9 @@
 
                 // Play type-specific sound
                 playTypeSound(data.types);
+                
+                // Play Pokémon voice if unlocked
+                playPokemonVoice(name);
 
                 // Update modal with Pokemon data
                 document.getElementById('infoSprite').src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${number}.gif`;
@@ -8440,6 +8475,11 @@
                     // Mark as caught
                     caughtPokemon[currentPokemon.number] = true;
                     localStorage.setItem('caughtPokemon', JSON.stringify(caughtPokemon));
+                    
+                    // Play Pokémon voice if unlocked (after catch)
+                    setTimeout(() => {
+                        playPokemonVoice(currentPokemon.name);
+                    }, 4000); // Play after celebration shows
                     
                     // Cache Pokemon types for badge tracking
                     fetch(`https://pokeapi.co/api/v2/pokemon/${currentPokemon.number}`)
