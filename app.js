@@ -1184,9 +1184,10 @@
         function stealPokemon() {
             const healthyPokemon = getHealthyCaughtPokemon();
             
-            // Random amount 1-5 (or less if not enough)
-            const maxSteal = Math.min(5, healthyPokemon.length);
-            const amountToSteal = Math.floor(Math.random() * maxSteal) + 1;
+            // ALWAYS leave at least 1 Pokémon free
+            // Random amount 1-5 (but never steal all)
+            const maxSteal = Math.min(5, healthyPokemon.length - 1); // -1 to leave at least one
+            const amountToSteal = Math.max(1, Math.floor(Math.random() * maxSteal) + 1);
             
             // Randomly select Pokémon
             const shuffled = healthyPokemon.sort(() => Math.random() - 0.5);
@@ -1288,13 +1289,92 @@
         function startRescueBattle() {
             if (stolenPokemon.length === 0) return;
             
-            // Navigate to battle screen properly
+            // Navigate to battle page
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById('battlePage').classList.add('active');
-            document.getElementById('battleArenaScreen').style.display = 'block';
+            
+            // Show team selection (hide arena)
+            document.getElementById('teamSelectionScreen').style.display = 'block';
+            document.getElementById('battleArenaScreen').style.display = 'none';
             
             // Change music to battle theme
             changeMusic(musicTracks.teamRocketBattle);
+            
+            // Populate rescue team selection
+            showRescueTeamSelection();
+        }
+        
+        let rescueSelectedPokemon = null;
+        
+        function showRescueTeamSelection() {
+            const availableDiv = document.getElementById('availablePokemon');
+            const selectedDiv = document.getElementById('selectedTeamDisplay');
+            
+            // Header text
+            const header = document.querySelector('#teamSelectionScreen h2');
+            if (header) header.textContent = '🚨 SELECT 1 POKÉMON TO RESCUE YOUR TEAM! 🚨';
+            
+            // Clear selected
+            selectedDiv.innerHTML = '';
+            rescueSelectedPokemon = null;
+            
+            // Get available Pokémon (not stolen, not injured)
+            const availablePokemon = [];
+            for (let i = 1; i <= 151; i++) {
+                if (caughtPokemon[i] && !stolenPokemon.includes(i)) {
+                    const pokemonName = pokemon[i - 1];
+                    if (!injuredPokemon.includes(pokemonName)) {
+                        availablePokemon.push({ number: i, name: pokemonName });
+                    }
+                }
+            }
+            
+            // Display available Pokémon
+            availableDiv.innerHTML = availablePokemon.map(p => `
+                <div class="selectable-pokemon" data-number="${p.number}" onclick="selectRescuePokemon(${p.number})">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${p.number}.png" 
+                         alt="${p.name}"
+                         style="width: 80px; height: 80px;">
+                    <div style="font-weight: 600; margin-top: 5px;">${p.name}</div>
+                </div>
+            `).join('');
+            
+            // Hide start battle button initially
+            const startBtn = document.getElementById('startBattleBtn');
+            if (startBtn) startBtn.style.display = 'none';
+        }
+        
+        function selectRescuePokemon(number) {
+            rescueSelectedPokemon = number;
+            const pokemonName = pokemon[number - 1];
+            
+            // Update selected display
+            const selectedDiv = document.getElementById('selectedTeamDisplay');
+            selectedDiv.innerHTML = `
+                <div class="selected-pokemon-card">
+                    <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${number}.png" 
+                         alt="${pokemonName}"
+                         style="width: 100px; height: 100px;">
+                    <div style="font-weight: 700; font-size: 1.2em; margin-top: 10px;">${pokemonName}</div>
+                    <button class="start-battle-btn" onclick="beginRescueBattle()" style="margin-top: 15px; padding: 12px 30px; font-size: 1.1em; background: linear-gradient(135deg, #DC143C 0%, #8B0000 100%); color: white; border: 3px solid #FFD700; border-radius: 10px; cursor: pointer; font-weight: 800;">
+                        ⚔️ BATTLE TEAM ROCKET!
+                    </button>
+                </div>
+            `;
+            
+            // Highlight selected Pokémon
+            document.querySelectorAll('.selectable-pokemon').forEach(card => {
+                card.classList.remove('selected');
+            });
+            document.querySelector(`[data-number="${number}"]`).classList.add('selected');
+        }
+        
+        function beginRescueBattle() {
+            if (!rescueSelectedPokemon) return;
+            
+            // Hide team selection, show battle arena
+            document.getElementById('teamSelectionScreen').style.display = 'none';
+            document.getElementById('battleArenaScreen').style.display = 'block';
             
             // Setup rescue battle
             setupRescueBattle();
@@ -1309,18 +1389,18 @@
             document.getElementById('opponentSprite').style.width = '200px'; // Bigger sprite
             document.getElementById('opponentPokemonName').textContent = 'TEAM ROCKET';
             
-            // Load player's first healthy Pokémon
-            const healthyPokemon = getHealthyCaughtPokemon();
-            if (healthyPokemon.length > 0) {
-                const playerPokemonNum = healthyPokemon[0];
-                const playerPokemonName = pokemon[playerPokemonNum - 1];
-                document.getElementById('playerSprite').src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${playerPokemonNum}.gif`;
+            // Load player's selected Pokémon
+            if (rescueSelectedPokemon) {
+                const playerPokemonName = pokemon[rescueSelectedPokemon - 1];
+                document.getElementById('playerSprite').src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${rescueSelectedPokemon}.gif`;
                 document.getElementById('playerPokemonName').textContent = playerPokemonName.toUpperCase();
             }
             
-            // Set HP
-            updateBattleHealth('player', 100, 100);
-            updateBattleHealth('opponent', 100, 100);
+            // Set HP (both start at 100)
+            rescuePlayerHP = 100;
+            rescueRocketHP = 100;
+            updateBattleHealth('player', rescuePlayerHP, 100);
+            updateBattleHealth('opponent', rescueRocketHP, 100);
             
             // Hide team display (solo battle) - use querySelector for classes
             const playerTeam = document.querySelector('.team-pokeballs.player-team');
@@ -1338,14 +1418,15 @@
         
         let currentRescueQuestion = 0;
         let totalRescueQuestions = 0;
+        let rescuePlayerHP = 100;
+        let rescueRocketHP = 100;
         
         function showRescueQuestion() {
-            // Generate math problem
-            const table = Math.floor(Math.random() * 11) + 2;
-            const multiplier = Math.floor(Math.random() * 11) + 2;
-            currentAnswer = table * multiplier;
+            // Generate math problem based on current level settings
+            const mathData = generateMathProblem();
+            currentAnswer = mathData.answer;
             
-            document.getElementById('battleQuestionText').textContent = `${table} × ${multiplier} = ?`;
+            document.getElementById('battleQuestionText').textContent = mathData.problem + ' = ?';
             document.getElementById('battleAnswerInput').value = '';
             document.getElementById('battleMessage').textContent = `Rescue ${currentRescueQuestion + 1}/${totalRescueQuestions} - Defeat Team Rocket!`;
             document.getElementById('battleAnswerInput').focus();
@@ -1356,46 +1437,76 @@
             const messageEl = document.getElementById('battleMessage');
             
             if (userAnswer === currentAnswer) {
-                messageEl.textContent = `✓ Correct! Hit Team Rocket! (${currentRescueQuestion + 1}/${totalRescueQuestions})`;
+                // Correct answer: deal damage to Team Rocket, small damage to player
+                rescueRocketHP -= 10;
+                rescuePlayerHP -= 2;
+                
+                messageEl.textContent = `✅ Critical Hit! Your Pokémon dealt 10 damage! (${currentRescueQuestion + 1}/${totalRescueQuestions})`;
                 messageEl.style.color = '#4CAF50';
                 
                 playSuccessSound();
                 
-                // Damage Team Rocket
-                const damagePerQuestion = Math.floor(100 / totalRescueQuestions);
-                const newHP = Math.max(0, (100 - (damagePerQuestion * (currentRescueQuestion + 1))));
-                updateBattleHealth('opponent', newHP, 100);
+                // Update health bars
+                updateBattleHealth('opponent', rescueRocketHP, 100);
+                updateBattleHealth('player', rescuePlayerHP, 100);
                 
-                // Rescue one Pokémon
-                currentRescueQuestion++;
+                // Shake Team Rocket sprite
+                const rocketSprite = document.getElementById('opponentSprite');
+                if (rocketSprite) {
+                    rocketSprite.style.animation = 'shake 0.5s';
+                    setTimeout(() => {
+                        rocketSprite.style.animation = '';
+                    }, 500);
+                }
                 
-                if (currentRescueQuestion >= totalRescueQuestions) {
+                // Check if Team Rocket defeated
+                if (rescueRocketHP <= 0) {
                     // Victory!
                     setTimeout(() => {
                         rescueVictory();
                     }, 1000);
                 } else {
+                    // Rescue one Pokémon and continue
+                    currentRescueQuestion++;
+                    
                     // Next question
                     setTimeout(() => {
                         showRescueQuestion();
                     }, 1000);
                 }
             } else {
-                messageEl.textContent = '✗ Wrong! Team Rocket attacks!';
+                // Wrong answer: take damage
+                rescuePlayerHP -= 15;
+                
+                messageEl.textContent = `❌ Wrong! Team Rocket attacks for 15 damage!`;
                 messageEl.style.color = '#FF6B6B';
                 
                 playFailureSound();
                 
-                // Player takes damage
-                const currentHP = parseInt(document.getElementById('playerHealthText').textContent.split('/')[0]);
-                const newHP = Math.max(0, currentHP - 20);
-                updateBattleHealth('player', newHP, 100);
+                // Update health bar
+                updateBattleHealth('player', rescuePlayerHP, 100);
                 
-                if (newHP <= 0) {
+                // Shake player sprite
+                const playerSprite = document.getElementById('playerSprite');
+                if (playerSprite) {
+                    playerSprite.style.animation = 'shake 0.5s';
+                    setTimeout(() => {
+                        playerSprite.style.animation = '';
+                    }, 500);
+                }
+                
+                if (rescuePlayerHP <= 0) {
                     // Defeat
                     setTimeout(() => {
                         rescueDefeat();
                     }, 1000);
+                } else {
+                    // Can try again
+                    setTimeout(() => {
+                        messageEl.textContent = `Try again! (${currentRescueQuestion + 1}/${totalRescueQuestions})`;
+                        document.getElementById('battleAnswerInput').value = '';
+                        document.getElementById('battleAnswerInput').focus();
+                    }, 1500);
                 }
             }
         }
@@ -1407,11 +1518,33 @@
             // Random defeat dialogue
             const dialogue = teamRocketDialogues.defeat[Math.floor(Math.random() * teamRocketDialogues.defeat.length)];
             
-            // Show victory message
+            // Hide battle controls
+            const questionEl = document.getElementById('battleQuestionText');
+            const inputEl = document.getElementById('battleAnswerInput');
+            const submitBtn = document.querySelector('#battleArenaScreen .submit-btn');
+            if (questionEl) questionEl.style.display = 'none';
+            if (inputEl) inputEl.style.display = 'none';
+            if (submitBtn) submitBtn.style.display = 'none';
+            
+            // Show victory message with button
             document.getElementById('battleMessage').innerHTML = `
                 <div style="font-size: 1.5em; color: #FFD700; margin-bottom: 15px;">🎉 VICTORY! 🎉</div>
                 <div style="font-size: 1.1em; color: white; margin-bottom: 20px;">${dialogue}</div>
-                <div style="font-size: 1.2em; color: #4CAF50;">✨ All ${totalRescueQuestions} Pokémon rescued! ✨</div>
+                <div style="font-size: 1.2em; color: #4CAF50; margin-bottom: 25px;">✨ All ${totalRescueQuestions} Pokémon rescued! ✨</div>
+                <button onclick="returnToHuntFromRescue()" style="
+                    padding: 15px 40px;
+                    font-size: 1.3em;
+                    font-weight: 800;
+                    background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+                    color: white;
+                    border: 4px solid #FFD700;
+                    border-radius: 15px;
+                    cursor: pointer;
+                    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.6);
+                    transition: all 0.3s;
+                ">
+                    🏠 BACK TO HUNT
+                </button>
             `;
             
             // Return stolen Pokémon
@@ -1419,12 +1552,7 @@
             localStorage.setItem('stolenPokemon', '[]');
             
             // Play fanfare
-            playSound(musicTracks.catchFanfare);
-            
-            // Return to hunt after delay
-            setTimeout(() => {
-                returnToHuntFromRescue();
-            }, 4000);
+            playCatchFanfare();
         }
         
         function rescueDefeat() {
@@ -1453,6 +1581,14 @@
             const opponentTeam = document.querySelector('.team-pokeballs.opponent-team');
             if (playerTeam) playerTeam.style.display = '';
             if (opponentTeam) opponentTeam.style.display = '';
+            
+            // Restore battle controls
+            const questionEl = document.getElementById('battleQuestionText');
+            const inputEl = document.getElementById('battleAnswerInput');
+            const submitBtn = document.querySelector('#battleArenaScreen .submit-btn');
+            if (questionEl) questionEl.style.display = '';
+            if (inputEl) inputEl.style.display = '';
+            if (submitBtn) submitBtn.style.display = '';
             
             // Show/hide rescue button based on stolen count
             updateRescueButton();
@@ -2665,7 +2801,7 @@
             document.getElementById('unlockMessage').textContent = getUnlockMessage(currentGym.unlock);
             
             // Play fanfare
-            playSound(musicTracks.catchFanfare);
+            playCatchFanfare();
         }
 
         // Lose gym
