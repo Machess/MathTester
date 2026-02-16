@@ -277,6 +277,7 @@
         let stolenPokemon = JSON.parse(localStorage.getItem('stolenPokemon')) || [];
         let huntResetCounter = parseInt(localStorage.getItem('huntResetCounter')) || 0;
         let teamRocketActive = false;
+        let teamRocketChance = parseFloat(localStorage.getItem('teamRocketChance')) || 0.25; // Start at 25%
         
         const teamRocketDialogues = {
             appear: [
@@ -1107,11 +1108,9 @@
             });
             document.getElementById('bushHeader').textContent = 'Choose one';
             
-            // Only increment counter and check for Team Rocket if explicitly requested
-            // This ensures Team Rocket only appears after empty Pokéball rounds
+            // Check for Team Rocket if explicitly requested
+            // This ensures Team Rocket only appears after empty Pokéball rounds (3 empty balls)
             if (checkForRocket) {
-                huntResetCounter++;
-                localStorage.setItem('huntResetCounter', huntResetCounter);
                 checkTeamRocketEvent();
             }
         }
@@ -1126,19 +1125,28 @@
             const healthyPokemon = getHealthyCaughtPokemon();
             if (healthyPokemon.length === 0) return;
             
-            // Trigger every 5-7 resets with 20% chance
-            if (huntResetCounter >= 5) {
-                const chance = Math.random();
-                if (chance < 0.20) { // 20% chance
-                    // Reset counter
-                    huntResetCounter = 0;
-                    localStorage.setItem('huntResetCounter', '0');
-                    
-                    // Trigger event
-                    setTimeout(() => {
-                        triggerTeamRocketEncounter();
-                    }, 500);
-                }
+            // Progressive chance system: 25% → 50% → 75%
+            const roll = Math.random();
+            console.log(`🎲 Team Rocket Roll: ${(roll * 100).toFixed(1)}% (Need < ${(teamRocketChance * 100)}%)`);
+            
+            if (roll < teamRocketChance) {
+                // TEAM ROCKET TRIGGERED! 🚨
+                console.log('🚨 TEAM ROCKET APPEARS!');
+                
+                // Reset chance for next event
+                teamRocketChance = 0.25;
+                localStorage.setItem('teamRocketChance', '0.25');
+                
+                // Trigger event
+                setTimeout(() => {
+                    triggerTeamRocketEncounter();
+                }, 500);
+            } else {
+                // Didn't trigger - increase chance for next round
+                const oldChance = teamRocketChance;
+                teamRocketChance = Math.min(0.75, teamRocketChance + 0.25);
+                localStorage.setItem('teamRocketChance', teamRocketChance.toString());
+                console.log(`❌ Team Rocket didn't appear. Chance increased: ${(oldChance * 100)}% → ${(teamRocketChance * 100)}%`);
             }
         }
         
@@ -1517,9 +1525,6 @@
         }
         
         function rescueVictory() {
-            // Victory sparkles
-            createVictorySparkles();
-            
             // Random defeat dialogue
             const dialogue = teamRocketDialogues.defeat[Math.floor(Math.random() * teamRocketDialogues.defeat.length)];
             
@@ -1531,11 +1536,9 @@
             if (inputEl) inputEl.style.display = 'none';
             if (submitBtn) submitBtn.style.display = 'none';
             
-            // Show victory message with button
+            // Show victory message with button (dialogue only, no fluff)
             document.getElementById('battleMessage').innerHTML = `
-                <div style="font-size: 1.5em; color: #FFD700; margin-bottom: 15px;">🎉 VICTORY! 🎉</div>
                 <div style="font-size: 1.1em; color: white; margin-bottom: 20px;">${dialogue}</div>
-                <div style="font-size: 1.2em; color: #4CAF50; margin-bottom: 25px;">✨ All ${totalRescueQuestions} Pokémon rescued! ✨</div>
                 <button onclick="returnToHuntFromRescue()" style="
                     padding: 15px 40px;
                     font-size: 1.3em;
@@ -3970,10 +3973,15 @@
             localStorage.removeItem('gradeLevel');
             localStorage.removeItem('allowedOperations');
             localStorage.removeItem('isMuted');
+            localStorage.removeItem('stolenPokemon');
+            localStorage.removeItem('teamRocketChance');
+            localStorage.removeItem('huntResetCounter');
             
             // Reset all variables to defaults
             caughtPokemon = {};
             injuredPokemon = [];
+            stolenPokemon = [];
+            teamRocketChance = 0.25;
             gameStats = {
                 totalProblems: 0,
                 correctAnswers: 0,
