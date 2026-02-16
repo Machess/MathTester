@@ -1056,7 +1056,9 @@
                 if (page === 'hunt') {
                     document.getElementById('huntPage').classList.add('active');
                     document.querySelectorAll('.nav-btn')[1].classList.add('active');
-                    resetBushes(); // Reset bushes when returning to hunt page
+                    // Reset bushes when returning to hunt page
+                    // DON'T check for Team Rocket (manual navigation)
+                    resetBushes(false);
                     updateRescueButton(); // Update rescue button visibility
                     // Play hunt music (Pallet Town)
                     if (!isMuted) {
@@ -1098,17 +1100,20 @@
         }
 
         // Reset bushes for new round
-        function resetBushes() {
+        function resetBushes(checkForRocket = false) {
             checkedBushes = [];
             document.querySelectorAll('.bush').forEach(bush => {
                 bush.classList.remove('checked', 'stealing');
             });
             document.getElementById('bushHeader').textContent = 'Choose one';
             
-            // Increment reset counter and check for Team Rocket event
-            huntResetCounter++;
-            localStorage.setItem('huntResetCounter', huntResetCounter);
-            checkTeamRocketEvent();
+            // Only increment counter and check for Team Rocket if explicitly requested
+            // This ensures Team Rocket only appears after empty Pokéball rounds
+            if (checkForRocket) {
+                huntResetCounter++;
+                localStorage.setItem('huntResetCounter', huntResetCounter);
+                checkTeamRocketEvent();
+            }
         }
 
         // ===== TEAM ROCKET EVENT SYSTEM =====
@@ -3726,7 +3731,8 @@
                     setTimeout(() => {
                         closeModal();
                         // Reset all bushes for new round after catching Pokemon
-                        resetBushes();
+                        // DON'T check for Team Rocket (user navigates to Pokédex)
+                        resetBushes(false);
                         
                         // Navigate to Pokedex and show the caught Pokemon info
                         setTimeout(() => {
@@ -3774,8 +3780,9 @@
                             // Check if all bushes are checked
                             if (checkedBushes.length === 3) {
                                 // All bushes checked, reset for new round
+                                // CHECK for Team Rocket (user stays on hunt screen)
                                 setTimeout(() => {
-                                    resetBushes();
+                                    resetBushes(true);
                                 }, 500);
                             }
                         }, 1500);
@@ -3803,8 +3810,9 @@
                         showRanAwayNotification(currentPokemon.name);
                         modalSprite.classList.remove('run-away');
                         // Reset bushes after Pokemon runs away
+                        // DON'T check for Team Rocket (Pokémon escaped, not a successful empty round)
                         setTimeout(() => {
-                            resetBushes();
+                            resetBushes(false);
                         }, 2000);
                     }, 800);
                 } else {
