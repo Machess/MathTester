@@ -52,7 +52,9 @@
             pokecenter: 'assets/sounds/pokemon_center.mp3',
             gym: 'assets/sounds/pokemon_gym.mp3',
             catchFanfare: 'assets/sounds/fanfare_item_get.mp3',
-            recovery: 'assets/sounds/pokemon_recovery.mp3'
+            recovery: 'assets/sounds/pokemon_recovery.mp3',
+            teamRocketShow: 'assets/sounds/teamrocket_show.mp3',
+            teamRocketBattle: 'assets/sounds/teamrocket_battle.mp3'
         };
 
         // ===== GYM CHALLENGE SYSTEM =====
@@ -271,6 +273,28 @@
         let gymLeaderHP = 100;
         let gymSelectedTeam = [];
         
+        // Team Rocket event system
+        let stolenPokemon = JSON.parse(localStorage.getItem('stolenPokemon')) || [];
+        let huntResetCounter = parseInt(localStorage.getItem('huntResetCounter')) || 0;
+        let teamRocketActive = false;
+        
+        const teamRocketDialogues = {
+            appear: [
+                "🚨 Prepare for trouble!\nMake it double!\nWe're stealing your Pokémon on the double!",
+                "💫 To protect the world from devastation!\nTo unite all peoples within our nation!\n...and steal some Pokémon while we're at it!",
+                "😈 Your Pokémon are now Team Rocket property!\nSolve this problem if you dare chase us!",
+                "😼 Meowth! That's right!\nWe're taking these cuties!\nCatch us if you can!",
+                "✨ Look at all these adorable Pokémon!\nWe'll take good care of them... NOT! Hahahaha!"
+            ],
+            defeat: [
+                "💥 WHAT?! We've been defeated by a kid!\nLooks like Team Rocket's blasting off again! ⭐",
+                "🌟 No! Our perfect plan foiled by mathematics!\nWe're blasting off agaaaaaain! ✨",
+                "💫 Curse you and your superior math skills!\nTeam Rocket's blasting off! 🌠",
+                "⚡ This isn't over! We'll be back!\n...probably after we study more math! 📚",
+                "🌪️ Defeated by numbers?! The shame!\nLooks like we're blasting off! 🎆"
+            ]
+        };
+        
         // Battle backgrounds mapping
         const battleBackgrounds = {
             neutral: 'assets/backgrounds/neutral_bg.png',
@@ -290,18 +314,30 @@
         
         // Play Pokémon voice/cry
         function playPokemonVoice(pokemonName) {
-            if (isMuted) return;
+            console.log('playPokemonVoice called with:', pokemonName);
+            
+            if (isMuted) {
+                console.log('Muted - not playing');
+                return;
+            }
             
             // Check if voice is unlocked
             const voiceKey = pokemonName.toLowerCase();
+            console.log('Checking voiceKey:', voiceKey);
+            console.log('voicesUnlocked:', gymProgress.voicesUnlocked);
+            
             if (!gymProgress.voicesUnlocked || !gymProgress.voicesUnlocked[voiceKey]) {
+                console.log('Voice not unlocked for:', voiceKey);
                 return; // Voice not unlocked yet
             }
+            
+            console.log('Voice is unlocked! Looking for audio file...');
             
             // Get audio file
             let audioFile = null;
             if (pokemonVoices[pokemonName]) {
                 const voiceData = pokemonVoices[pokemonName];
+                console.log('Found voice data:', voiceData);
                 
                 // If array (multiple sounds), pick random
                 if (Array.isArray(voiceData)) {
@@ -310,13 +346,18 @@
                 } else {
                     audioFile = voiceData;
                 }
+            } else {
+                console.log('No voice data found for:', pokemonName);
             }
             
             // Play sound
             if (audioFile) {
+                console.log('Playing audio file:', audioFile);
                 const audio = new Audio(audioFile);
                 audio.volume = 0.7;
                 audio.play().catch(err => console.log('Could not play voice:', err));
+            } else {
+                console.log('No audio file to play');
             }
         }
         
@@ -677,6 +718,28 @@
             isMusicPlaying = false;
         }
         
+        // Change music to a specific URL (for special events)
+        function changeMusic(url) {
+            if (isMuted) return;
+            
+            // Stop current music
+            if (currentMusic) {
+                currentMusic.pause();
+                currentMusic.currentTime = 0;
+            }
+            
+            // Play new music
+            currentMusic = new Audio(url);
+            currentMusic.loop = true;
+            currentMusic.volume = 0.3;
+            
+            currentMusic.play().catch(err => {
+                console.log('Music playback prevented:', err);
+            });
+            
+            isMusicPlaying = true;
+        }
+        
         // Play catch fanfare (doesn't loop)
         function playCatchFanfare() {
             if (isMuted) return;
@@ -994,6 +1057,7 @@
                     document.getElementById('huntPage').classList.add('active');
                     document.querySelectorAll('.nav-btn')[1].classList.add('active');
                     resetBushes(); // Reset bushes when returning to hunt page
+                    updateRescueButton(); // Update rescue button visibility
                     // Play hunt music (Pallet Town)
                     if (!isMuted) {
                         playBackgroundMusic('hunt');
@@ -1037,9 +1101,393 @@
         function resetBushes() {
             checkedBushes = [];
             document.querySelectorAll('.bush').forEach(bush => {
-                bush.classList.remove('checked');
+                bush.classList.remove('checked', 'stealing');
             });
             document.getElementById('bushHeader').textContent = 'Choose one';
+            
+            // Increment reset counter and check for Team Rocket event
+            huntResetCounter++;
+            localStorage.setItem('huntResetCounter', huntResetCounter);
+            checkTeamRocketEvent();
+        }
+
+        // ===== TEAM ROCKET EVENT SYSTEM =====
+        
+        function checkTeamRocketEvent() {
+            // Don't trigger if already active or no Pokémon to steal
+            if (teamRocketActive || stolenPokemon.length > 0) return;
+            
+            // Get healthy caught Pokémon
+            const healthyPokemon = getHealthyCaughtPokemon();
+            if (healthyPokemon.length === 0) return;
+            
+            // Trigger every 5-7 resets with 20% chance
+            if (huntResetCounter >= 5) {
+                const chance = Math.random();
+                if (chance < 0.20) { // 20% chance
+                    // Reset counter
+                    huntResetCounter = 0;
+                    localStorage.setItem('huntResetCounter', '0');
+                    
+                    // Trigger event
+                    setTimeout(() => {
+                        triggerTeamRocketEncounter();
+                    }, 500);
+                }
+            }
+        }
+        
+        function getHealthyCaughtPokemon() {
+            const healthy = [];
+            for (let i = 1; i <= 151; i++) {
+                if (caughtPokemon[i]) {
+                    const pokemonName = pokemon[i - 1];
+                    // Only include if not injured/fainted
+                    if (!injuredPokemon.includes(pokemonName)) {
+                        healthy.push(i);
+                    }
+                }
+            }
+            return healthy;
+        }
+        
+        function triggerTeamRocketEncounter() {
+            teamRocketActive = true;
+            
+            // Change music
+            changeMusic(musicTracks.teamRocketShow);
+            
+            // Hide normal hunt view
+            document.getElementById('normalHuntView').style.display = 'none';
+            
+            // Show Team Rocket
+            const rocketScreen = document.getElementById('teamRocketEncounter');
+            rocketScreen.style.display = 'block';
+            
+            // Animate Pokéballs disappearing
+            document.querySelectorAll('.bush').forEach((bush, index) => {
+                setTimeout(() => {
+                    bush.classList.add('stealing');
+                }, index * 200);
+            });
+            
+            // Random dialogue
+            const dialogue = teamRocketDialogues.appear[Math.floor(Math.random() * teamRocketDialogues.appear.length)];
+            document.getElementById('rocketDialogue').textContent = dialogue;
+            
+            // Steal Pokémon after animation
+            setTimeout(() => {
+                stealPokemon();
+            }, 1500);
+        }
+        
+        function stealPokemon() {
+            const healthyPokemon = getHealthyCaughtPokemon();
+            
+            // Random amount 1-5 (or less if not enough)
+            const maxSteal = Math.min(5, healthyPokemon.length);
+            const amountToSteal = Math.floor(Math.random() * maxSteal) + 1;
+            
+            // Randomly select Pokémon
+            const shuffled = healthyPokemon.sort(() => Math.random() - 0.5);
+            stolenPokemon = shuffled.slice(0, amountToSteal);
+            
+            // Save to localStorage
+            localStorage.setItem('stolenPokemon', JSON.stringify(stolenPokemon));
+            
+            // Show stolen message
+            const stolenNames = stolenPokemon.map(num => pokemon[num - 1]).join(', ');
+            document.getElementById('stolenMessage').innerHTML = `
+                <div style="margin-bottom: 15px;">💀 WE STOLE ${amountToSteal} OF YOUR POKÉMON! 💀</div>
+                <div style="font-size: 0.9em; color: white;">${stolenNames}</div>
+            `;
+            
+            // Update Pokédex to show stolen status
+            updatePokedexStolenStatus();
+            
+            // Show math problem to chase them
+            setTimeout(() => {
+                showRocketEscapeProblem();
+            }, 2000);
+        }
+        
+        function showRocketEscapeProblem() {
+            // Generate harder math problem
+            const table = Math.floor(Math.random() * 11) + 2; // 2-12
+            const multiplier = Math.floor(Math.random() * 11) + 2; // 2-12
+            const answer = table * multiplier;
+            
+            // Use existing modal
+            currentPokemon = null; // No Pokémon to catch
+            currentAnswer = answer;
+            
+            document.getElementById('modalSprite').src = 'assets/images/teamrocket.png';
+            document.getElementById('modalSprite').alt = 'Team Rocket';
+            document.getElementById('mathProblem').textContent = `Chase them! ${table} × ${multiplier} = ?`;
+            document.getElementById('submitBtn').textContent = 'Chase Team Rocket!';
+            document.getElementById('answerInput').value = '';
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('celebration').style.display = 'none';
+            document.getElementById('mathModal').classList.add('active');
+            document.getElementById('answerInput').focus();
+        }
+        
+        function updatePokedexStolenStatus() {
+            // This will be called when viewing Pokédex to add stolen class
+            const grid = document.getElementById('pokemonGrid');
+            if (!grid) return;
+            
+            stolenPokemon.forEach(num => {
+                const cards = grid.querySelectorAll('.pokemon-card');
+                cards.forEach(card => {
+                    if (card.dataset && card.dataset.number == num) {
+                        card.classList.add('stolen');
+                    }
+                });
+            });
+        }
+        
+        function completeRocketEscape() {
+            // Close modal
+            document.getElementById('mathModal').classList.remove('active');
+            
+            // Hide Team Rocket encounter
+            document.getElementById('teamRocketEncounter').style.display = 'none';
+            
+            // Show normal hunt view
+            document.getElementById('normalHuntView').style.display = 'flex';
+            
+            // Show rescue button
+            updateRescueButton();
+            
+            // Reset bushes
+            checkedBushes = [];
+            document.querySelectorAll('.bush').forEach(bush => {
+                bush.classList.remove('checked', 'stealing');
+            });
+            
+            // Change music back
+            changeMusic(musicTracks.hunt);
+            
+            teamRocketActive = false;
+        }
+        
+        function updateRescueButton() {
+            const button = document.getElementById('rescueButton');
+            const count = stolenPokemon.length;
+            
+            if (count > 0) {
+                button.style.display = 'inline-block';
+                document.getElementById('stolenCount').textContent = count;
+            } else {
+                button.style.display = 'none';
+            }
+        }
+        
+        function startRescueBattle() {
+            if (stolenPokemon.length === 0) return;
+            
+            // Navigate to battle screen properly
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('battlePage').classList.add('active');
+            document.getElementById('battleArenaScreen').style.display = 'block';
+            
+            // Change music to battle theme
+            changeMusic(musicTracks.teamRocketBattle);
+            
+            // Setup rescue battle
+            setupRescueBattle();
+        }
+        
+        function setupRescueBattle() {
+            // Set battle field background
+            document.getElementById('battleField').style.backgroundImage = `url('${battleBackgrounds.neutral}')`;
+            
+            // Load Team Rocket as opponent
+            document.getElementById('opponentSprite').src = 'assets/images/teamrocket.png';
+            document.getElementById('opponentSprite').style.width = '200px'; // Bigger sprite
+            document.getElementById('opponentPokemonName').textContent = 'TEAM ROCKET';
+            
+            // Load player's first healthy Pokémon
+            const healthyPokemon = getHealthyCaughtPokemon();
+            if (healthyPokemon.length > 0) {
+                const playerPokemonNum = healthyPokemon[0];
+                const playerPokemonName = pokemon[playerPokemonNum - 1];
+                document.getElementById('playerSprite').src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/${playerPokemonNum}.gif`;
+                document.getElementById('playerPokemonName').textContent = playerPokemonName.toUpperCase();
+            }
+            
+            // Set HP
+            updateBattleHealth('player', 100, 100);
+            updateBattleHealth('opponent', 100, 100);
+            
+            // Hide team display (solo battle) - use querySelector for classes
+            const playerTeam = document.querySelector('.team-pokeballs.player-team');
+            const opponentTeam = document.querySelector('.team-pokeballs.opponent-team');
+            if (playerTeam) playerTeam.style.display = 'none';
+            if (opponentTeam) opponentTeam.style.display = 'none';
+            
+            // Setup rescue questions (one per stolen Pokémon)
+            currentRescueQuestion = 0;
+            totalRescueQuestions = stolenPokemon.length;
+            
+            // Show first question
+            showRescueQuestion();
+        }
+        
+        let currentRescueQuestion = 0;
+        let totalRescueQuestions = 0;
+        
+        function showRescueQuestion() {
+            // Generate math problem
+            const table = Math.floor(Math.random() * 11) + 2;
+            const multiplier = Math.floor(Math.random() * 11) + 2;
+            currentAnswer = table * multiplier;
+            
+            document.getElementById('battleQuestionText').textContent = `${table} × ${multiplier} = ?`;
+            document.getElementById('battleAnswerInput').value = '';
+            document.getElementById('battleMessage').textContent = `Rescue ${currentRescueQuestion + 1}/${totalRescueQuestions} - Defeat Team Rocket!`;
+            document.getElementById('battleAnswerInput').focus();
+        }
+        
+        function checkRescueAnswer() {
+            const userAnswer = parseInt(document.getElementById('battleAnswerInput').value);
+            const messageEl = document.getElementById('battleMessage');
+            
+            if (userAnswer === currentAnswer) {
+                messageEl.textContent = `✓ Correct! Hit Team Rocket! (${currentRescueQuestion + 1}/${totalRescueQuestions})`;
+                messageEl.style.color = '#4CAF50';
+                
+                playSuccessSound();
+                
+                // Damage Team Rocket
+                const damagePerQuestion = Math.floor(100 / totalRescueQuestions);
+                const newHP = Math.max(0, (100 - (damagePerQuestion * (currentRescueQuestion + 1))));
+                updateBattleHealth('opponent', newHP, 100);
+                
+                // Rescue one Pokémon
+                currentRescueQuestion++;
+                
+                if (currentRescueQuestion >= totalRescueQuestions) {
+                    // Victory!
+                    setTimeout(() => {
+                        rescueVictory();
+                    }, 1000);
+                } else {
+                    // Next question
+                    setTimeout(() => {
+                        showRescueQuestion();
+                    }, 1000);
+                }
+            } else {
+                messageEl.textContent = '✗ Wrong! Team Rocket attacks!';
+                messageEl.style.color = '#FF6B6B';
+                
+                playFailureSound();
+                
+                // Player takes damage
+                const currentHP = parseInt(document.getElementById('playerHealthText').textContent.split('/')[0]);
+                const newHP = Math.max(0, currentHP - 20);
+                updateBattleHealth('player', newHP, 100);
+                
+                if (newHP <= 0) {
+                    // Defeat
+                    setTimeout(() => {
+                        rescueDefeat();
+                    }, 1000);
+                }
+            }
+        }
+        
+        function rescueVictory() {
+            // Victory sparkles
+            createVictorySparkles();
+            
+            // Random defeat dialogue
+            const dialogue = teamRocketDialogues.defeat[Math.floor(Math.random() * teamRocketDialogues.defeat.length)];
+            
+            // Show victory message
+            document.getElementById('battleMessage').innerHTML = `
+                <div style="font-size: 1.5em; color: #FFD700; margin-bottom: 15px;">🎉 VICTORY! 🎉</div>
+                <div style="font-size: 1.1em; color: white; margin-bottom: 20px;">${dialogue}</div>
+                <div style="font-size: 1.2em; color: #4CAF50;">✨ All ${totalRescueQuestions} Pokémon rescued! ✨</div>
+            `;
+            
+            // Return stolen Pokémon
+            stolenPokemon = [];
+            localStorage.setItem('stolenPokemon', '[]');
+            
+            // Play fanfare
+            playSound(musicTracks.catchFanfare);
+            
+            // Return to hunt after delay
+            setTimeout(() => {
+                returnToHuntFromRescue();
+            }, 4000);
+        }
+        
+        function rescueDefeat() {
+            document.getElementById('battleMessage').innerHTML = `
+                <div style="font-size: 1.3em; color: #FF6B6B;">You were defeated!</div>
+                <div style="margin-top: 15px;">Your Pokémon are still with Team Rocket...</div>
+                <div style="margin-top: 10px; font-size: 0.9em;">Try again from the Hunt screen!</div>
+            `;
+            
+            setTimeout(() => {
+                returnToHuntFromRescue();
+            }, 3000);
+        }
+        
+        function returnToHuntFromRescue() {
+            // Navigate back to hunt page properly
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('huntPage').classList.add('active');
+            document.getElementById('battleArenaScreen').style.display = 'none';
+            
+            // Reset opponent sprite size
+            document.getElementById('opponentSprite').style.width = '';
+            
+            // Show team displays again for normal battles
+            const playerTeam = document.querySelector('.team-pokeballs.player-team');
+            const opponentTeam = document.querySelector('.team-pokeballs.opponent-team');
+            if (playerTeam) playerTeam.style.display = '';
+            if (opponentTeam) opponentTeam.style.display = '';
+            
+            // Show/hide rescue button based on stolen count
+            updateRescueButton();
+            
+            // Update Pokédex
+            if (document.getElementById('pokemonGrid')) {
+                initializeGrid();
+            }
+            
+            // Change music back
+            changeMusic(musicTracks.hunt);
+        }
+        
+        function createVictorySparkles() {
+            const container = document.createElement('div');
+            container.className = 'victory-sparkles';
+            document.body.appendChild(container);
+            
+            const sparkleEmojis = ['✨', '⭐', '💫', '🌟', '✨'];
+            
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle';
+                    sparkle.textContent = sparkleEmojis[Math.floor(Math.random() * sparkleEmojis.length)];
+                    sparkle.style.left = Math.random() * 100 + '%';
+                    sparkle.style.top = Math.random() * 100 + '%';
+                    sparkle.style.animationDelay = Math.random() * 0.5 + 's';
+                    container.appendChild(sparkle);
+                    
+                    setTimeout(() => sparkle.remove(), 2000);
+                }, i * 100);
+            }
+            
+            setTimeout(() => container.remove(), 3000);
         }
 
         // ===== POKÉMON CENTER FUNCTIONS =====
@@ -2700,6 +3148,14 @@
 
         // Submit battle answer
         function submitBattleAnswer() {
+            // Check if this is a rescue battle (Team Rocket opponent)
+            const opponentName = document.getElementById('opponentPokemonName').textContent;
+            if (opponentName === 'TEAM ROCKET') {
+                checkRescueAnswer();
+                return;
+            }
+            
+            // Normal battle
             const userAnswer = parseInt(document.getElementById('battleAnswerInput').value);
             
             if (userAnswer === currentBattle.currentAnswer) {
@@ -3021,6 +3477,11 @@
                 card.appendChild(nameEl);
                 card.appendChild(numberEl);
                 grid.appendChild(card);
+                
+                // Mark stolen Pokémon
+                if (stolenPokemon.includes(number)) {
+                    card.classList.add('stolen');
+                }
             });
 
             updateStats();
@@ -3141,34 +3602,48 @@
                         }, 500);
                     }, 5000); // Extended to 5 seconds to show celebration
                 } else {
-                    // Empty bush - mark it as checked
-                    celebration.textContent = '✓ Bush checked! Try another!';
-                    
-                    setTimeout(() => {
-                        celebration.style.display = 'block';
-                        modalSprite.classList.remove('catching');
-                    }, 800);
-                    
-                    saveGameStats();
-                    updateStreakDisplay();
-                    updateBadgeCount();
-                    checkBadges();
-
-                    // Mark this bush as checked
-                    checkedBushes.push(selectedBush);
-                    document.getElementById(`bush-${selectedBush}`).classList.add('checked');
-
-                    setTimeout(() => {
-                        closeModal();
+                    // Check if this is Team Rocket encounter (modal sprite is Team Rocket)
+                    if (modalSprite.src && modalSprite.src.includes('teamrocket.png')) {
+                        // Successfully escaped Team Rocket
+                        celebration.textContent = '✓ You chased them away!';
                         
-                        // Check if all bushes are checked
-                        if (checkedBushes.length === 3) {
-                            // All bushes checked, reset for new round
-                            setTimeout(() => {
-                                resetBushes();
-                            }, 500);
-                        }
-                    }, 1500);
+                        setTimeout(() => {
+                            celebration.style.display = 'block';
+                        }, 500);
+                        
+                        setTimeout(() => {
+                            completeRocketEscape();
+                        }, 2000);
+                    } else {
+                        // Empty bush - mark it as checked
+                        celebration.textContent = '✓ Bush checked! Try another!';
+                        
+                        setTimeout(() => {
+                            celebration.style.display = 'block';
+                            modalSprite.classList.remove('catching');
+                        }, 800);
+                        
+                        saveGameStats();
+                        updateStreakDisplay();
+                        updateBadgeCount();
+                        checkBadges();
+
+                        // Mark this bush as checked
+                        checkedBushes.push(selectedBush);
+                        document.getElementById(`bush-${selectedBush}`).classList.add('checked');
+
+                        setTimeout(() => {
+                            closeModal();
+                            
+                            // Check if all bushes are checked
+                            if (checkedBushes.length === 3) {
+                                // All bushes checked, reset for new round
+                                setTimeout(() => {
+                                    resetBushes();
+                                }, 500);
+                            }
+                        }, 1500);
+                    }
                 }
             } else {
                 // Wrong answer - Pokemon runs away or stays in bush

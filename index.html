@@ -176,7 +176,14 @@
     <div class="page" id="huntPage">
         <div class="bush-screen">
             <h2 id="bushHeader">Choose one</h2>
-            <div class="bushes-container">
+            
+            <!-- Rescue Button (shown when Pokémon stolen) -->
+            <button class="rescue-button" id="rescueButton" onclick="startRescueBattle()" style="display: none;">
+                🚨 RESCUE (<span id="stolenCount">0</span> POKÉMON)
+            </button>
+            
+            <!-- Normal Hunt View -->
+            <div class="bushes-container" id="normalHuntView">
                 <div class="bush" id="bush-0" onclick="selectBush(0)">
                     <div class="bush-image">
                         <img src="assets/images/pokeball.png" alt="Pokéball" class="pokeball-sprite">
@@ -195,6 +202,17 @@
                     </div>
                     <div class="bush-label">Pokéball 3</div>
                 </div>
+            </div>
+            
+            <!-- Team Rocket Encounter -->
+            <div class="team-rocket-encounter" id="teamRocketEncounter" style="display: none;">
+                <div class="rocket-sprite-container">
+                    <img src="assets/images/teamrocket.png" alt="Team Rocket" class="team-rocket-sprite" id="teamRocketSprite">
+                </div>
+                <div class="rocket-dialogue" id="rocketDialogue">
+                    Prepare for trouble!
+                </div>
+                <div class="stolen-message" id="stolenMessage"></div>
             </div>
         </div>
     </div>
